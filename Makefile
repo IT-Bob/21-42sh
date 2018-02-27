@@ -13,8 +13,10 @@ ifeq ($(OS), Linux)
 else
 	CFLAGSUP = -Wno-sign-compare # -g -fsanitize=address
 endif
-CPPFLAGS = -I $(INC_PATH) -I $(LIB_INC) -I $(LIBAG_INC) -I $(ENV_INC)
-CLIB = -L $(ENV) -lenv -L $(LIBAG) -lag -L $(LIBFT) -lft
+CPPFLAGS = -I $(INC_PATH) -I $(LIB_INC) -I $(LIBAG_INC) -I $(ENV_INC) \
+			-I $(LINE_INC) -I $(CMP_INC)
+CLIB = -L $(LINE) -llinput -L $(CMP) -lcomplete -L $(ENV) -lenv \
+-L $(LIBAG) -lag -L $(LIBFT) -lft -ltermcap
 
 # Fichiers d'en-tête
 INC_PATH = includes/
@@ -40,10 +42,18 @@ ENV = modules/environment/
 ENV_INC = $(ENV)includes/
 LIB_ENV = $(ENV)libenv.a
 
+LINE = modules/line_input/
+LINE_INC = $(LINE)includes/
+LIB_LINE = $(LINE)liblinput.a
+
+CMP = modules/completion//
+CMP_INC = $(CMP)includes/
+LIB_CMP = $(CMP)libcomplete.a
+
 # Règles de compilation
 all: lib $(NAME)
 
-$(NAME): Makefile $(LIB_FT) $(LIB_AG) $(LIB_ENV) $(OBJ)
+$(NAME): Makefile $(LIB_FT) $(LIB_AG) $(LIB_ENV) $(LIB_LINE) $(LIB_CMP)  $(OBJ)
 	@echo "$(CYAN)Compilation de $(NAME)$(RESET)"
 	@$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGSUP) $(OBJ) $(CLIB) -o $(NAME)
 
@@ -54,16 +64,23 @@ lib:
 	@make -C $(LIBFT) all
 	@make -C $(LIBAG) LIBFT_INC=../libft/includes/ all
 	@make -C $(ENV) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ all
+	@make -C $(CMP) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ all
+	@make -C $(LINE) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ \
+	ENV_INC=../environment/includes CMP_INC=../completion/includes all
 
 clean: cleanproj
 	@make -C $(LIBFT) clean
 	@make -C $(LIBAG) clean
 	@make -C $(ENV) clean
+	@make -C $(CMP) clean
+	@make -C $(LINE) clean
 
 fclean: fcleanproj
 	@make -C $(LIBFT) fclean
 	@make -C $(LIBAG) fclean
 	@make -C $(ENV) fclean
+	@make -C $(CMP) fclean
+	@make -C $(LINE) fclean
 
 re: fclean all
 
@@ -84,6 +101,8 @@ normeall: norme
 	@make -C $(LIBFT) norme
 	@make -C $(LIBAG) norme
 	@make -C $(ENV) norme
+	@make -C $(CMP) norme
+	@make -C $(LINE) norme
 
 # Règles pour la documentation
 doxygen:
@@ -93,6 +112,8 @@ doxygen:
 	@make -C $(LIBFT) doxygen $(DOXYGEN)
 	@make -C $(LIBAG) doxygen $(DOXYGEN)
 	@make -C $(ENV) doxygen $(DOXYGEN)
+	@make -C $(CMP) doxygen $(DOXYGEN)
+	@make -C $(LINE) doxygen $(DOXYGEN)
 
 cleandoxy:
 #	@echo "$(JAUNE)Pas de documentation pour $(PROJECT)$(RESET)"
@@ -102,6 +123,8 @@ cleandoxy:
 	@make -C $(LIBFT) cleandoxy
 	@make -C $(LIBAG) cleandoxy
 	@make -C $(ENV) cleandoxy
+	@make -C $(CMP) cleandoxy
+	@make -C $(LINE) cleandoxy
 
 fcleanall: cleandoxy fclean
 

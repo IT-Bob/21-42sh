@@ -37,13 +37,20 @@ int				main(void)
 {
 	extern char		**environ;
 	char			**env;
+	char			*line;
 
-	if ((env = create_env(environ)))
+	line = NULL;
+	if ((env = create_env(environ)) == NULL)
+		return (ft_putendl_fd("21sh: create environnement impossible.", 2));
+	while (1)
 	{
-		ft_putendl_fd("env create", 2);
-		print_env((const char**)env);
+		if (!(line = line_input("$>", NULL, env)) || ft_strequ("exit", line))
+		{
+			line ? ft_strdel(&line) : NULL;
+			ft_putendl("");
+			return (1);
+		}
+		ft_putendl("");
 	}
-	else
-		ft_putendl_fd("21sh: create environnement impossible.", 2);
 	return (0);
 }

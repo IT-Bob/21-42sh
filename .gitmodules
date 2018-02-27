@@ -7,3 +7,9 @@
 [submodule "modules/libag"]
 	path = modules/libag
 	url = https://github.com/Aguerin42/libag.git
+[submodule "modules/line_input"]
+	path = modules/line_input
+	url = https://github.com/aguerin42/line_input.git
+[submodule "modules/completion"]
+	path = modules/completion
+	url = https://github.com/aguerin42/completion.git
