@@ -1,82 +1,123 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: mtacnet <mtacnet@student.42.fr>            +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2017/09/11 14:50:14 by mtacnet           #+#    #+#              #
-#    Updated: 2018/02/19 12:44:32 by mtacnet          ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+# Nom
+NAME = 21sh
+PROJECT = 21sh
 
-NAME		= 21sh
+# Détection de l'OS
+OS = $(shell uname -s)
 
-GREEN		= "\033[32m"
-RESET		= "\033[0m"
+# Options de compilation
+CC = @gcc
+CFLAGS = -Wall -Werror -Wextra
+ifeq ($(OS), Linux)
+	CFLAGSUP = -Wno-sign-compare -Wno-empty-body #-g -fsanitize=address
+else
+	CFLAGSUP = -Wno-sign-compare # -g -fsanitize=address
+endif
+CPPFLAGS = -I $(INC_PATH) -I $(LIB_INC) -I $(LIBAG_INC) -I $(ENV_INC)
+CLIB = -L $(ENV) -lenv -L $(LIBAG) -lag -L $(LIBFT) -lft
 
-# src / obj files
-SRC			= sh.c \
+# Fichiers d'en-tête
+INC_PATH = includes/
+INC_FILE = sh.h
+INC = $(addprefix $(INC_PATH), $(INC_FILE))
 
-OBJ			= $(addprefix $(OBJDIR),$(SRC:.c=.o))
-INC			= $(INCDIR)sh.h
+# Fichiers sources
+SRC_PATH = src/
+SRC_FILE = sh.c
+SRC = $(addprefix $(SRC_PATH), $(SRC_FILE))
+OBJ = $(SRC:.c=.o)
 
-# compiler
-CC			= gcc
-CFLAGS		= -Wall -Wextra -Werror
+# Fichiers des bibliothèques
+LIBFT = modules/libft/
+LIB_INC = $(LIBFT)includes/
+LIB_FT = $(LIBFT)libft.a
 
-# ft library
-FT			= modules/libft/
-FT_LIB 		= $(addprefix $(FT),libft.a)
-FT_INC 		= -I modules/libft/includes/
-FT_LNK 		= -L modules/libft -l ft
+LIBAG = modules/libag/
+LIBAG_INC = $(LIBAG)includes/
+LIB_AG = $(LIBAG)libag.a
 
-# ag library
-AG			= modules/libag/
-AG_LIB 		= $(addprefix $(AG),libag.a)
-AG_INC 		= -I modules/libag/includes/
-AG_LNK 		= -L modules/libag -l ft
+ENV = modules/environment/
+ENV_INC = $(ENV)includes/
+LIB_ENV = $(ENV)libenv.a
 
-# environment lib
-ENV			= modules/environment/
-ENV_LIB		= $(addprefix $(ENV),libenv.a)
-ENV_INC		= -I modules/environment/includes/
-ENV_LNK		= -L modules/environment -l ft
+# Règles de compilation
+all: lib $(NAME)
 
-# directories
-SRCDIR		= ./src/
-INCDIR		= ./includes/
-OBJDIR		= ./obj/
+$(NAME): Makefile $(LIB_FT) $(LIB_AG) $(LIB_ENV) $(OBJ)
+	@echo "$(CYAN)Compilation de $(NAME)$(RESET)"
+	@$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGSUP) $(OBJ) $(CLIB) -o $(NAME)
 
-all: obj $(FT_LIB) $(AG_LIB) $(ENV_LIB) $(NAME)
+$(OBJ): $(INC)
 
-obj:
-		@mkdir -p $(OBJDIR)
+lib:
+	@echo "$(VERT)Compilation...$(RESET)"
+	@make -C $(LIBFT) all
+	@make -C $(LIBAG) LIBFT_INC=../libft/includes/ all
+	@make -C $(ENV) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ all
 
-$(OBJDIR)%.o:$(SRCDIR)%.c $(INC)
-		$(CC) $(CFLAGS) $(FT_INC) $(AG_INC) $(ENV_INC) -I $(INCDIR) -o $@ -c $<
+clean: cleanproj
+	@make -C $(LIBFT) clean
+	@make -C $(LIBAG) clean
+	@make -C $(ENV) clean
 
-$(FT_LIB):
-		@make -C $(FT)
-
-$(AG_LIB):
-		@make -C $(AG) LIBFT_INC=../libft/includes/ all
-
-$(ENV_LIB):
-		@make -C $(ENV) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ all
-
-$(NAME): $(OBJ)
-		@$(CC) $(OBJ) $(FT_LNK) -lm -o $(NAME)
-		@echo $(GREEN)"Compilation done !" $(RESET)
-
-clean:
-		@rm -rf $(OBJDIR)
-		@make -C $(FT) clean
-
-fclean: clean
-		@rm -rf $(NAME)
-		@make -C $(FT) fclean
+fclean: fcleanproj
+	@make -C $(LIBFT) fclean
+	@make -C $(LIBAG) fclean
+	@make -C $(ENV) fclean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+cleanproj:
+	@echo "$(ROUGEC)Suppression des fichiers objets de $(NAME)$(RESET)"
+	@rm -f $(OBJ)
+
+fcleanproj: cleanproj
+	@echo "$(ROUGEC)Suppression de l'exécutable $(NAME)$(RESET)"
+	@rm -f $(NAME)
+
+# Règles pour la norme
+norme: cleanproj
+	@echo "$(MAGEN)Norme pour $(PROJECT)$(RESET)"
+	@norminette includes/ src/
+
+normeall: norme
+	@make -C $(LIBFT) norme
+	@make -C $(LIBAG) norme
+	@make -C $(ENV) norme
+
+# Règles pour la documentation
+doxygen:
+#	@echo "$(JAUNE)Pas de documentation pour $(PROJECT)$(RESET)"
+	@echo "$(CYAN)Génération de la documentation de $(PROJECT)$(RESET)"
+	@$(DOXYGEN) documentation/$(PROJECT).doxyconf > documentation/$(PROJECT).log
+	@make -C $(LIBFT) doxygen $(DOXYGEN)
+	@make -C $(LIBAG) doxygen $(DOXYGEN)
+	@make -C $(ENV) doxygen $(DOXYGEN)
+
+cleandoxy:
+#	@echo "$(JAUNE)Pas de documentation pour $(PROJECT)$(RESET)"
+	@echo "Suppression de la documentation de $(PROJECT)"
+	@rm -rf documentation/html
+	@rm -rf documentation/$(PROJECT).log
+	@make -C $(LIBFT) cleandoxy
+	@make -C $(LIBAG) cleandoxy
+	@make -C $(ENV) cleandoxy
+
+fcleanall: cleandoxy fclean
+
+# Couleurs
+RESET = \033[0m
+BLANC = \033[37m
+BLEU  = \033[34m
+CYAN  = \033[36m
+JAUNE = \033[33m
+MAGEN = \033[35m
+NOIR  = \033[30m
+ROUGE = \033[31m
+ROUGEC = \033[1;31m
+VERT  = \033[32m
+
+# VARIABLES
+DOXYGEN = doxygen
+
+.PHONY: all lib clean fclean re doxygen cleandoxy
