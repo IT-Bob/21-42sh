@@ -1,3 +1,9 @@
 [submodule "modules/libft"]
 	path = modules/libft
 	url = https://github.com/Aguerin42/libft.git
+[submodule "modules/environment"]
+	path = modules/environment
+	url = https://github.com/Aguerin42/environment.git
+[submodule "modules/libag"]
+	path = modules/libag
+	url = https://github.com/Aguerin42/libag.git

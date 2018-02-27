@@ -31,21 +31,39 @@ FT_LIB 		= $(addprefix $(FT),libft.a)
 FT_INC 		= -I modules/libft/includes/
 FT_LNK 		= -L modules/libft -l ft
 
+# ag library
+AG			= modules/libag/
+AG_LIB 		= $(addprefix $(AG),libag.a)
+AG_INC 		= -I modules/libag/includes/
+AG_LNK 		= -L modules/libag -l ft
+
+# environment lib
+ENV			= modules/environment/
+ENV_LIB		= $(addprefix $(ENV),libenv.a)
+ENV_INC		= -I modules/environment/includes/
+ENV_LNK		= -L modules/environment -l ft
+
 # directories
 SRCDIR		= ./src/
 INCDIR		= ./includes/
 OBJDIR		= ./obj/
 
-all: obj $(FT_LIB) $(NAME)
+all: obj $(FT_LIB) $(AG_LIB) $(ENV_LIB) $(NAME)
 
 obj:
 		@mkdir -p $(OBJDIR)
 
 $(OBJDIR)%.o:$(SRCDIR)%.c $(INC)
-		$(CC) $(CFLAGS) $(FT_INC) -I $(INCDIR) -o $@ -c $<
+		$(CC) $(CFLAGS) $(FT_INC) $(AG_INC) $(ENV_INC) -I $(INCDIR) -o $@ -c $<
 
 $(FT_LIB):
 		@make -C $(FT)
+
+$(AG_LIB):
+		@make -C $(AG) LIBFT_INC=../libft/includes/ all
+
+$(ENV_LIB):
+		@make -C $(ENV) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ all
 
 $(NAME): $(OBJ)
 		@$(CC) $(OBJ) $(FT_LNK) -lm -o $(NAME)
