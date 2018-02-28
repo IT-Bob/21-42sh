@@ -18,7 +18,7 @@ SRCS = $(addprefix $(SRC_PATH), $(SRC_FILE))
 OBJS	= $(SRCS:.c=.o)
 
 GREEN	= "\033[32m"
-
+ROUGE	= "\033[31m"
 all: $(NAME)
 
 $(NAME): $(OBJS)
@@ -27,12 +27,13 @@ $(NAME): $(OBJS)
 
 %.o: %.c
 	@$(CC) -o $@ -c $< $(CFLAGS)
-	@echo $(GREEN)"Lib_MT: "$@
 
 clean:
+	@echo "$(ROUGEC)Suppression des fichiers objets de $(NAME)$(RESET)"
 	@$(RM) $(OBJS)
 
 fclean: clean
+	@echo "$(ROUGEC)Suppression de la bibliothèque $(NAME)$(RESET)"
 	@$(RM) $(NAME)
 
 re: fclean
