@@ -37,20 +37,25 @@ int				main(void)
 {
 	extern char		**environ;
 	char			**env;
+	char			*hist_file;
 	char			*line;
 	t_tok			*token;
+	t_lstag			*history;
 
 	line = NULL;
+	history = read_history((hist_file = "./.21sh_history"));
 	if ((env = create_env(environ)) == NULL)
 		return (ft_putendl_fd("21sh: create environnement impossible.", 2));
 	while (1)
 	{
-		if (!(line = line_input("$>", NULL, env)) || ft_strequ("exit", line))
+		if (!(line = line_input("$>", history, env)) || ft_strequ("exit", line))
 		{
 			line ? ft_strdel(&line) : NULL;
+			history ? delete_history_list(&history) : NULL;
 			ft_putendl("");
 			return (1);
 		}
+		history = add_history(history, hist_file, line);
 		ft_putendl("");
 		if ((token = lexer(line)))
 		{

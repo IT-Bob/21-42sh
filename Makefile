@@ -132,9 +132,9 @@ normeall: norme
 
 # Règles pour la documentation
 doxygen:
-#	@echo "$(JAUNE)Pas de documentation pour $(PROJECT)$(RESET)"
-	@echo "$(CYAN)Génération de la documentation de $(PROJECT)$(RESET)"
-	@$(DOXYGEN) documentation/$(PROJECT).doxyconf > documentation/$(PROJECT).log
+	@echo "$(JAUNE)Pas de documentation pour $(PROJECT)$(RESET)"
+#	@echo "$(CYAN)Génération de la documentation de $(PROJECT)$(RESET)"
+#	@$(DOXYGEN) documentation/$(PROJECT).doxyconf > documentation/$(PROJECT).log
 	@make -C $(LIBFT) doxygen $(DOXYGEN)
 	@make -C $(LIBAG) doxygen $(DOXYGEN)
 	@make -C $(ENV) doxygen $(DOXYGEN)
@@ -143,10 +143,10 @@ doxygen:
 	@make -C $(LINE) doxygen $(DOXYGEN)
 
 cleandoxy:
-#	@echo "$(JAUNE)Pas de documentation pour $(PROJECT)$(RESET)"
-	@echo "Suppression de la documentation de $(PROJECT)"
-	@rm -rf documentation/html
-	@rm -rf documentation/$(PROJECT).log
+	@echo "$(JAUNE)Pas de documentation pour $(PROJECT)$(RESET)"
+#	@echo "Suppression de la documentation de $(PROJECT)"
+#	@rm -rf documentation/html
+#	@rm -rf documentation/$(PROJECT).log
 	@make -C $(LIBFT) cleandoxy
 	@make -C $(LIBAG) cleandoxy
 	@make -C $(ENV) cleandoxy
