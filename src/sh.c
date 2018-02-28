@@ -38,6 +38,7 @@ int				main(void)
 	extern char		**environ;
 	char			**env;
 	char			*line;
+	t_tok			*token;
 
 	line = NULL;
 	if ((env = create_env(environ)) == NULL)
@@ -51,6 +52,12 @@ int				main(void)
 			return (1);
 		}
 		ft_putendl("");
+		if ((token = lexer(line)))
+		{
+			parser(token);
+			freelst(&token);
+		}
+		line ? ft_strdel(&line) : NULL;
 	}
 	return (0);
 }
