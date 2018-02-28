@@ -50,6 +50,7 @@ int				main(void)
 	{
 		if (!(line = line_input("$>", history, env)) || ft_strequ("exit", line))
 		{
+			history = add_history(history, hist_file, line);
 			line ? ft_strdel(&line) : NULL;
 			history ? delete_history_list(&history) : NULL;
 			ft_putendl("");
