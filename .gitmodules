@@ -16,3 +16,6 @@
 [submodule "modules/parser"]
 	path = modules/parser
 	url = https://github.com/mtacnet/parser.git
+[submodule "modules/history"]
+	path = modules/history
+	url = https://github.com/aguerin42/history.git

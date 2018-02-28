@@ -14,8 +14,8 @@ else
 	CFLAGSUP = -Wno-sign-compare # -g -fsanitize=address
 endif
 CPPFLAGS = -I $(INC_PATH) -I $(LIB_INC) -I $(LIBAG_INC) -I $(ENV_INC) \
-			-I $(LINE_INC) -I $(CMP_INC) -I $(LIBMT_INC) -I $(PARSER_INC)
-CLIB = -L $(LINE) -llinput -L $(CMP) -lcomplete -L $(ENV) -lenv -L $(PARSER) -lparser \
+			-I $(LINE_INC) -I $(CMP_INC) -I $(LIBMT_INC) -I $(PARSER_INC) -I $(HIST_INC)
+CLIB = -L $(LINE) -llinput -L $(CMP) -lcomplete -L $(HIST) -lstory -L $(ENV) -lenv -L $(PARSER) -lparser \
 -L $(LIBAG) -lag -L $(LIBMT) -lmt -L $(LIBFT) -lft -ltermcap
 
 # Fichiers d'en-tête
@@ -50,9 +50,13 @@ LINE = modules/line_input/
 LINE_INC = $(LINE)includes/
 LIB_LINE = $(LINE)liblinput.a
 
-CMP = modules/completion//
+CMP = modules/completion/
 CMP_INC = $(CMP)includes/
 LIB_CMP = $(CMP)libcomplete.a
+
+HIST = modules/history/
+HIST_INC = $(HIST)includes/
+LIB_HIST = $(HIST)libstory.a
 
 PARSER = modules/parser/
 PARSER_INC = $(PARSER)/includes/
@@ -61,7 +65,7 @@ LIB_PARSER = $(PARSER)libparser.a
 # Règles de compilation
 all: lib $(NAME)
 
-$(NAME): Makefile $(LIB_FT) $(LIB_AG) $(LIB_MT) $(LIB_ENV) $(LIB_LINE) \
+$(NAME): Makefile $(LIB_FT) $(LIB_AG) $(LIB_MT) $(LIB_ENV) $(LIB_HIST) $(LIB_LINE) \
 		$(LIB_CMP) $(LIB_PARSER) $(OBJ)
 
 	@echo "$(CYAN)Compilation de $(NAME)$(RESET)"
@@ -76,6 +80,7 @@ lib:
 	@make -C $(LIBMT) LIBFT_INC=../libft/includes/ all
 	@make -C $(ENV) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ all
 	@make -C $(CMP) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ all
+	@make -C $(HIST) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ all
 	@make -C $(LINE) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ \
 	ENV_INC=../environment/includes CMP_INC=../completion/includes all
 	@make -C $(PARSER) LIBFT_INC=../libft/includes/ LIBMT_INC=../libmt/includes/ all\
@@ -86,6 +91,7 @@ clean: cleanproj
 	@make -C $(LIBMT) clean
 	@make -C $(ENV) clean
 	@make -C $(CMP) clean
+	@make -C $(HIST) clean
 	@make -C $(LINE) clean
 	@make -C $(PARSER) clean
 
@@ -95,6 +101,7 @@ fclean: fcleanproj
 	@make -C $(LIBMT) fclean
 	@make -C $(ENV) fclean
 	@make -C $(CMP) fclean
+	@make -C $(HIST) fclean
 	@make -C $(LINE) fclean
 	@make -C $(PARSER) fclean
 
@@ -119,6 +126,7 @@ normeall: norme
 	@make -C $(LIBMT) norme
 	@make -C $(ENV) norme
 	@make -C $(CMP) norme
+	@make -C $(HIST) norme
 	@make -C $(LINE) norme
 	@make -C $(PARSER) norme
 
@@ -131,6 +139,7 @@ doxygen:
 	@make -C $(LIBAG) doxygen $(DOXYGEN)
 	@make -C $(ENV) doxygen $(DOXYGEN)
 	@make -C $(CMP) doxygen $(DOXYGEN)
+	@make -C $(HIST) doxygen $(DOXYGEN)
 	@make -C $(LINE) doxygen $(DOXYGEN)
 
 cleandoxy:
@@ -142,6 +151,7 @@ cleandoxy:
 	@make -C $(LIBAG) cleandoxy
 	@make -C $(ENV) cleandoxy
 	@make -C $(CMP) cleandoxy
+	@make -C $(HIST) cleandoxy
 	@make -C $(LINE) cleandoxy
 
 fcleanall: cleandoxy fclean
