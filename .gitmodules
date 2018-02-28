@@ -13,3 +13,6 @@
 [submodule "modules/completion"]
 	path = modules/completion
 	url = https://github.com/aguerin42/completion.git
+[submodule "modules/parser"]
+	path = modules/parser
+	url = https://github.com/mtacnet/parser.git
