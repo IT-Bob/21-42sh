@@ -14,9 +14,9 @@ else
 	CFLAGSUP = -Wno-sign-compare # -g -fsanitize=address
 endif
 CPPFLAGS = -I $(INC_PATH) -I $(LIB_INC) -I $(LIBAG_INC) -I $(ENV_INC) \
-			-I $(LINE_INC) -I $(CMP_INC)
-CLIB = -L $(LINE) -llinput -L $(CMP) -lcomplete -L $(ENV) -lenv \
--L $(LIBAG) -lag -L $(LIBFT) -lft -ltermcap
+			-I $(LINE_INC) -I $(CMP_INC) -I $(LIBMT_INC) -I $(PARSER_INC)
+CLIB = -L $(LINE) -llinput -L $(CMP) -lcomplete -L $(ENV) -lenv -L $(PARSER) -lparser \
+-L $(LIBAG) -lag -L $(LIBMT) -lmt -L $(LIBFT) -lft -ltermcap
 
 # Fichiers d'en-tête
 INC_PATH = includes/
@@ -38,6 +38,10 @@ LIBAG = modules/libag/
 LIBAG_INC = $(LIBAG)includes/
 LIB_AG = $(LIBAG)libag.a
 
+LIBMT = modules/libmt/
+LIBMT_INC = $(LIBMT)includes/
+LIBMT_MT = $(LIBMT)libmt.a
+
 ENV = modules/environment/
 ENV_INC = $(ENV)includes/
 LIB_ENV = $(ENV)libenv.a
@@ -50,10 +54,16 @@ CMP = modules/completion//
 CMP_INC = $(CMP)includes/
 LIB_CMP = $(CMP)libcomplete.a
 
+PARSER = modules/parser/
+PARSER_INC = $(PARSER)/includes/
+LIB_PARSER = $(PARSER)libparser.a
+
 # Règles de compilation
 all: lib $(NAME)
 
-$(NAME): Makefile $(LIB_FT) $(LIB_AG) $(LIB_ENV) $(LIB_LINE) $(LIB_CMP)  $(OBJ)
+$(NAME): Makefile $(LIB_FT) $(LIB_AG) $(LIB_MT) $(LIB_ENV) $(LIB_LINE) \
+		$(LIB_CMP) $(LIB_PARSER) $(OBJ)
+
 	@echo "$(CYAN)Compilation de $(NAME)$(RESET)"
 	@$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGSUP) $(OBJ) $(CLIB) -o $(NAME)
 
@@ -63,24 +73,30 @@ lib:
 	@echo "$(VERT)Compilation...$(RESET)"
 	@make -C $(LIBFT) all
 	@make -C $(LIBAG) LIBFT_INC=../libft/includes/ all
+	@make -C $(LIBMT) LIBFT_INC=../libft/includes/ all
 	@make -C $(ENV) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ all
 	@make -C $(CMP) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ all
 	@make -C $(LINE) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ \
 	ENV_INC=../environment/includes CMP_INC=../completion/includes all
+	@make -C $(PARSER) LIBFT_INC=../libft/includes/ LIBMT_INC=../libmt/includes/ all\
 
 clean: cleanproj
 	@make -C $(LIBFT) clean
 	@make -C $(LIBAG) clean
+	@make -C $(LIBMT) clean
 	@make -C $(ENV) clean
 	@make -C $(CMP) clean
 	@make -C $(LINE) clean
+	@make -C $(PARSER) clean
 
 fclean: fcleanproj
 	@make -C $(LIBFT) fclean
 	@make -C $(LIBAG) fclean
+	@make -C $(LIBMT) fclean
 	@make -C $(ENV) fclean
 	@make -C $(CMP) fclean
 	@make -C $(LINE) fclean
+	@make -C $(PARSER) fclean
 
 re: fclean all
 
@@ -100,9 +116,11 @@ norme: cleanproj
 normeall: norme
 	@make -C $(LIBFT) norme
 	@make -C $(LIBAG) norme
+	@make -C $(LIBMT) norme
 	@make -C $(ENV) norme
 	@make -C $(CMP) norme
 	@make -C $(LINE) norme
+	@make -C $(PARSER) norme
 
 # Règles pour la documentation
 doxygen:
