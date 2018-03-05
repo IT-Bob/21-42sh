@@ -9,7 +9,7 @@ OS = $(shell uname -s)
 CC = @gcc
 CFLAGS = -Wall -Werror -Wextra
 ifeq ($(OS), Linux)
-	CFLAGSUP = -Wno-sign-compare -Wno-empty-body #-g -fsanitize=address
+	CFLAGSUP = -Wno-sign-compare -Wno-empty-body -g -fsanitize=address
 else
 	CFLAGSUP = -Wno-sign-compare # -g -fsanitize=address
 endif
