@@ -10,9 +10,9 @@
 # include "parser.h"
 
 /*
-**	history.c
+**	builtin.c
 */
 
-t_lstag		*init_history(char *path);
+char		**get_shbuiltin(void);
 
 #endif

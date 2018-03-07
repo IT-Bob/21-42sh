@@ -33,25 +33,74 @@ static char		**create_env(char **environ)
 	return (env);
 }
 
-int				main(void)
+/**
+**	\brief	Regroupement de tableaux
+**
+**	Regroupe les tableaux de chaînes de caractères
+**	(environnement et local) en un seul afin de pouvoir l'envoyer
+**	à l'édition de ligne.
+**
+**	\param	env		- tableau contenant les variables d'environnement
+**	\param	local	- tableau contenant les variables locales
+**
+**	\return **tableau** regroupant ceux donnés en paramètres
+**			ou **NULL** en cas d'erreur
+*/
+
+char			**concat_tab(char **env, char **local)
 {
-	extern char		**environ;
+	int		len;
+	int		i;
+	int		j;
+	char	**t;
+
+	t = NULL;
+	if ((len = ag_strlendouble(env) + ag_strlendouble(local)))
+	{
+		if ((t = (char**)ft_memalloc(sizeof(char*) * (len + 1))))
+		{
+			i = -1;
+			j = 0;
+			while (t && env && env[++i])
+				if (!(t[j++] = ft_strdup(env[i])))
+					ag_strdeldouble(&t);
+			i = -1;
+			while (t && local && local[++i])
+				if (!(t[j++] = ft_strdup(local[i])))
+					ag_strdeldouble(&t);
+		}
+		if (!t)
+			ft_putendl_fd(
+			"21sh: allocation error in concat_tab() function", 2);
+	}
+	return (t);
+}
+
+int				main(int argc, char **argv, char **environ)
+{
 	char			**env;
+	char			**var;
 	char			*hist_file;
 	char			*line;
+	char			**built;
 	t_tok			*token;
 	t_lstag			*history;
 
 	line = NULL;
 	history = read_history((hist_file = "./.21sh_history"));
-	if ((env = create_env(environ)) == NULL)
+	if (!(env = create_env(environ)))
 		return (ft_putendl_fd("21sh: create environnement impossible.", 2));
 	while (1)
 	{
-		if (!(line = line_input("$>", history, env)) || ft_strequ("exit", line))
+		var = concat_tab(env, NULL);
+		if (!(line = line_input("$>", history, var, (built = get_shbuiltin())))
+			|| ft_strequ("exit", line))
 		{
 			history = add_history(history, hist_file, line);
+			env ? ag_strdeldouble(&env) : NULL;
+			var ? ag_strdeldouble(&var) : NULL;
 			line ? ft_strdel(&line) : NULL;
+			built ? ft_memdel((void**)&built) : NULL;
 			history ? delete_history_list(&history) : NULL;
 			ft_putendl("");
 			return (1);
@@ -63,7 +112,10 @@ int				main(void)
 			parser(token);
 			freelst(&token);
 		}
+		var ? ag_strdeldouble(&var) : NULL;
 		line ? ft_strdel(&line) : NULL;
 	}
+	(void)argc;
+	(void)argv;
 	return (0);
 }
