@@ -70,7 +70,7 @@ char			**concat_tab(char **env, char **local)
 					ag_strdeldouble(&t);
 		}
 		if (!t)
-			ft_putendl_fd(
+		ft_putendl_fd(
 			"21sh: allocation error in concat_tab() function", 2);
 	}
 	return (t);
@@ -93,8 +93,9 @@ int				main(int argc, char **argv, char **environ)
 	while (1)
 	{
 		var = concat_tab(env, NULL);
+		history = ag_lsthead(history);
 		if (!(line = line_input("$>", history, var, (built = get_shbuiltin())))
-			|| ft_strequ("exit", line))
+			|| ft_strnequ("exit", line, 4))
 		{
 			history = add_history(history, hist_file, line);
 			env ? ag_strdeldouble(&env) : NULL;
