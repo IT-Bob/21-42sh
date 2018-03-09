@@ -93,7 +93,7 @@ int				main(int argc, char **argv, char **environ)
 	while (1)
 	{
 		var = concat_tab(env, NULL);
-		history = ag_lsthead(history);
+		history ? history = ag_lsthead(history) : NULL;
 		if (!(line = line_input("$>", history, var, (built = get_shbuiltin())))
 			|| ft_strnequ("exit", line, 4))
 		{
@@ -112,6 +112,14 @@ int				main(int argc, char **argv, char **environ)
 		{
 			parser(token);
 			freelst(&token);
+		}
+		if ((ft_strnequ("history", line, 7)))
+		{
+			char **test;
+
+			test = ft_strsplit(line, ' ');
+			history_builtin(test, &history);
+			ag_strdeldouble(&test);
 		}
 		var ? ag_strdeldouble(&var) : NULL;
 		line ? ft_strdel(&line) : NULL;

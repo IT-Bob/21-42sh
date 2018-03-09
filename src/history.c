@@ -11,16 +11,21 @@
 **	\return	**0** si tout s'est bien déroulé ou **1** sinon
 */
 
-int	history_builtin(char **argv, t_lstag *history)
+int	history_builtin(char **argv, t_lstag **history)
 {
 	int	cmp;
+	int	i;
 
 	if (argv && argv[0] && history)
 	{
 		cmp = -1;
-		if (argv[1] && argv[1][0] != '-')
-			cmp = ft_atoi(argv[1]);
-		print_history(history, cmp);
+		i = 0;
+		while (argv[++i])
+		{
+			if (ft_strequ(argv[i], "-c"))
+				delete_history_list(history);
+		}
+		history ? print_history(*history, cmp) : NULL;
 	}
 	return (1);
 }

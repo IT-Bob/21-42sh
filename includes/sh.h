@@ -19,6 +19,6 @@ char		**get_shbuiltin(void);
 **	history.c
 */
 
-int			history_builtin(char **argv, t_lstag *history);
+int			history_builtin(char **argv, t_lstag **history);
 
 #endif
