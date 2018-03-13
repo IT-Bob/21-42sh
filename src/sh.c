@@ -100,6 +100,8 @@ int			main(int argc, char **argv, char **environ)
 	t_tok	*token;
 	t_lstag	*history;
 
+	char **test;
+
 	line = NULL;
 	history = read_history((hist_file = "./.21sh_history"));
 	if (!(env = create_env(environ)))
@@ -107,6 +109,7 @@ int			main(int argc, char **argv, char **environ)
 	while (1)
 	{
 		history ? history = ag_lsthead(history) : NULL;
+		get_history(history);
 		if (!(line = call_line(&history, hist_file, env)) || ft_strnequ("exit", line, 4))
 		{
 			env ? ag_strdeldouble(&env) : NULL;
@@ -121,14 +124,9 @@ int			main(int argc, char **argv, char **environ)
 			parser(token);
 			freelst(&token);
 		}
-		if ((ft_strnequ("history", line, 7)))
-		{
-			char **test;
-
-			test = ft_strsplit(line, ' ');
-			history_builtin(test, &history);
-			ag_strdeldouble(&test);
-		}
+		test = ft_strsplit(line, ' ');
+		execute((const char**)test, env);
+		test ? ag_strdeldouble(&test) : NULL;
 		line ? ft_strdel(&line) : NULL;
 	}
 	(void)argc;

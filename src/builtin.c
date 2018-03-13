@@ -1,6 +1,32 @@
 #include "sh.h"
 
-/**
+/*
+**	\brief	Test si la commande envoyée est un builtin
+**
+**	\param	arg	- commande à tester
+**
+**	\return	**1** si la commande est un builtin ou **0** sinon
+*/
+
+int	is_builtin(const char *arg)
+{
+	int		i;
+	char	**builtin;
+
+	if (arg)
+	{
+		i = -1;
+		builtin = get_shbuiltin();
+		while (builtin && builtin[++i])
+		{
+			if (ft_strequ(builtin[i], arg))
+				return (1);
+		}
+	}
+	return (0);
+}
+
+/*
 **	\brief	Tableau indiquant les builtins du projet
 **
 **	La fonction renvoie un tableau dont chaque case contient le nom
