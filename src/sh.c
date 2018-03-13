@@ -1,6 +1,6 @@
 #include "sh.h"
 
-static char		**set_env(void)
+static char	**set_env(void)
 {
 	char	**env;
 	char	*tmp;
@@ -18,7 +18,7 @@ static char		**set_env(void)
 	return (env);
 }
 
-static char		**create_env(char **environ)
+static char	**create_env(char **environ)
 {
 	char	**env;
 
@@ -33,7 +33,7 @@ static char		**create_env(char **environ)
 	return (env);
 }
 
-/**
+/*
 **	\brief	Regroupement de tableaux
 **
 **	Regroupe les tableaux de chaînes de caractères
@@ -47,7 +47,7 @@ static char		**create_env(char **environ)
 **			ou **NULL** en cas d'erreur
 */
 
-char			**concat_tab(char **env, char **local)
+char		**concat_tab(char **env, char **local)
 {
 	int		len;
 	int		i;
@@ -76,15 +76,29 @@ char			**concat_tab(char **env, char **local)
 	return (t);
 }
 
-int				main(int argc, char **argv, char **environ)
+static char	*call_line(t_lstag **history, char *hist_file, char **env)
 {
-	char			**env;
-	char			**var;
-	char			*hist_file;
-	char			*line;
-	char			**built;
-	t_tok			*token;
-	t_lstag			*history;
+	char	*line;
+	char	**built;
+	char	**var;
+
+	var = concat_tab(env, NULL);
+	line = line_input("$>", *history, var, (built = get_shbuiltin()));
+	*history = add_history(*history, hist_file, line);
+	var ? ag_strdeldouble(&var) : NULL;
+	*history ? *history = ag_lsthead(*history) : NULL;
+	ft_putendl("");
+	return (line);
+}
+
+int			main(int argc, char **argv, char **environ)
+{
+	char	**env;
+	char	**built;
+	char	*hist_file;
+	char	*line;
+	t_tok	*token;
+	t_lstag	*history;
 
 	line = NULL;
 	history = read_history((hist_file = "./.21sh_history"));
@@ -92,22 +106,16 @@ int				main(int argc, char **argv, char **environ)
 		return (ft_putendl_fd("21sh: create environnement impossible.", 2));
 	while (1)
 	{
-		var = concat_tab(env, NULL);
 		history ? history = ag_lsthead(history) : NULL;
-		if (!(line = line_input("$>", history, var, (built = get_shbuiltin())))
-			|| ft_strnequ("exit", line, 4))
+		if (!(line = call_line(&history, hist_file, env)) || ft_strnequ("exit", line, 4))
 		{
-			history = add_history(history, hist_file, line);
 			env ? ag_strdeldouble(&env) : NULL;
-			var ? ag_strdeldouble(&var) : NULL;
 			line ? ft_strdel(&line) : NULL;
-			built ? ft_memdel((void**)&built) : NULL;
+			if ((built = get_shbuiltin()))
+				ft_memdel((void**)&built);
 			history ? delete_history_list(&history) : NULL;
-			ft_putendl("");
 			return (1);
 		}
-		history = add_history(history, hist_file, line);
-		ft_putendl("");
 		if ((token = lexer(line)))
 		{
 			parser(token);
@@ -121,7 +129,6 @@ int				main(int argc, char **argv, char **environ)
 			history_builtin(test, &history);
 			ag_strdeldouble(&test);
 		}
-		var ? ag_strdeldouble(&var) : NULL;
 		line ? ft_strdel(&line) : NULL;
 	}
 	(void)argc;
