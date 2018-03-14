@@ -8,7 +8,7 @@
 **	\return	**1** si la commande est un builtin ou **0** sinon
 */
 
-int	is_builtin(const char *arg)
+int		is_builtin(const char *arg)
 {
 	int		i;
 	char	**builtin;
@@ -37,7 +37,7 @@ int	is_builtin(const char *arg)
 **			ou **NULL** en cas d'erreur
 */
 
-char **get_shbuiltin(void)
+char	**get_shbuiltin(void)
 {
 	static char	**t = NULL;
 

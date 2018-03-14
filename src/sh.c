@@ -95,7 +95,6 @@ int			main(int argc, char **argv, char **environ)
 {
 	char	**env;
 	char	**built;
-	char	*hist_file;
 	char	*line;
 	t_tok	*token;
 	t_lstag	*history;
@@ -103,14 +102,14 @@ int			main(int argc, char **argv, char **environ)
 	char **test;
 
 	line = NULL;
-	history = read_history((hist_file = "./.21sh_history"));
+	history = read_history(get_history_file("./.21sh_history"), NULL);
 	if (!(env = create_env(environ)))
 		return (ft_putendl_fd("21sh: create environnement impossible.", 2));
 	while (1)
 	{
 		history ? history = ag_lsthead(history) : NULL;
 		get_history(&history);
-		if (!(line = call_line(&history, hist_file, env)) || ft_strnequ("exit", line, 4))
+		if (!(line = call_line(&history, get_history_file(NULL), env)) || ft_strnequ("exit", line, 4))
 		{
 			env ? ag_strdeldouble(&env) : NULL;
 			line ? ft_strdel(&line) : NULL;

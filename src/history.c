@@ -5,7 +5,7 @@
 **
 **	_Sigleton_ permettant d'obtenir et de mettre à jour le pointeur sur la tête
 **	de liste de l'historique.
-**	La fonction doit être appelé une première fois avec `history` non nul afin
+**	La fonction doit être appelée une première fois avec `history` non nul afin
 **	d'initialiser le sigleton. Les appels suivants peuvent être effectués avec
 **	`history` nul pour seulement obtenir le pointeur,
 **	ou non nul pour le mettre à jour
@@ -23,6 +23,31 @@ t_lstag		**get_history(t_lstag **history)
 	if (history)
 		h = history;
 	return (h);
+}
+
+/*
+**	\brief	Obtention du nom du fichier d'historique
+**
+**	_Sigleton_ permettant d'obtenir et de mettre à jour le nom du fichier
+**	d'historique.
+**	La fonction doit être appelée une première fois avec `file` non nul afin
+**	d'initialiser le sigleton. Les appels suivants peuvent être effectués avec
+**	`file` nul pour seulement obtenir le pointeur,
+**	ou non nul pour le mettre à jour
+**
+**	\param	file	- non du fichier d'historique
+**
+**	\return	**tête de liste** de l'historique ou **NULL**
+**			si celui-ci n'existe pas ou que le pointeur n'a pas été initialisé
+*/
+
+char		*get_history_file(const char *file)
+{
+	static char	*f = NULL;
+
+	if (file)
+		f = (char*)file;
+	return (f);
 }
 
 static int	delete_command(t_lstag **history, int pos)
@@ -100,8 +125,18 @@ int			history_builtin(const char **argv, t_lstag **history)
 					err = ft_putendl_fd(
 					"history: -d option needs a positive numerical argument", 2);
 			}
+			else if (ft_strequ(argv[i], "-r"))
+			{
+				*history = read_history(get_history_file(NULL), *history);
+				err = 1;
+			}
+			else if (ft_strequ(argv[i], "-w"))
+			{
+				write_history(get_history_file(NULL), ag_lsttail(*history));
+				err = 1;
+			}
 			else
-				err = ft_putendl_fd("history: bad option\nusage: history [-c] [n]", 2);
+				err = ft_putendl_fd("history: bad option\nusage: history [-cdr] [n]", 2);
 		}
 		history && !err ? print_history(*history, cmp) : NULL;
 	}
