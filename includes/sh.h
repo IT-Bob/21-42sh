@@ -26,7 +26,7 @@ int			execute(const char **argv, char **env);
 **	history.c
 */
 
-t_lstag		*get_history(t_lstag *history);
+t_lstag		**get_history(t_lstag **history);
 int			history_builtin(const char **argv, t_lstag **history);
 
 #endif

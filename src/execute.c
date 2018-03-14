@@ -10,7 +10,7 @@
 
 static int	call_builtin(const char **argv)
 {
-	t_lstag	*history;
+	t_lstag	**history;
 
 	history = get_history(NULL);
 	if (ft_strequ(argv[0], "builtin"))
@@ -24,7 +24,7 @@ static int	call_builtin(const char **argv)
 	else if (ft_strequ(argv[0], "exit"))
 		ft_putendl_fd("lancement de exit", 2);
 	else if (ft_strequ(argv[0], "history"))
-		return (history_builtin(argv, history ? &history : NULL));
+		return (history_builtin(argv, history ? history : NULL));
 	else if (ft_strequ(argv[0], "setenv"))
 		ft_putendl_fd("lancement de setenv", 2);
 	else if (ft_strequ(argv[0], "unsetenv"))

@@ -16,9 +16,9 @@
 **			ou que le pointeur n'a pas été initialisé
 */
 
-t_lstag		*get_history(t_lstag *history)
+t_lstag		**get_history(t_lstag **history)
 {
-	static t_lstag	*h = NULL;
+	static t_lstag	**h = NULL;
 
 	if (history)
 		h = history;

@@ -109,7 +109,7 @@ int			main(int argc, char **argv, char **environ)
 	while (1)
 	{
 		history ? history = ag_lsthead(history) : NULL;
-		get_history(history);
+		get_history(&history);
 		if (!(line = call_line(&history, hist_file, env)) || ft_strnequ("exit", line, 4))
 		{
 			env ? ag_strdeldouble(&env) : NULL;
