@@ -76,6 +76,7 @@ int			history_builtin(const char **argv, t_lstag **history)
 	int	i;
 	int	err;
 
+	err = 1;
 	if (argv && argv[0] && history)
 	{
 		err = 0;
