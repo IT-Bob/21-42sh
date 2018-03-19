@@ -79,11 +79,24 @@ char		**concat_tab(char **env, char **local)
 static char	*call_line(t_lstag **history, char *hist_file, char **env)
 {
 	char	*line;
+	char	*tmp;
 	char	**built;
 	char	**var;
 
+	tmp = NULL;
 	var = concat_tab(env, NULL);
 	line = line_input("$>", *history, var, (built = get_shbuiltin()));
+	while (line && quotes(&line) > 0)
+	{
+		ft_putendl("");
+		if ((tmp = line_input(">", *history, var, (built = get_shbuiltin()))))
+		{
+			if (!(line = ag_strfreejoin(line, tmp)))
+				ft_putendl_fd(
+					"21sh: allocation error in call_line() function", 2);
+			ft_strdel(&tmp);
+		}
+	}
 	*history = add_history(*history, hist_file, line);
 	var ? ag_strdeldouble(&var) : NULL;
 	*history ? *history = ag_lsthead(*history) : NULL;
@@ -108,7 +121,7 @@ int			main(int argc, char **argv, char **environ)
 	while (1)
 	{
 		history ? history = ag_lsthead(history) : NULL;
-		get_history(&history);
+		history ? get_history(&history) : NULL;
 		if (!(line = call_line(&history, get_history_file(NULL), env)) || ft_strnequ("exit", line, 4))
 		{
 			env ? ag_strdeldouble(&env) : NULL;

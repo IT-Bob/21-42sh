@@ -30,4 +30,10 @@ t_lstag		**get_history(t_lstag **history);
 char		*get_history_file(const char *file);
 int			history_builtin(const char **argv, t_lstag **history);
 
+/*
+**	quotes.c
+*/
+
+int			quotes(char **line);
+
 #endif
