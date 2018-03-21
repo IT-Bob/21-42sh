@@ -13,10 +13,10 @@ ifeq ($(OS), Linux)
 else
 	CFLAGSUP = -Wno-sign-compare # -g -fsanitize=address
 endif
-CPPFLAGS = -I $(INC_PATH) -I $(LIB_INC) -I $(LIBAG_INC) -I $(ENV_INC) \
-			-I $(LINE_INC) -I $(CMP_INC) -I $(LIBMT_INC) -I $(PARSER_INC) -I $(HIST_INC)
-CLIB = -L $(LINE) -llinput -L $(CMP) -lcomplete -L $(HIST) -lstory -L $(ENV) -lenv -L $(PARSER) -lparser \
--L $(LIBAG) -lag -L $(LIBMT) -lmt -L $(LIBFT) -lft -ltermcap
+CPPFLAGS =	-I $(INC_PATH) -I $(LIB_INC) -I $(LIBAG_INC) -I $(ENV_INC) \
+			-I $(LINE_INC) -I $(CMP_INC) -I $(LIBMT_INC) -I $(PARSER_INC) -I $(HIST_INC) -I $(ERROR_INC) \
+			CLIB = -L $(LINE) -llinput -L $(CMP) -lcomplete -L $(HIST) -lstory -L $(ENV) -lenv -L $(ERROR) -lerror \
+			-L $(PARSER) -lparser -L $(LIBAG) -lag -L $(LIBMT) -lmt -L $(LIBFT) -lft -ltermcap
 
 # Fichiers d'en-tête
 INC_PATH = includes/
@@ -62,11 +62,15 @@ PARSER = modules/parser/
 PARSER_INC = $(PARSER)/includes/
 LIB_PARSER = $(PARSER)libparser.a
 
+ERROR = modules/error/
+ERROR_INC = $(ERROR)/includes/
+LIB_ERROR = $(ERROR)/error.a
+
 # Règles de compilation
 all: lib $(NAME)
 
 $(NAME): Makefile $(LIB_FT) $(LIB_AG) $(LIB_MT) $(LIB_ENV) $(LIB_HIST) $(LIB_LINE) \
-		$(LIB_CMP) $(LIB_PARSER) $(OBJ)
+		$(LIB_CMP) $(LIB_PARSER) $(LIB_ERROR) $(OBJ)
 
 	@echo "$(CYAN)Compilation de $(NAME)$(RESET)"
 	@$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGSUP) $(OBJ) $(CLIB) -o $(NAME)
@@ -84,6 +88,7 @@ lib:
 	@make -C $(LINE) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ \
 	ENV_INC=../environment/includes CMP_INC=../completion/includes all
 	@make -C $(PARSER) LIBFT_INC=../libft/includes/ LIBMT_INC=../libmt/includes/ all\
+	@make -C $(ERROR) LIBFT_INC=../libft/includes/ LIB_ERROR=../error/includes/ all\
 
 clean: cleanproj
 	@make -C $(LIBFT) clean
@@ -94,6 +99,7 @@ clean: cleanproj
 	@make -C $(HIST) clean
 	@make -C $(LINE) clean
 	@make -C $(PARSER) clean
+	@make -C $(ERROR) clean
 
 fclean: fcleanproj
 	@make -C $(LIBFT) fclean
@@ -104,6 +110,7 @@ fclean: fcleanproj
 	@make -C $(HIST) fclean
 	@make -C $(LINE) fclean
 	@make -C $(PARSER) fclean
+	@make -C $(ERROR) fclean
 
 re: fclean all
 
@@ -129,6 +136,7 @@ normeall: norme
 	@make -C $(HIST) norme
 	@make -C $(LINE) norme
 	@make -C $(PARSER) norme
+	@make -C $(ERROR) norme
 
 # Règles pour la documentation
 doxygen:
