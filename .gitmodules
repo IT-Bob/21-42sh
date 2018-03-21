@@ -19,3 +19,6 @@
 [submodule "modules/history"]
 	path = modules/history
 	url = https://github.com/aguerin42/history.git
+[submodule "modules/error"]
+	path = modules/error
+	url = https://github.com/mtacnet/error.git
