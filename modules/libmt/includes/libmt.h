@@ -26,15 +26,13 @@ typedef struct		t_elem
 	struct s_list	*next;
 }					t_elem;
 
-
 int					ft_countword(const char *str, char c);
 int					ft_isspace(int c);
 int					ft_strlenint(const char *s);
-char				*ft_strjoinfree(char *s1, char *s2, int mode);
 void				supp_elem_tab(char **tab, int value);
 void				free_tab(char **tab);
 void				view_tab(char **tab);
+char				*ft_strjoinfree(char *s1, char *s2, int mode);
 size_t				ft_intlen(int c);
-
 
 #endif

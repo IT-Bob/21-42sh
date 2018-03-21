@@ -133,8 +133,12 @@ int			main(int argc, char **argv, char **environ)
 		}
 		if ((token = lexer(line)))
 		{
-			parser(token);
-			freelst(&token);
+			if (parser(token) == NULL)
+				return (-1);
+			if (create_final_lst(&token) == -1)
+				return (-1);
+			if (token)
+				freelst(&token);
 		}
 		test = ft_strsplit(line, ' ');
 		execute((const char**)test, env);
