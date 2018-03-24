@@ -110,10 +110,13 @@ int			main(int argc, char **argv, char **environ)
 	char	**built;
 	char	*line;
 	t_tok	*token;
+	t_exec	*exe;
 	t_lstag	*history;
 
 	char **test;
 
+	token = NULL;
+	exe = NULL;
 	line = NULL;
 	history = read_history(get_history_file("./.21sh_history"), NULL);
 	if (!(env = create_env(environ)))
@@ -135,8 +138,16 @@ int			main(int argc, char **argv, char **environ)
 		{
 			if (parser(token) == NULL)
 				return (-1);
-			if (create_final_lst(&token) == -1)
+			if (!(exe = create_final_lst(&token)))
 				return (-1);
+			if (parsing_error(exe) == -1)
+			{
+				freelst_exec(&exe);
+				exe = NULL;
+				return (-1);
+			}
+			else
+				view_exec_lst(&exe);
 			if (token)
 				freelst(&token);
 		}
