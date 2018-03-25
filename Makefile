@@ -71,8 +71,8 @@ LIB_PARSER = $(PARSER)libparser.a
 # Règles de compilation
 all: lib $(NAME)
 
-$(NAME): Makefile $(LIB_FT) $(LIB_AG) $(LIB_MT) $(LIB_ERROR) $(LIB_ENV) $(LIB_HIST) $(LIB_LINE) \
-		$(LIB_CMP) $(LIB_PARSER) $(OBJ)
+$(NAME): Makefile $(LIB_FT) $(LIB_AG) $(LIB_MT) $(LIB_ERROR) $(LIB_ENV) $(LIB_HIST) \
+$(LIB_LINE) $(LIB_CMP) $(LIB_PARSER) $(OBJ)
 
 	@echo "$(CYAN)Compilation de $(NAME)$(RESET)"
 	@$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGSUP) $(OBJ) $(CLIB) -o $(NAME)
@@ -133,12 +133,12 @@ normeall: norme
 	@make -C $(LIBFT) norme
 	@make -C $(LIBAG) norme
 	@make -C $(LIBMT) norme
+	@make -C $(ERROR) norme
 	@make -C $(ENV) norme
 	@make -C $(CMP) norme
 	@make -C $(HIST) norme
 	@make -C $(LINE) norme
 	@make -C $(PARSER) norme
-	@make -C $(ERROR) norme
 
 # Règles pour la documentation
 doxygen:
