@@ -22,3 +22,6 @@
 [submodule "modules/error"]
 	path = modules/error
 	url = https://github.com/mtacnet/error.git
+[submodule "modules/execution"]
+	path = modules/execution
+	url = https://github.com/mtacnet/execution.git

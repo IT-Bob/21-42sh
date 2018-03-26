@@ -8,6 +8,8 @@
 # include "history.h"
 # include "line_input.h"
 # include "parser.h"
+# include "liberror.h"
+# include "libexec.h"
 
 /*
 **	builtin.c
