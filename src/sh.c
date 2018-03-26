@@ -147,7 +147,8 @@ int			main(int argc, char **argv, char **environ)
 				return (-1);
 			}
 			else
-				view_exec_lst(&exe);
+				//view_exec_lst(&exe);
+				exec(&exe);
 			if (token)
 				freelst(&token);
 		}
