@@ -70,8 +70,7 @@ char		**concat_tab(char **env, char **local)
 					ag_strdeldouble(&t);
 		}
 		if (!t)
-		ft_putendl_fd(
-			"21sh: allocation error in concat_tab() function", 2);
+			sh_error(1, "21sh: concat_tab");
 	}
 	return (t);
 }
@@ -92,8 +91,7 @@ static char	*call_line(t_lstag **history, char *hist_file, char **env)
 		if ((tmp = line_input(">", *history, var, (built = get_shbuiltin()))))
 		{
 			if (!(line = ag_strfreejoin(line, tmp)))
-				ft_putendl_fd(
-					"21sh: allocation error in call_line() function", 2);
+				sh_error(1, "21sh: call_line");
 			ft_strdel(&tmp);
 		}
 	}
@@ -120,7 +118,7 @@ int			main(int argc, char **argv, char **environ)
 	line = NULL;
 	history = read_history(get_history_file("./.21sh_history"), NULL);
 	if (!(env = create_env(environ)))
-		return (ft_putendl_fd("21sh: create environnement impossible.", 2));
+		return (sh_error_int(1, "21sh: environnement cannot be created."));
 	while (1)
 	{
 		history ? history = ag_lsthead(history) : NULL;
