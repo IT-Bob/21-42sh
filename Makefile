@@ -97,7 +97,7 @@ lib:
 	@make -C $(EXEC) LIBFT_INC=../libft/includes PARSER_INC=../parser/includes \
 	LIBMT_INC=../libmt/includes ERROR_INC=../error/includes all
 	@make -C $(LINE) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ \
-	ENV_INC=../environment/includes CMP_INC=../completion/includes all
+	ENV_INC=../environment/includes CMP_INC=../completion/includes ERROR_INC=../error/includes/ all
 
 clean: cleanproj
 	@make -C $(LIBFT) clean
