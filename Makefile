@@ -35,46 +35,57 @@ OBJ = $(SRC:.c=.o)
 LIBFT = modules/libft/
 LIB_INC = $(LIBFT)includes/
 LIB_FT = $(LIBFT)libft.a
+FT = LIBFT_INC=../libft/includes
 
 LIBAG = modules/libag/
 LIBAG_INC = $(LIBAG)includes/
 LIB_AG = $(LIBAG)libag.a
+AG = LIBAG_INC=../libag/includes
 
 LIBMT = modules/libmt/
 LIBMT_INC = $(LIBMT)includes/
 LIBMT_MT = $(LIBMT)libmt.a
+MT = LIBMT_INC=../libmt/includes
 
 ERROR = modules/error/
 ERROR_INC = $(ERROR)/includes/
 LIB_ERROR = $(ERROR)/liberror.a
+ERR = ERROR_INC=../error/includes
 
 ENV = modules/environment/
 ENV_INC = $(ENV)includes/
 LIB_ENV = $(ENV)libenv.a
+ENVI = ENV_INC=../environment/includes
 
 LINE = modules/line_input/
 LINE_INC = $(LINE)includes/
 LIB_LINE = $(LINE)liblinput.a
+LIN = LINE_INC=../line_input/includes
 
 CMP = modules/completion/
 CMP_INC = $(CMP)includes/
 LIB_CMP = $(CMP)libcomplete.a
+COMP = CMP_INC=../completion/includes
 
 HIST = modules/history/
 HIST_INC = $(HIST)includes/
 LIB_HIST = $(HIST)libstory.a
+HST = HIST_INC=../history/includes
 
 PARSER = modules/parser/
 PARSER_INC = $(PARSER)/includes/
 LIB_PARSER = $(PARSER)libparser.a
+PARS = PARSER_INC=../parser/includes
 
 EXEC = modules/execution/
 EXEC_INC = $(EXEC)/includes/
 LIB_EXEC = $(EXEC)libexec.a
+XC = EXEC_INC=../execution/includes
 
 BUILT = modules/builtins/
 BUILT_INC = $(BUILT)includes/
 LIB_BUILT = $(BUILT)libuiltins.a
+BLT = BUILT_INC=../builtins/includes
 
 # Règles de compilation
 all: lib $(NAME)
@@ -90,19 +101,16 @@ $(OBJ): $(INC)
 lib:
 	@echo "$(VERT)Compilation...$(RESET)"
 	@make -C $(LIBFT) all
-	@make -C $(LIBAG) LIBFT_INC=../libft/includes/ all
-	@make -C $(LIBMT) LIBFT_INC=../libft/includes/ all
-	@make -C $(ERROR) LIBFT_INC=../libft/includes/ all
-	@make -C $(ENV) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ all
-	@make -C $(CMP) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ ERROR_INC=../error/includes/ all
-	@make -C $(HIST) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ ERROR_INC=../error/includes all
-	@make -C $(PARSER) LIBFT_INC=../libft/includes/ LIBMT_INC=../libmt/includes/ \
-	ERROR_INC=../error/includes EXEC_INC=../execution/includes all
-	@make -C $(EXEC) LIBFT_INC=../libft/includes PARSER_INC=../parser/includes \
-	LIBMT_INC=../libmt/includes ERROR_INC=../error/includes all
-	@make -C $(LINE) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ \
-	ENV_INC=../environment/includes CMP_INC=../completion/includes ERROR_INC=../error/includes/ all
-	@make -C $(BUILT) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ ENV_INC=../environment/includes/
+	@make -C $(LIBAG) $(FT) all
+	@make -C $(LIBMT) $(FT) all
+	@make -C $(ERROR) $(FT) all
+	@make -C $(ENV) $(FT) $(AG) all
+	@make -C $(CMP) $(FT) $(AG) $(ERR) all
+	@make -C $(HIST) $(FT) $(AG) $(ERR) all
+	@make -C $(PARSER) $(FT) $(MT) $(ERR) $(XC) all
+	@make -C $(EXEC) $(FT) $(PARS) $(MT) $(ERR) all
+	@make -C $(LINE) $(FT) $(AG) $(ENVI) $(COMP) $(ERR) all
+	@make -C $(BUILT) $(FT) $(AG) $(ENVI) all
 
 clean: cleanproj
 	@make -C $(LIBFT) clean
