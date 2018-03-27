@@ -72,7 +72,7 @@ EXEC = modules/execution/
 EXEC_INC = $(EXEC)/includes/
 LIB_EXEC = $(EXEC)libexec.a
 
-BUILT = modules/builtins42/
+BUILT = modules/builtins/
 BUILT_INC = $(BUILT)includes/
 LIB_BUILT = $(BUILT)libuiltins.a
 

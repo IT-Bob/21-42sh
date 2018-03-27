@@ -25,3 +25,6 @@
 [submodule "modules/execution"]
 	path = modules/execution
 	url = https://github.com/mtacnet/execution.git
+[submodule "modules/builtins"]
+	path = modules/builtins
+	url = https://github.com/tgrange42/builtins42.git
