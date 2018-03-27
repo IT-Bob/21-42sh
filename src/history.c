@@ -58,8 +58,7 @@ static int	delete_command(t_lstag **history, int pos)
 
 	if (pos > 0)
 	{
-		h = *history;
-		h = ag_lsttail(h);
+		h = ag_lsttail(*history);
 		while (--pos && h)
 			h = h->prev;
 		if (h)
@@ -77,7 +76,7 @@ static int	delete_command(t_lstag **history, int pos)
 				*history = ag_lsthead(next);
 			}
 			h->content ? ft_memdel((void**)&h->content) : NULL;
-/*VERIF*/	h ? ft_memdel((void**)&h) : NULL;
+			h ? ft_memdel((void**)&h) : NULL;
 		}
 	}
 	return (0);
@@ -127,7 +126,10 @@ int			history_builtin(const char **argv, t_lstag **history)
 			}
 			else if (ft_strequ(argv[i], "-r"))
 			{
-				*history = read_history(get_history_file(NULL), *history);
+				if (argv[i + 1] && argv[i + 1][0] != '-')
+					*history = read_history((char*)argv[i + 1], *history);
+				else
+					*history = read_history(get_history_file(NULL), *history);
 				err = 1;
 			}
 			else if (ft_strequ(argv[i], "-w"))
@@ -139,6 +141,8 @@ int			history_builtin(const char **argv, t_lstag **history)
 				err = ft_putendl_fd("history: bad option\nusage: history [-cdr] [n]", 2);
 		}
 		history && !err ? print_history(*history, cmp) : NULL;
+		if (!history)
+			ft_putendl("hop");
 	}
 	return (err);
 }

@@ -90,8 +90,8 @@ lib:
 	@make -C $(LIBMT) LIBFT_INC=../libft/includes/ all
 	@make -C $(ERROR) LIBFT_INC=../libft/includes/ all
 	@make -C $(ENV) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ all
-	@make -C $(CMP) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ all
-	@make -C $(HIST) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ all
+	@make -C $(CMP) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ ERROR_INC=../error/includes/ all
+	@make -C $(HIST) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ ERROR_INC=../error/includes all
 	@make -C $(PARSER) LIBFT_INC=../libft/includes/ LIBMT_INC=../libmt/includes/ \
 	ERROR_INC=../error/includes EXEC_INC=../execution/includes all
 	@make -C $(EXEC) LIBFT_INC=../libft/includes PARSER_INC=../parser/includes \
