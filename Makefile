@@ -80,7 +80,7 @@ LIB_BUILT = $(BUILT)libuiltins.a
 all: lib $(NAME)
 
 $(NAME): Makefile $(LIB_FT) $(LIB_AG) $(LIB_MT) $(LIB_ERROR) $(LIB_ENV) $(LIB_HIST) \
-$(LIB_LINE) $(LIB_CMP) $(LIB_PARSER) $(LIB_EXEC) $(OBJ)
+$(LIB_LINE) $(LIB_CMP) $(LIB_PARSER) $(LIB_EXEC) $(LIB_BUILT) $(OBJ)
 
 	@echo "$(CYAN)Compilation de $(NAME)$(RESET)"
 	@$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGSUP) $(OBJ) $(CLIB) -o $(NAME)
