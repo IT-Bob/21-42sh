@@ -14,9 +14,9 @@ else
 	CFLAGSUP = -Wno-sign-compare # -g -fsanitize=address
 endif
 CPPFLAGS =	-I $(INC_PATH) -I $(LIB_INC) -I $(LIBAG_INC) -I $(ENV_INC)  \
-			-I $(LINE_INC) -I $(CMP_INC) -I $(LIBMT_INC) -I $(ERROR_INC) -I $(PARSER_INC) -I $(HIST_INC) -I $(EXEC_INC)
+			-I $(LINE_INC) -I $(CMP_INC) -I $(LIBMT_INC) -I $(ERROR_INC) -I $(PARSER_INC) -I $(HIST_INC) -I $(EXEC_INC) -I $(BUILT_INC)
 
-CLIB =	-L $(LINE) -llinput -L $(CMP) -lcomplete -L $(HIST) -lstory -L $(ENV) -lenv \
+CLIB =	-L $(LINE) -llinput -L $(CMP) -lcomplete -L $(HIST) -lstory -L $(BUILT) -luiltins -L $(ENV) -lenv \
 		-L $(PARSER) -lparser -L $(LIBAG) -lag -L $(LIBMT) -lmt -L $(EXEC) -lexec \
 		-L $(ERROR) -lerror -L $(LIBFT) -lft -ltermcap \
 
@@ -72,6 +72,10 @@ EXEC = modules/execution/
 EXEC_INC = $(EXEC)/includes/
 LIB_EXEC = $(EXEC)libexec.a
 
+BUILT = modules/builtins42/
+BUILT_INC = $(BUILT)includes/
+LIB_BUILT = $(BUILT)libuiltins.a
+
 # Règles de compilation
 all: lib $(NAME)
 
@@ -98,6 +102,7 @@ lib:
 	LIBMT_INC=../libmt/includes ERROR_INC=../error/includes all
 	@make -C $(LINE) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ \
 	ENV_INC=../environment/includes CMP_INC=../completion/includes ERROR_INC=../error/includes/ all
+	@make -C $(BUILT) LIBFT_INC=../libft/includes/ LIBAG_INC=../libag/includes/ ENV_INC=../environment/includes/
 
 clean: cleanproj
 	@make -C $(LIBFT) clean
@@ -110,6 +115,7 @@ clean: cleanproj
 	@make -C $(PARSER) clean
 	@make -C $(EXEC) clean
 	@make -C $(LINE) clean
+	@make -C $(BUILT) clean
 
 fclean: fcleanproj
 	@make -C $(LIBFT) fclean
@@ -122,6 +128,7 @@ fclean: fcleanproj
 	@make -C $(PARSER) fclean
 	@make -C $(EXEC) fclean
 	@make -C $(LINE) fclean
+	@make -C $(BUILT) fclean
 
 re: fclean all
 
