@@ -7,7 +7,7 @@ RM		= rm -rf
 LIBFT_INC = includes/
 
 
-CFLAGS	= -Wall -Wextra -Werror -c -I $(LIBFT_INC) -I includes/
+CFLAGS	= -Wall -Wextra -Werror -I $(LIBFT_INC) -I includes/
 
 SRC_PATH =	src/
 SRC_FILE =	ft_countword.c ft_intlen.c ft_strjoinfree.c \

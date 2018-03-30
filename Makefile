@@ -16,9 +16,10 @@ endif
 CPPFLAGS =	-I $(INC_PATH) -I $(LIB_INC) -I $(LIBAG_INC) -I $(ENV_INC)  \
 			-I $(LINE_INC) -I $(CMP_INC) -I $(LIBMT_INC) -I $(ERROR_INC) -I $(PARSER_INC) -I $(HIST_INC) -I $(EXEC_INC) -I $(BUILT_INC)
 
-CLIB =	-L $(LINE) -llinput -L $(CMP) -lcomplete -L $(HIST) -lstory -L $(BUILT) -luiltins -L $(ENV) -lenv \
-		-L $(PARSER) -lparser -L $(LIBAG) -lag -L $(LIBMT) -lmt -L $(EXEC) -lexec \
-		-L $(ERROR) -lerror -L $(LIBFT) -lft -ltermcap \
+CLIB =	-L $(LINE) -llinput -L $(CMP) -lcomplete	-L $(HIST) -lstory\
+		-L $(BUILT) -luiltins -L $(ENV) -lenv \
+		-L $(EXEC) -lexec	-L $(PARSER) -lparser	-L $(ERROR) -lerror\
+		-L $(LIBMT) -lmt	-L $(LIBAG) -lag		-L $(LIBFT) -lft -ltermcap
 
 # Fichiers d'en-tête
 INC_PATH = includes/
