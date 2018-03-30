@@ -146,9 +146,10 @@ int			main(int argc, char **argv, char **environ)
 			}
 			else
 				//view_exec_lst(&exe);
-				exec(&exe);
+				exec(&exe, env, NULL);
 			if (token)
 				freelst(&token);
+			freelst_exec(&exe);
 		}
 		test = ft_strsplit(line, ' ');
 		execute((const char**)test, env);

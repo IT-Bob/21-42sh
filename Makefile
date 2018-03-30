@@ -107,8 +107,8 @@ lib:
 	@make -C $(ENV) $(FT) $(AG) all
 	@make -C $(CMP) $(FT) $(AG) $(ERR) all
 	@make -C $(HIST) $(FT) $(AG) $(ERR) all
-	@make -C $(PARSER) $(FT) $(MT) $(ERR) $(XC) all
-	@make -C $(EXEC) $(FT) $(PARS) $(MT) $(ERR) all
+	@make -C $(PARSER) $(FT) $(MT) $(ERR) all
+	@make -C $(EXEC) $(AG) $(FT) $(PARS) $(MT) $(ERR) $(ENVI) all
 	@make -C $(LINE) $(FT) $(AG) $(ENVI) $(COMP) $(ERR) all
 	@make -C $(BUILT) $(FT) $(AG) $(ENVI) all
 
