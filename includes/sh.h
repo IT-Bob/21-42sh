@@ -19,12 +19,6 @@ int			is_builtin(const char *arg);
 char		**get_shbuiltin(void);
 
 /*
-**	execute.c
-*/
-
-int			execute(const char **argv, char **env);
-
-/*
 **	history.c
 */
 

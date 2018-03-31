@@ -152,7 +152,6 @@ int			main(int argc, char **argv, char **environ)
 			freelst_exec(&exe);
 		}
 		test = ft_strsplit(line, ' ');
-		execute((const char**)test, env);
 		test ? ag_strdeldouble(&test) : NULL;
 		line ? ft_strdel(&line) : NULL;
 	}
