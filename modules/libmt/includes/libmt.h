@@ -6,7 +6,7 @@
 /*   By: mtacnet <mtacnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/20 13:26:34 by mtacnet           #+#    #+#             */
-/*   Updated: 2017/10/31 14:57:05 by mtacnet          ###   ########.fr       */
+/*   Updated: 2018/03/31 14:01:04 by mtacnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-typedef struct		t_elem
+typedef struct		s_elem
 {
 	void			*content;
 	size_t			content_size;
