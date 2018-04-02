@@ -34,7 +34,7 @@ $(NAME): $(OBJS)
 	@$(CC) -o $@ -c $< $(CFLAGS)
 
 clean:
-	@echo "$(ROUGE)0Suppression des fichiers objets de $(NAME)$(RESET)"
+	@echo "$(ROUGE)Suppression des fichiers objets de $(NAME)$(RESET)"
 	@$(RM) $(OBJS)
 
 fclean: clean
