@@ -110,7 +110,7 @@ int			main(int argc, char **argv, char **environ)
 	t_tok	*token;
 	t_exec	*exe;
 	t_lstag	*history;
-
+	char	**local;
 	char **test;
 
 	token = NULL;
@@ -119,6 +119,8 @@ int			main(int argc, char **argv, char **environ)
 	history = read_history(get_history_file("./.21sh_history"), NULL);
 	if (!(env = create_env(environ)))
 		return (sh_error_int(1, "21sh: environnement cannot be created."));
+	if (!(local = create_env(environ)))
+		return (sh_error_int(1, "21sh: local cannot be created."));
 	while (1)
 	{
 		history ? history = ag_lsthead(history) : NULL;
@@ -146,7 +148,7 @@ int			main(int argc, char **argv, char **environ)
 			}
 			else
 				//view_exec_lst(&exe);
-				exec(&exe, env, NULL);
+				exec(&exe, &env, &local);
 			if (token)
 				freelst(&token);
 			freelst_exec(&exe);

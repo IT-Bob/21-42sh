@@ -16,10 +16,9 @@ endif
 CPPFLAGS =	-I $(INC_PATH) -I $(LIB_INC) -I $(LIBAG_INC) -I $(ENV_INC)  \
 			-I $(LINE_INC) -I $(CMP_INC) -I $(LIBMT_INC) -I $(ERROR_INC) -I $(PARSER_INC) -I $(HIST_INC) -I $(EXEC_INC) -I $(BUILT_INC)
 
-CLIB =	-L $(LINE) -llinput -L $(CMP) -lcomplete	-L $(HIST) -lstory\
-		-L $(BUILT) -luiltins -L $(ENV) -lenv \
-		-L $(EXEC) -lexec	-L $(PARSER) -lparser	-L $(ERROR) -lerror\
-		-L $(LIBMT) -lmt	-L $(LIBAG) -lag		-L $(LIBFT) -lft -ltermcap
+CLIB =	-L $(LINE) -llinput -L $(CMP) -lcomplete -L $(HIST) -lstory\
+		-L $(EXEC) -lexec -L $(PARSER) -lparser -L $(BUILT) -luiltins -L $(ENV) -lenv\
+		-L $(ERROR) -lerror -L $(LIBMT) -lmt -L $(LIBAG) -lag -L $(LIBFT) -lft -ltermcap
 
 # Fichiers d'en-tête
 INC_PATH = includes/
@@ -109,7 +108,7 @@ lib:
 	@make -C $(CMP) $(FT) $(AG) $(ERR) all
 	@make -C $(HIST) $(FT) $(AG) $(ERR) all
 	@make -C $(PARSER) $(FT) $(MT) $(ERR) all
-	@make -C $(EXEC) $(AG) $(FT) $(PARS) $(MT) $(ERR) $(ENVI) all
+	@make -C $(EXEC) $(AG) $(FT) $(PARS) $(MT) $(ERR) $(ENVI) $(BLT) all
 	@make -C $(LINE) $(FT) $(AG) $(ENVI) $(COMP) $(ERR) all
 	@make -C $(BUILT) $(FT) $(AG) $(ENVI) all
 
