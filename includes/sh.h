@@ -15,7 +15,6 @@
 **	builtin.c
 */
 
-int			is_builtin(const char *arg);
 char		**get_shbuiltin(void);
 
 /*
@@ -24,7 +23,7 @@ char		**get_shbuiltin(void);
 
 t_lstag		**get_history(t_lstag **history);
 char		*get_history_file(const char *file);
-int			history_builtin(const char **argv, t_lstag **history);
+int			history(char **command, t_lstag **history);
 
 /*
 **	quotes.c

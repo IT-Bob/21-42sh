@@ -50,99 +50,22 @@ char		*get_history_file(const char *file)
 	return (f);
 }
 
-static int	delete_command(t_lstag **history, int pos)
-{
-	t_lstag	*h;
-	t_lstag	*prev;
-	t_lstag	*next;
-
-	if (pos > 0)
-	{
-		h = ag_lsttail(*history);
-		while (--pos && h)
-			h = h->prev;
-		if (h)
-		{
-			prev = h->prev;
-			next = h->next;
-			if (prev)
-			{
-				prev->next = next;
-				*history = ag_lsthead(prev);
-			}
-			if (next)
-			{
-				next->prev = prev;
-				*history = ag_lsthead(next);
-			}
-			h->content ? ft_memdel((void**)&h->content) : NULL;
-			h ? ft_memdel((void**)&h) : NULL;
-		}
-	}
-	return (0);
-}
-
 /*
-**	\brief	Builtin `history`
+**	\brief	Builtin d'historique
 **
-**	La fonction permet la gestion de l'historique du Shell.
+**	\param	command	- commande historique et ses éventuels paramètres
+**	\param	history	- historique du shell
 **
-**	\param	argv	- commande `history` et ses éventuels paramètres
-**	\param	history	- liste contenant l'historique
-**
-**	\return	**0** si tout s'est bien déroulé
-**			ou une **valeur non nulle** sinon
+**	\return **1** en cas d'erreur ou **0** sinon
 */
 
-int			history_builtin(const char **argv, t_lstag **history)
+int			history(char **command, t_lstag **history)
 {
-	int	cmp;
-	int	i;
-	int	err;
-
-	err = 1;
-	if (argv && argv[0] && history)
+	if (command && history)
 	{
-		err = 0;
-		cmp = -1;
-		i = 0;
-		while (argv[++i] && argv[i][0] == '-' && !err)
-		{
-			if (ft_strequ(argv[i], "-c"))
-				delete_history_list(history);
-			else if (ft_strequ(argv[i], "-d"))
-			{
-				if (argv[i + 1] && ft_isdigit(argv[++i][0]))
-				{
-					delete_command(history, ft_atoi(argv[i]));
-					ft_putstr("Suppression de la commande ");
-					ft_putnbr(ft_atoi(argv[i]));
-					ft_putendl("");
-					err = 1;
-				}
-				else
-					err = ft_putendl_fd(
-					"history: -d option needs a positive numerical argument", 2);
-			}
-			else if (ft_strequ(argv[i], "-r"))
-			{
-				if (argv[i + 1] && argv[i + 1][0] != '-')
-					*history = read_history((char*)argv[i + 1], *history);
-				else
-					*history = read_history(get_history_file(NULL), *history);
-				err = 1;
-			}
-			else if (ft_strequ(argv[i], "-w"))
-			{
-				write_history(get_history_file(NULL), ag_lsttail(*history));
-				err = 1;
-			}
-			else
-				err = ft_putendl_fd("history: bad option\nusage: history [-cdr] [n]", 2);
-		}
-		history && !err ? print_history(*history, cmp) : NULL;
-		if (!history)
-			ft_putendl("hop");
+		if (command[0] && !command[1])
+			print_history(*history, -1);
+		return (0);	
 	}
-	return (err);
+	return (1);
 }
