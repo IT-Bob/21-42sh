@@ -37,10 +37,19 @@ char		**concat_tab(char **env, char **local)
 					ag_strdeldouble(&t);
 		}
 		if (!t)
-			sh_error(1, "21sh: concat_tab");
+			sh_error(1, "21sh: in function concat_tab");
 	}
 	return (t);
 }
+
+/*
+**	\brief	Appel de l'édition de ligne
+**
+**	Appel l'édition de ligne tant que une quote (ou parenthèse, etc..)
+**	est ouverte, ou qu'un backslash est en fin de ligne
+**
+**	\return	**commande** ou **NULL** en cas d'erreur
+*/
 
 static char	*call_line(t_lstag **history, char *hist_file, char **env)
 {
@@ -69,19 +78,47 @@ static char	*call_line(t_lstag **history, char *hist_file, char **env)
 	return (line);
 }
 
-int			main(int argc, char **argv, char **environ)
+/*
+**	\brief	Lexing/parsing puis appel de l'exécution
+*/
+
+static int	pre_exec(char *line, char ***env, char ***local)
 {
-	char	**env;
-	char	**built;
-	char	*line;
 	t_tok	*token;
 	t_exec	*exe;
-	t_lstag	*history;
-	char	**local;
-	char **test;
 
 	token = NULL;
 	exe = NULL;
+	if (line && (token = lexer(line)))
+	{
+		if (parser(token) == NULL)
+			return (-1);
+		if (!(exe = create_final_lst(&token)))
+			return (-1);
+		if (parsing_error(exe) == -1)
+		{
+			freelst_exec(&exe);
+			exe = NULL;
+			return (-1);
+		}
+		else
+			//view_exec_lst(&exe);
+			exec(&exe, env, local);
+		if (token)
+			freelst(&token);
+		freelst_exec(&exe);
+	}
+	return (1);
+}
+
+int			main(int argc, char **argv, char **environ)
+{
+	char	**env;
+	char	**local;
+	char	**built;
+	char	*line;
+	t_lstag	*history;
+
 	line = NULL;
 	if (!(env = create_env((const char**)environ)))
 		return (sh_error_int(1, "21sh: environnement cannot be created."));
@@ -103,27 +140,7 @@ int			main(int argc, char **argv, char **environ)
 			history ? delete_history_list(&history) : NULL;
 			return (1);
 		}
-		if ((token = lexer(line)))
-		{
-			if (parser(token) == NULL)
-				return (-1);
-			if (!(exe = create_final_lst(&token)))
-				return (-1);
-			if (parsing_error(exe) == -1)
-			{
-				freelst_exec(&exe);
-				exe = NULL;
-				return (-1);
-			}
-			else
-				//view_exec_lst(&exe);
-				exec(&exe, &env, &local);
-			if (token)
-				freelst(&token);
-			freelst_exec(&exe);
-		}
-		test = ft_strsplit(line, ' ');
-		test ? ag_strdeldouble(&test) : NULL;
+		pre_exec(line, &env, &local);
 		line ? ft_strdel(&line) : NULL;
 	}
 	(void)argc;
