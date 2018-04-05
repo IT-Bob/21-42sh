@@ -18,25 +18,28 @@
 char		**get_shbuiltin(void);
 
 /*
-**	envloc.c
-*/
-
-char	***get_loc(char ***loc);
-char	***get_env(char ***env);
-char	*getenvloc(const char *name, const char **loc, const char **env);
-
-/*
 **	history.c
 */
 
 t_lstag		**get_history(t_lstag **history);
 char		*get_history_file(const char *file);
 int			history(char **command, t_lstag **history);
+t_lstag		*init_history(const char **env, const char **loc);
 
 /*
 **	quotes.c
 */
 
 int			quotes(char **line);
+
+/*
+**	variables.c
+*/
+
+char	***get_loc(char ***loc);
+char	***get_env(char ***env);
+char	*getenvloc(const char *name, const char **loc, const char **env);
+char	**create_loc(const char **env);
+char	**create_env(const char **environ);
 
 #endif

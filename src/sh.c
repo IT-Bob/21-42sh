@@ -1,38 +1,5 @@
 #include "sh.h"
 
-static char	**set_env(void)
-{
-	char	**env;
-	char	*tmp;
-	char	*tmp1;
-
-	if ((env = (char**)ft_memalloc(sizeof(char*) * (2 + 1))))
-	{
-		tmp = getcwd(NULL, 0);
-		tmp1 = ft_strjoin("PWD=", tmp);
-		if (!(env[0] = ft_strdup("SHLVL=1")) || !(env[1] = ft_strdup(tmp1)))
-			ag_strdeldouble(&env);
-		tmp ? ft_strdel(&tmp) : NULL;
-		tmp1 ? ft_strdel(&tmp1) : NULL;
-	}
-	return (env);
-}
-
-static char	**create_env(char **environ)
-{
-	char	**env;
-
-	env = NULL;
-	if (environ)
-	{
-		if (environ[0] == NULL)
-			env = set_env();
-		else
-			env = dupenv((const char**)environ, ag_strlendouble(environ));
-	}
-	return (env);
-}
-
 /*
 **	\brief	Regroupement de tableaux
 **
@@ -102,38 +69,6 @@ static char	*call_line(t_lstag **history, char *hist_file, char **env)
 	return (line);
 }
 
-/*
-**	\brief	Initialisation du fichier d'historique et récupération
-*/
-
-t_lstag	*init_history(const char **env, char ***loc)
-{
-	t_lstag	*history;
-	char	*file;
-	char	*path;
-
-	history = NULL;
-	file = NULL;
-	path = NULL;
-	if (env || loc)
-	{
-		if (!(file = getenvloc("HISTFILE", (const char **)*loc, env)) || !file[0])
-			if ((path = getenvloc("HOME", (const char**)*loc, env)) && path[0])
-			{
-				if (!(file = ft_strnew(ft_strlen(path) + 14)))
-					return (sh_error(1, "in init_history function"));
-				file = ft_strcpy(file, path);
-				file = ft_strcat(file, "/.21sh_history");
-				if (ft_vcontenv("HISTFILE", file, loc))
-					sh_error(1, "in init_history function");
-				ft_strdel(&file);
-			}
-		get_history_file(getenvloc("HISTFILE", (const char **)*loc, env));
-		history = read_history(get_history_file(NULL), NULL);
-	}
-	return (history);
-}
-
 int			main(int argc, char **argv, char **environ)
 {
 	char	**env;
@@ -148,13 +83,13 @@ int			main(int argc, char **argv, char **environ)
 	token = NULL;
 	exe = NULL;
 	line = NULL;
-	if (!(env = create_env(environ)))
+	if (!(env = create_env((const char**)environ)))
 		return (sh_error_int(1, "21sh: environnement cannot be created."));
-	if (!(local = create_env(environ)))
+	if (!(local = create_loc((const char**)env)))
 		return (sh_error_int(1, "21sh: local cannot be created."));
 	get_env(&env);
 	get_loc(&local);
-	history = init_history((const char**)env, &local);
+	history = init_history((const char**)env, (const char**)local);
 	while (1)
 	{
 		history ? history = ag_lsthead(history) : NULL;

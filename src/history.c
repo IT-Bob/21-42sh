@@ -48,8 +48,11 @@ char		*get_history_file(const char *file)
 	if (file)
 		f = (char*)file;
 	else
-		f = getenvloc("HISTFILE", (const char**)*get_loc(NULL),
-						(const char**)*get_env(NULL));
+	{
+		if ((f = getenvloc("HISTFILE", (const char**)*get_loc(NULL),
+						(const char**)*get_env(NULL))) && !f[0])
+			f = NULL;
+	}
 	return (f);
 }
 
@@ -71,4 +74,17 @@ int			history(char **command, t_lstag **history)
 		return (0);	
 	}
 	return (1);
+}
+
+/*
+**	\brief	Initialisation du fichier d'historique et récupération
+*/
+
+t_lstag		*init_history(const char **env, const char **loc)
+{
+	t_lstag	*history;
+
+	get_history_file(getenvloc("HISTFILE", loc, env));
+	history = read_history(get_history_file(NULL), NULL);
+	return (history);
 }
