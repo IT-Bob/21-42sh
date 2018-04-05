@@ -18,6 +18,14 @@
 char		**get_shbuiltin(void);
 
 /*
+**	envloc.c
+*/
+
+char	***get_loc(char ***loc);
+char	***get_env(char ***env);
+char	*getenvloc(const char *name, const char **loc, const char **env);
+
+/*
 **	history.c
 */
 

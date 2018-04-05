@@ -47,6 +47,9 @@ char		*get_history_file(const char *file)
 
 	if (file)
 		f = (char*)file;
+	else
+		f = getenvloc("HISTFILE", (const char**)*get_loc(NULL),
+						(const char**)*get_env(NULL));
 	return (f);
 }
 

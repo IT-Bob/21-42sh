@@ -102,6 +102,38 @@ static char	*call_line(t_lstag **history, char *hist_file, char **env)
 	return (line);
 }
 
+/*
+**	\brief	Initialisation du fichier d'historique et récupération
+*/
+
+t_lstag	*init_history(const char **env, char ***loc)
+{
+	t_lstag	*history;
+	char	*file;
+	char	*path;
+
+	history = NULL;
+	file = NULL;
+	path = NULL;
+	if (env || loc)
+	{
+		if (!(file = getenvloc("HISTFILE", (const char **)*loc, env)) || !file[0])
+			if ((path = getenvloc("HOME", (const char**)*loc, env)) && path[0])
+			{
+				if (!(file = ft_strnew(ft_strlen(path) + 14)))
+					return (sh_error(1, "in init_history function"));
+				file = ft_strcpy(file, path);
+				file = ft_strcat(file, "/.21sh_history");
+				if (ft_vcontenv("HISTFILE", file, loc))
+					sh_error(1, "in init_history function");
+				ft_strdel(&file);
+			}
+		get_history_file(getenvloc("HISTFILE", (const char **)*loc, env));
+		history = read_history(get_history_file(NULL), NULL);
+	}
+	return (history);
+}
+
 int			main(int argc, char **argv, char **environ)
 {
 	char	**env;
@@ -116,11 +148,13 @@ int			main(int argc, char **argv, char **environ)
 	token = NULL;
 	exe = NULL;
 	line = NULL;
-	history = read_history(get_history_file("./.21sh_history"), NULL);
 	if (!(env = create_env(environ)))
 		return (sh_error_int(1, "21sh: environnement cannot be created."));
 	if (!(local = create_env(environ)))
 		return (sh_error_int(1, "21sh: local cannot be created."));
+	get_env(&env);
+	get_loc(&local);
+	history = init_history((const char**)env, &local);
 	while (1)
 	{
 		history ? history = ag_lsthead(history) : NULL;
