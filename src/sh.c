@@ -102,8 +102,14 @@ static int	pre_exec(char *line, char ***env, char ***local)
 			return (-1);
 		}
 		else
+		{
 			//view_exec_lst(&exe);
-			exec(&exe, env, local);
+			if (exec(&exe, env, local) == -1)
+			{
+				freelst_exec(&exe);
+				return (-1);
+			}
+		}
 		if (token)
 			freelst(&token);
 		freelst_exec(&exe);
