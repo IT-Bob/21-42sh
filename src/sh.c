@@ -140,6 +140,7 @@ int			main(int argc, char **argv, char **environ)
 		if (!(line = call_line(&history, get_history_file(NULL), env)) || ft_strnequ("exit", line, 4))
 		{
 			env ? ag_strdeldouble(&env) : NULL;
+			local ? ag_strdeldouble(&local) : NULL;
 			line ? ft_strdel(&line) : NULL;
 			if ((built = get_shbuiltin()))
 				ft_memdel((void**)&built);
