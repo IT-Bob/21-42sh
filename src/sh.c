@@ -43,42 +43,6 @@ char		**concat_tab(char **env, char **local)
 }
 
 /*
-**	\brief	Appel de l'édition de ligne
-**
-**	Appel l'édition de ligne tant que une quote (ou parenthèse, etc..)
-**	est ouverte, ou qu'un backslash est en fin de ligne
-**
-**	\return	**commande** ou **NULL** en cas d'erreur
-*/
-
-static char	*call_line(t_lstag **history, char *hist_file, char **env)
-{
-	char	*line;
-	char	*tmp;
-	char	**built;
-	char	**var;
-
-	tmp = NULL;
-	var = concat_tab(env, NULL);
-	line = line_input("$>", *history, var, (built = get_shbuiltin()));
-	while (line && quotes(&line) > 0)
-	{
-		ft_putendl("");
-		if ((tmp = line_input(">", *history, var, (built = get_shbuiltin()))))
-		{
-			if (!(line = ag_strfreejoin(line, tmp)))
-				sh_error(1, "21sh: call_line");
-			ft_strdel(&tmp);
-		}
-	}
-	*history = add_history(*history, hist_file, line);
-	var ? ag_strdeldouble(&var) : NULL;
-	*history ? *history = ag_lsthead(*history) : NULL;
-	ft_putendl("");
-	return (line);
-}
-
-/*
 **	\brief	Lexing/parsing puis appel de l'exécution
 */
 
@@ -117,27 +81,90 @@ static int	pre_exec(char *line, char ***env, char ***local)
 	return (1);
 }
 
-int			main(int argc, char **argv, char **environ)
+/*
+**	\brief	Appel de l'édition de ligne
+**
+**	Appelle l'édition de ligne tant qu'une quote (ou parenthèse, etc..)
+**	est ouverte, ou qu'un backslash est en fin de ligne
+**
+**	\return	**commande** ou **NULL** en cas d'erreur
+*/
+
+static char	*call_line(t_lstag **history, char *hist_file, char **env)
+{
+	char	*line;
+	char	*tmp;
+	char	**built;
+	char	**var;
+
+	tmp = NULL;
+	var = concat_tab(env, NULL);
+	line = line_input("$>", *history, var, (built = get_shbuiltin()));
+	while (line && quotes(&line) > 0)
+	{
+		ft_putendl("");
+		if ((tmp = line_input(">", *history, var, (built = get_shbuiltin()))))
+		{
+			if (!(line = ag_strfreejoin(line, tmp)))
+				sh_error(1, "21sh: call_line");
+			ft_strdel(&tmp);
+		}
+	}
+	*history = add_history(*history, hist_file, line);
+	var ? ag_strdeldouble(&var) : NULL;
+	*history ? *history = ag_lsthead(*history) : NULL;
+	ft_putendl("");
+	return (line);
+}
+
+/*
+**	\brief	Initalisation des environnements et de l'historique
+**
+**	La fonction initialise les variables d'environnement, les variables locales
+**	et la liste de l'historique.
+**	Si la création/allocation des tableaux de variables échoue, la fonction s'arrête
+**	et renvoie **1**.
+**
+**	\return	**0** en cas de succès ou **1** en cas d'erreur
+*/
+
+static int	init_sh(char ***env, char ***local, t_lstag	**history)
+{
+	extern char	**environ;
+
+	if (env && local && history)
+	{
+		if (!(*env = create_env((const char**)environ)))
+			return (sh_error_int(1, "21sh: environnement cannot be created."));
+		if (!(*local = create_loc((const char**)*env)))
+		{
+			ag_strdeldouble(env);
+			return (sh_error_int(1, "21sh: local cannot be created."));
+		}
+		get_env(env);
+		get_loc(local);
+		*history = init_history((const char**)*env, (const char**)*local);
+		return (0);
+	}
+	return (1);
+}
+
+int			main(void)
 {
 	char	**env;
 	char	**local;
-	char	**built;
 	char	*line;
 	t_lstag	*history;
+	char	**built; // A SUPPRIMER
 
-	line = NULL;
-	if (!(env = create_env((const char**)environ)))
-		return (sh_error_int(1, "21sh: environnement cannot be created."));
-	if (!(local = create_loc((const char**)env)))
-		return (sh_error_int(1, "21sh: local cannot be created."));
-	get_env(&env);
-	get_loc(&local);
-	history = init_history((const char**)env, (const char**)local);
+	if (init_sh(&env, &local, &history))
+		return (1);
 	while (1)
 	{
 		history ? history = ag_lsthead(history) : NULL;
 		history ? get_history(&history) : NULL;
-		if (!(line = call_line(&history, get_history_file(NULL), env)) || ft_strnequ("exit", line, 4))
+		if (!(line = call_line(&history, get_history_file(NULL), env))
+			|| ft_strnequ("exit", line, 4)) // A SUPPRIMER
 		{
 			env ? ag_strdeldouble(&env) : NULL;
 			local ? ag_strdeldouble(&local) : NULL;
@@ -150,7 +177,5 @@ int			main(int argc, char **argv, char **environ)
 		pre_exec(line, &env, &local);
 		line ? ft_strdel(&line) : NULL;
 	}
-	(void)argc;
-	(void)argv;
 	return (0);
 }
