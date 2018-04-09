@@ -21,9 +21,7 @@ char		**get_shbuiltin(void);
 **	history.c
 */
 
-t_lstag		**get_history(t_lstag **history);
 char		*get_history_file(const char *file);
-int			history(char **command, t_lstag **history);
 t_lstag		*init_history(const char **env, const char **loc);
 
 /*
