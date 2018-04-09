@@ -27,7 +27,6 @@ char	**get_shbuiltin(void)
 			t[5] = "history";
 			t[6] = "setenv";
 			t[7] = "unsetenv";
-			t[8] = "!";
 		}
 		else
 			sh_error(1, "in function get_builtin");
