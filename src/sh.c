@@ -43,45 +43,6 @@ char		**concat_tab(char **env, char **local)
 }
 
 /*
-**	\brief	Lexing/parsing puis appel de l'exécution
-*/
-
-static int	pre_exec(char *line, char ***env, char ***local)
-{
-	t_tok	*token;
-	t_exec	*exe;
-
-	token = NULL;
-	exe = NULL;
-	if (line && (token = lexer(line)))
-	{
-		if (parser(token) == NULL)
-			return (-1);
-		if (!(exe = create_final_lst(&token)))
-			return (-1);
-		if (parsing_error(exe) == -1)
-		{
-			freelst_exec(&exe);
-			exe = NULL;
-			return (-1);
-		}
-		else
-		{
-			//view_exec_lst(&exe);
-			if (exec(&exe, env, local) == -1)
-			{
-				freelst_exec(&exe);
-				return (-1);
-			}
-		}
-		if (token)
-			freelst(&token);
-		freelst_exec(&exe);
-	}
-	return (1);
-}
-
-/*
 **	\brief	Appel de l'édition de ligne
 **
 **	Appelle l'édition de ligne tant qu'une quote (ou parenthèse, etc..)
