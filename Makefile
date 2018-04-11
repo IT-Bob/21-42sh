@@ -110,7 +110,7 @@ lib:
 	@make -C $(PARSER) $(FT) $(MT) $(ERR) all
 	@make -C $(EXEC) $(AG) $(FT) $(PARS) $(MT) $(ERR) $(ENVI) $(BLT) $(HST) all
 	@make -C $(LINE) $(FT) $(AG) $(ENVI) $(COMP) $(ERR) all
-	@make -C $(BUILT) $(FT) $(AG) $(ENVI) $(HST) $(ERR) $(XC) $(PARS) $(MT) all
+	@make -C $(BUILT) $(FT) $(AG) $(ENVI) $(HST) $(ERR) $(XC) $(PARS) $(MT) $(ERR) all
 
 clean: cleanproj
 	@make -C $(LIBFT) clean
