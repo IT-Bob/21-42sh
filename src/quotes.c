@@ -1,7 +1,7 @@
 #include "sh.h"
 
 /*
-**	\brief	Détection de quotes ouverts ou de backslash en fin de ligne
+**	\brief	Détection de quotes ouvertes ou de backslash en fin de ligne
 **
 **	La fonction regarde dans la ligne si des `quotes` (simples ou doubles ou back)
 **	sont ouvertes et non fermées ou si un `backslash` est présent en fin
@@ -30,7 +30,8 @@ int	quotes(char **line)
 		q = 0;
 		while (tmp[++i])
 			if (tmp[i] == '\'' || tmp[i] == '\"' || tmp[i] == '`'
-				|| (tmp[i] == '\\' && !tmp[i + 1]))
+				|| ((tmp[i] == '\\' || tmp[i] == '|' || tmp[i] == '&')
+					&& !tmp[i + 1]))
 			{
 				if (!q)
 					q = tmp[i];
