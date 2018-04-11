@@ -98,15 +98,17 @@ char	**create_loc(const char **env)
 				tmp = ft_strcpy(tmp, home);
 				tmp = ft_strcat(tmp, "/.21sh_history");
 				if (ft_vcontenv("HISTFILE", tmp, &loc))
-					sh_error(1, "in function set_loc");
+					sh_error(1, "in function create_loc");
 			}
 			else
 				ag_strdeldouble(&loc);
-			tmp ? ft_strdel(&tmp) : sh_error(1, "in function set_loc");
+			if (ft_vcontenv("PS1", "$>", &loc))
+				sh_error(1, "in function create_loc");
+			tmp ? ft_strdel(&tmp) : sh_error(1, "in function create_loc");
 		}
 	}
 	else
-		sh_error(1, "in function set_loc");
+		sh_error(1, "in function create_loc");
 	return (loc);
 }
 
