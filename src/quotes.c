@@ -30,8 +30,9 @@ int	quotes(char **line)
 		q = 0;
 		while (tmp[++i])
 			if (tmp[i] == '\'' || tmp[i] == '\"' || tmp[i] == '`'
-				|| ((tmp[i] == '\\' || tmp[i] == '|' || tmp[i] == '&')
-					&& !tmp[i + 1]))
+				|| ((tmp[i] == '\\' || tmp[i] == '|') && !tmp[i + 1])
+				|| (tmp[i] == '&' && tmp[i + 1] && tmp[i + 1] == '&'
+					&& !tmp[i + 2]))
 			{
 				if (!q)
 					q = tmp[i];
