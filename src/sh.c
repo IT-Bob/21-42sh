@@ -14,7 +14,7 @@
 **			ou **NULL** en cas d'erreur
 */
 
-char		**concat_tab(char **env, char **local)
+static char	**concat_tab(const char **env, const char **local)
 {
 	int		len;
 	int		i;
@@ -22,7 +22,7 @@ char		**concat_tab(char **env, char **local)
 	char	**t;
 
 	t = NULL;
-	if ((len = ag_strlendouble(env) + ag_strlendouble(local)))
+	if ((len = ag_strlendouble((char**)env) + ag_strlendouble((char**)local)))
 	{
 		if ((t = (char**)ft_memalloc(sizeof(char*) * (len + 1))))
 		{
@@ -51,7 +51,8 @@ char		**concat_tab(char **env, char **local)
 **	\return	**commande** ou **NULL** en cas d'erreur
 */
 
-static char	*call_line(t_lstag **history, char *hist_file, char **env)
+static char	*call_line(t_lstag **history, char *hist_file,\
+						const char **env, const char **local)
 {
 	char	*line;
 	char	*tmp;
@@ -59,12 +60,13 @@ static char	*call_line(t_lstag **history, char *hist_file, char **env)
 	char	**var;
 
 	tmp = NULL;
-	var = concat_tab(env, NULL);
-	line = line_input("$>", *history, var, (built = get_shbuiltin()));
+	var = concat_tab(env, local);
+	built = get_shbuiltin();
+	line = line_input(getenvloc("PS1", local, env), *history, var, built);
 	while (line && quotes(&line) > 0)
 	{
 		ft_putendl("");
-		if ((tmp = line_input(">", *history, var, (built = get_shbuiltin()))))
+		if ((tmp = line_input(">", *history, var, built)))
 		{
 			if (!(line = ag_strfreejoin(line, tmp)))
 				sh_error(1, "21sh: call_line");
@@ -83,8 +85,8 @@ static char	*call_line(t_lstag **history, char *hist_file, char **env)
 **
 **	La fonction initialise les variables d'environnement, les variables locales
 **	et la liste de l'historique.
-**	Si la création/allocation des tableaux de variables échoue, la fonction s'arrête
-**	et renvoie **1**.
+**	Si la création/allocation des tableaux de variables échoue,
+**	la fonction s'arrête et renvoie **1**.
 **
 **	\return	**0** en cas de succès ou **1** en cas d'erreur
 */
@@ -124,7 +126,8 @@ int			main(void)
 	{
 		history ? history = ag_lsthead(history) : NULL;
 		history ? get_history(&history) : NULL;
-		if (!(line = call_line(&history, get_history_file(NULL), env))
+		if (!(line = call_line(&history, get_history_file(NULL),\
+								(const char**)env, (const char **)local))
 			|| ft_strnequ("exit", line, 4)) // A SUPPRIMER
 		{
 			env ? ag_strdeldouble(&env) : NULL;
