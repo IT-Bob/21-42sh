@@ -43,7 +43,7 @@ char	**create_loc(const char **env)
 	char	*tmp;
 	char	*home;
 
-	if ((loc = (char**)ft_memalloc(sizeof(char*) * (1 + 1))))
+	if ((loc = (char**)ft_memalloc(sizeof(char*) * 2)))
 	{
 		if ((home = ft_getenv("HOME", env)) && home[0])
 		{
@@ -56,10 +56,10 @@ char	**create_loc(const char **env)
 			}
 			else
 				ag_strdeldouble(&loc);
-			if (ft_vcontenv("PS1", "$>", &loc))
-				sh_error(1, "in function create_loc");
 			tmp ? ft_strdel(&tmp) : sh_error(1, "in function create_loc");
 		}
+		if (loc && ft_vcontenv("PS1", "$>", &loc))
+			sh_error(1, "in function create_loc");
 	}
 	else
 		sh_error(1, "in function create_loc");
