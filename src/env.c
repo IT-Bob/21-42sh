@@ -43,22 +43,21 @@ char	**create_env(const char **environ)
 {
 	char	**env;
 	char	*tmp;
-	char	*tmp1;
 
 	env = NULL;
 	if (!environ || !environ[0])
 	{
 		if ((env = (char**)ft_memalloc(sizeof(char*) * (2 + 1))))
 		{
-			tmp = getcwd(NULL, 0);
-			tmp1 = ft_strjoin("PWD=", tmp);
-			if (!(env[0] = ft_strdup("SHLVL=1")) || !(env[1] = ft_strdup(tmp1)))
+			if (!(env[0] = ft_strdup("SHLVL=1")))
 				ag_strdeldouble(&env);
-			tmp ? ft_strdel(&tmp) : NULL;
-			tmp1 ? ft_strdel(&tmp1) : NULL;
 		}
 	}
 	else
 		env = dupenv((const char**)environ, ag_strlendouble((char **)environ));
+	tmp = getcwd(NULL, 0);
+	ft_vcontenv("PWD", tmp, &env);
+	beacon_pwd(tmp);
+	tmp ? ft_strdel(&tmp) : NULL;
 	return (env);
 }

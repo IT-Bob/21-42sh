@@ -106,7 +106,6 @@ static int	init_sh(char ***env, char ***local, t_lstag	**history)
 		}
 		get_env(env);
 		get_loc(local);
-		// add_var_local(env);
 		*history = init_history((const char**)*env, (const char**)*local);
 		return (0);
 	}
