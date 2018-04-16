@@ -73,6 +73,7 @@ static char	*call_line(t_lstag **history, char *hist_file,\
 			ft_strdel(&tmp);
 		}
 	}
+	sh_launchsignal();
 	*history = add_history(*history, hist_file, line);
 	var ? ag_strdeldouble(&var) : NULL;
 	*history ? *history = ag_lsthead(*history) : NULL;
@@ -120,6 +121,7 @@ int			main(void)
 	t_lstag	*history;
 	char	**built; // A SUPPRIMER
 
+	sh_launchsignal();
 	if (init_sh(&env, &local, &history))
 		return (1);
 	while (1)
@@ -136,8 +138,10 @@ int			main(void)
 			if ((built = get_shbuiltin()))
 				ft_memdel((void**)&built);
 			history ? delete_history_list(&history) : NULL;
+			sh_resetsignal();
 			return (1);
 		}
+		sh_launchsignal();
 		pre_exec(line, &env, &local);
 		line ? ft_strdel(&line) : NULL;
 	}

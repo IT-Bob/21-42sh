@@ -31,6 +31,13 @@ t_lstag		*init_history(const char **env, const char **loc);
 int			quotes(char **line);
 
 /*
+**	signal.c
+*/
+
+void	sh_launchsignal(void);
+void	sh_resetsignal(void);
+
+/*
 **	variables.c
 */
 
