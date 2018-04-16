@@ -7,7 +7,8 @@
 static void	sh_signal(int signal)
 {
 	if (signal == SIGINT)
-		ft_putendl("");
+		NULL;
+	ft_putendl("");
 }
 
 /*

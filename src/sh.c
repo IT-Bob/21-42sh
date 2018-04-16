@@ -141,7 +141,6 @@ int			main(void)
 			sh_resetsignal();
 			return (1);
 		}
-		sh_launchsignal();
 		pre_exec(line, &env, &local);
 		line ? ft_strdel(&line) : NULL;
 	}
