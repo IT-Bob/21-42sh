@@ -38,7 +38,6 @@ int			main(void)
 	char	**local;
 	char	*line;
 	t_lstag	*history;
-	char	**built; // A SUPPRIMER
 
 	sh_launchsignal();
 	if (init_sh(&env, &local, &history))
@@ -48,18 +47,8 @@ int			main(void)
 		history ? history = ag_lsthead(history) : NULL;
 		history ? get_history(&history) : NULL;
 		if (!(line = call_line(&history, get_history_file(NULL),\
-								(const char**)env, (const char **)local))
-			|| ft_strnequ("exit", line, 4)) // A SUPPRIMER
-		{
-			env ? ag_strdeldouble(&env) : NULL;
-			local ? ag_strdeldouble(&local) : NULL;
-			line ? ft_strdel(&line) : NULL;
-			if ((built = get_shbuiltin()))
-				ft_memdel((void**)&built);
-			history ? delete_history_list(&history) : NULL;
-			sh_resetsignal();
-			return (1);
-		}
+								(const char**)env, (const char **)local)))
+			exit_final(1);
 		pre_exec(line, &env, &local);
 		line ? ft_strdel(&line) : NULL;
 	}

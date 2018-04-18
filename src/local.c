@@ -62,6 +62,8 @@ char	**create_loc(const char **env)
 			sh_error(1, "in function create_loc");
 		if (loc && ft_vcontenv("PS2", ">", &loc))
 			sh_error(1, "in function create_loc");
+		if (loc && ft_vcontenv("?", "0", &loc))
+			sh_error(1, "in function create_loc");
 	}
 	else
 		sh_error(1, "in function create_loc");

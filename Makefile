@@ -24,6 +24,7 @@ CLIB =	-L $(LINE) -llinput -L $(CMP) -lcomplete -L $(EXEC) -lexec -L $(PARSER) -
 INC_PATH = includes/
 INC_FILE = sh.h
 INC = $(addprefix $(INC_PATH), $(INC_FILE))
+SH = SH_INC=../../$(INC_PATH)
 
 # Fichiers sources
 SRC_PATH = src/
@@ -110,7 +111,7 @@ lib:
 	@make -C $(PARSER) $(FT) $(MT) $(ERR) all
 	@make -C $(EXEC) $(AG) $(FT) $(PARS) $(MT) $(ERR) $(ENVI) $(BLT) $(HST) all
 	@make -C $(LINE) $(FT) $(AG) $(ENVI) $(COMP) $(ERR) all
-	@make -C $(BUILT) $(FT) $(AG) $(ENVI) $(HST) $(ERR) $(XC) $(PARS) $(MT) $(ERR) all
+	@make -C $(BUILT) $(FT) $(AG) $(ENVI) $(HST) $(ERR) $(XC) $(PARS) $(MT) $(ERR) $(SH) all
 
 clean: cleanproj
 	@make -C $(LIBFT) clean
