@@ -24,7 +24,7 @@ MAGEN	= \033[35m
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): Makefile $(OBJS)
 	@echo "$(MAGEN)Création de la bibliothèque $(NAME)"
 	@ar rc $(NAME) $(OBJS)
 	@echo "Création de l'index pour $(NAME)$(RESET)"
