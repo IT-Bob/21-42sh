@@ -10,6 +10,7 @@
 # include "parser.h"
 # include "liberror.h"
 # include "libexec.h"
+# include "heredoc.h"
 
 /*
 **	builtin.c

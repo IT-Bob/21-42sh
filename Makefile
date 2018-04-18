@@ -14,9 +14,9 @@ else
 	CFLAGSUP = -Wno-sign-compare # -g -fsanitize=address
 endif
 CPPFLAGS =	-I $(INC_PATH) -I $(LIB_INC) -I $(LIBAG_INC) -I $(ENV_INC)  \
-			-I $(LINE_INC) -I $(CMP_INC) -I $(LIBMT_INC) -I $(ERROR_INC) -I $(PARSER_INC) -I $(HIST_INC) -I $(EXEC_INC) -I $(BUILT_INC)
+			-I $(LINE_INC) -I $(CMP_INC) -I $(LIBMT_INC) -I $(ERROR_INC) -I $(PARSER_INC) -I $(HIST_INC) -I $(EXEC_INC) -I $(BUILT_INC) -I $(HERE_INC)
 
-CLIB =	-L $(LINE) -llinput -L $(CMP) -lcomplete -L $(EXEC) -lexec -L $(PARSER) -lparser\
+CLIB =	-L $(HEREDOC) -lheredoc -L $(LINE) -llinput -L $(CMP) -lcomplete -L $(EXEC) -lexec -L $(PARSER) -lparser\
 		-L $(BUILT) -luiltins -L $(HIST) -lstory -L $(ENV) -lenv -L $(ERROR) -lerror\
 		-L $(LIBMT) -lmt -L $(LIBAG) -lag -L $(LIBFT) -lft -ltermcap
 
@@ -88,6 +88,11 @@ BUILT_INC = $(BUILT)includes/
 LIB_BUILT = $(BUILT)libuiltins.a
 BLT = BUILT_INC=../builtins/includes
 
+HEREDOC = modules/heredoc/
+HERE_INC = $(HEREDOC)includes/
+LIB_HERE = $(HEREDOC)libheredoc.a
+HRD = HERE_INC=../heredoc/includes
+
 # Règles de compilation
 all: lib $(NAME)
 
@@ -111,7 +116,8 @@ lib:
 	@make -C $(PARSER) $(FT) $(MT) $(ERR) all
 	@make -C $(EXEC) $(AG) $(FT) $(PARS) $(MT) $(ERR) $(ENVI) $(BLT) $(HST) all
 	@make -C $(LINE) $(FT) $(AG) $(ENVI) $(COMP) $(ERR) all
-	@make -C $(BUILT) $(FT) $(AG) $(ENVI) $(HST) $(ERR) $(XC) $(PARS) $(MT) $(ERR) $(SH) all
+	@make -C $(HEREDOC) $(FT) $(AG) $(ENVI) $(LIN) $(COMP) $(ERR) all
+	@make -C $(BUILT) $(FT) $(AG) $(ENVI) $(HST) $(ERR) $(XC) $(PARS) $(MT) $(SH) all
 
 clean: cleanproj
 	@make -C $(LIBFT) clean
@@ -125,6 +131,7 @@ clean: cleanproj
 	@make -C $(EXEC) clean
 	@make -C $(LINE) clean
 	@make -C $(BUILT) clean
+	@make -C $(HEREDOC) clean
 
 fclean: fcleanproj
 	@make -C $(LIBFT) fclean
@@ -138,6 +145,7 @@ fclean: fcleanproj
 	@make -C $(EXEC) fclean
 	@make -C $(LINE) fclean
 	@make -C $(BUILT) fclean
+	@make -C $(HEREDOC) fclean
 
 re: fclean all
 
@@ -165,6 +173,7 @@ normeall: norme
 	@make -C $(PARSER) norme
 	@make -C $(EXEC) norme
 	@make -C $(LINE) norme
+	@make -C $(HEREDOC) norme
 
 # Règles pour la documentation
 doxygen:
@@ -177,6 +186,7 @@ doxygen:
 	@make -C $(CMP) doxygen $(DOXYGEN)
 	@make -C $(HIST) doxygen $(DOXYGEN)
 	@make -C $(LINE) doxygen $(DOXYGEN)
+	@make -C $(HEREDOC) doxygen $(DOXYGEN)
 
 cleandoxy:
 	@echo "$(JAUNE)Pas de documentation pour $(PROJECT)$(RESET)"
@@ -189,6 +199,7 @@ cleandoxy:
 	@make -C $(CMP) cleandoxy
 	@make -C $(HIST) cleandoxy
 	@make -C $(LINE) cleandoxy
+	@make -C $(HEREDOC) cleandoxy
 
 fcleanall: cleandoxy fclean
 
