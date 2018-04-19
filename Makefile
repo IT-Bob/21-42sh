@@ -115,7 +115,7 @@ lib:
 	@make -C $(HIST) $(FT) $(AG) $(ERR) all
 	@make -C $(PARSER) $(FT) $(MT) $(ERR) all
 	@make -C $(EXEC) $(AG) $(FT) $(PARS) $(MT) $(ERR) $(ENVI) $(BLT) $(HST) all
-	@make -C $(LINE) $(FT) $(AG) $(ENVI) $(COMP) $(ERR) all
+	@make -C $(LINE) $(FT) $(AG) $(ENVI) $(COMP) $(ERR) $(HRD) all
 	@make -C $(HEREDOC) $(FT) $(AG) $(ENVI) $(LIN) $(COMP) $(ERR) all
 	@make -C $(BUILT) $(FT) $(AG) $(ENVI) $(HST) $(ERR) $(XC) $(PARS) $(MT) $(SH) all
 

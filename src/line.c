@@ -97,11 +97,14 @@ char			*call_line(t_lstag **history, char *hist_file,\
 	char	*line;
 	char	**var;
 	t_lstag	*list;
+	t_lstag	*hd;
 
 	var = concat_tab(env, local);
 	list = read_line(*history, var, env, local);
 	sh_launchsignal();
 	line = list_to_str(list);
+	hd = heredoc(line, var, get_shbuiltin());
+	hd ? ag_lstdel(&hd, del) : NULL;
 	sh_launchsignal();
 	list ? ag_lstdel(&list, del) : NULL;
 	*history = add_history(*history, hist_file, line);
