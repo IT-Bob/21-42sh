@@ -28,3 +28,6 @@
 [submodule "modules/builtins"]
 	path = modules/builtins
 	url = https://github.com/tgrange42/builtins42.git
+[submodule "modules/heredocs"]
+	path = modules/heredocs
+	url = https://github.com/Aguerin42/heredoc.git

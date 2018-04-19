@@ -16,7 +16,7 @@ endif
 CPPFLAGS =	-I $(INC_PATH) -I $(LIB_INC) -I $(LIBAG_INC) -I $(ENV_INC)  \
 			-I $(LINE_INC) -I $(CMP_INC) -I $(LIBMT_INC) -I $(ERROR_INC) -I $(PARSER_INC) -I $(HIST_INC) -I $(EXEC_INC) -I $(BUILT_INC) -I $(HERE_INC)
 
-CLIB =	-L $(HEREDOC) -lheredoc -L $(LINE) -llinput -L $(CMP) -lcomplete -L $(EXEC) -lexec -L $(PARSER) -lparser\
+CLIB =	-L $(EXEC) -lexec -L $(HEREDOC) -lheredoc -L $(LINE) -llinput -L $(CMP) -lcomplete -L $(PARSER) -lparser\
 		-L $(BUILT) -luiltins -L $(HIST) -lstory -L $(ENV) -lenv -L $(ERROR) -lerror\
 		-L $(LIBMT) -lmt -L $(LIBAG) -lag -L $(LIBFT) -lft -ltermcap
 
@@ -88,16 +88,16 @@ BUILT_INC = $(BUILT)includes/
 LIB_BUILT = $(BUILT)libuiltins.a
 BLT = BUILT_INC=../builtins/includes
 
-HEREDOC = modules/heredoc/
+HEREDOC = modules/heredocs/
 HERE_INC = $(HEREDOC)includes/
 LIB_HERE = $(HEREDOC)libheredoc.a
-HRD = HERE_INC=../heredoc/includes
+HRD = HERE_INC=../heredocs/includes
 
 # Règles de compilation
 all: lib $(NAME)
 
 $(NAME): Makefile $(LIB_FT) $(LIB_AG) $(LIB_MT) $(LIB_ERROR) $(LIB_ENV) $(LIB_HIST) \
-$(LIB_LINE) $(LIB_CMP) $(LIB_PARSER) $(LIB_EXEC) $(LIB_BUILT) $(OBJ)
+$(LIB_LINE) $(LIB_CMP) $(LIB_PARSER) $(LIB_EXEC) $(LIB_BUILT) $(LIB_HERE) $(OBJ)
 
 	@echo "$(CYAN)Compilation de $(NAME)$(RESET)"
 	@$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGSUP) $(OBJ) $(CLIB) -o $(NAME)
