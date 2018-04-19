@@ -102,8 +102,6 @@ char			*call_line(t_lstag **history, char *hist_file,\
 	list = read_line(*history, var, env, local);
 	sh_launchsignal();
 	line = list_to_str(list);
-	heredoc(line, var, get_shbuiltin());
-	ft_putendl(line);
 	sh_launchsignal();
 	list ? ag_lstdel(&list, del) : NULL;
 	*history = add_history(*history, hist_file, line);
