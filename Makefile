@@ -110,7 +110,7 @@ lib:
 	@make -C $(LIBAG) $(FT) all
 	@make -C $(LIBMT) $(FT) all
 	@make -C $(ERROR) $(FT) all
-	@make -C $(ENV) $(FT) $(AG) all
+	@make -C $(ENV) $(FT) $(AG) $(ERR) all
 	@make -C $(CMP) $(FT) $(AG) $(ERR) all
 	@make -C $(HIST) $(FT) $(AG) $(ERR) all
 	@make -C $(PARSER) $(FT) $(MT) $(ERR) all
