@@ -107,9 +107,11 @@ char			*call_line(t_lstag **history, char *hist_file,\
 	hd ? ag_lstdel(&hd, del) : NULL;
 	sh_launchsignal();
 	list ? ag_lstdel(&list, del) : NULL;
+	ft_putendl("");
+	if (ft_expand_exclam(&line, *history) < 0)
+		exit(EXIT_FAILURE); //need to be fixed
 	*history = add_history(*history, hist_file, line);
 	var ? ag_strdeldouble(&var) : NULL;
 	*history ? *history = ag_lsthead(*history) : NULL;
-	ft_putendl("");
 	return (line);
 }

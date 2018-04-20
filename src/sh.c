@@ -47,7 +47,7 @@ int			main(void)
 		history ? history = ag_lsthead(history) : NULL;
 		history ? get_history(&history) : NULL;
 		if (!(line = call_line(&history, get_history_file(NULL),\
-								(const char**)env, (const char **)local)))
+							(const char**)env, (const char **)local)))
 			exit_final(1);
 		pre_exec(line, &env, &local);
 		line ? ft_strdel(&line) : NULL;

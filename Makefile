@@ -28,7 +28,7 @@ SH = SH_INC=../../$(INC_PATH)
 
 # Fichiers sources
 SRC_PATH = src/
-SRC_FILE = builtin.c env.c history.c line.c local.c quotes.c sh.c signal.c tools.c variables.c
+SRC_FILE = builtin.c env.c history.c line.c local.c quotes.c sh.c signal.c tools.c variables.c ft_expand.c
 SRC = $(addprefix $(SRC_PATH), $(SRC_FILE))
 OBJ = $(SRC:.c=.o)
 

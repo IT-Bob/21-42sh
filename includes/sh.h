@@ -13,6 +13,12 @@
 # include "heredoc.h"
 
 /*
+**	ft_expand.c
+*/
+
+int			ft_expand_exclam(char **cmd, t_lstag *hist);
+
+/*
 **	builtin.c
 */
 
@@ -22,8 +28,8 @@ char		**get_shbuiltin(void);
 **	environment.c
 */
 
-char	***get_env(char ***env);
-char	**create_env(const char **environ);
+char		***get_env(char ***env);
+char		**create_env(const char **environ);
 
 /*
 **	history.c
@@ -43,8 +49,8 @@ char		*call_line(t_lstag **history, char *hist_file,\
 **	local.c
 */
 
-char	***get_loc(char ***loc);
-char	**create_loc(const char **env);
+char		***get_loc(char ***loc);
+char		**create_loc(const char **env);
 
 /*
 **	quotes.c
@@ -56,19 +62,19 @@ int			quotes(char **line, char c);
 **	signal.c
 */
 
-void	sh_launchsignal(void);
-void	sh_resetsignal(void);
+void		sh_launchsignal(void);
+void		sh_resetsignal(void);
 
 /*
 **	tools.c
 */
 
-char	**concat_tab(const char **env, const char **local);
+char		**concat_tab(const char **env, const char **local);
 
 /*
 **	variables.c
 */
 
-char	*getenvloc(const char *name, const char **loc, const char **env);
+char		*getenvloc(const char *name, const char **loc, const char **env);
 
 #endif
