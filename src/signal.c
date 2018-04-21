@@ -14,7 +14,7 @@ static void	sh_signal(int signal)
 /*
 **	\brief	Lancement des appels à la fonction `signal` pour les signaux à attraper
 **
-**	Les signaux attraper et ignorer par le Shell sont :
+**	Les signaux attrapés et ignorés par le Shell sont :
 **
 **	- SIGINT
 **	- SIGTSTP
