@@ -29,16 +29,20 @@ static int	init_sh(char ***env, char ***local, t_lstag	**history)
 		*history = init_history((const char**)*env, (const char**)*local);
 		return (0);
 	}
-	return (1);
+	return (ft_putendl_fd("ERROR: 21sh: initialization failed", 2));
 }
 
 int			main(void)
 {
 	char	**env;
 	char	**local;
+	char	**var;
 	char	*line;
 	t_lstag	*history;
 
+	env = NULL;
+	local = NULL;
+	history = NULL;
 	sh_launchsignal();
 	if (init_sh(&env, &local, &history))
 		return (1);
@@ -46,11 +50,12 @@ int			main(void)
 	{
 		history ? history = ag_lsthead(history) : NULL;
 		history ? get_history(&history) : NULL;
-		if (!(line = call_line(&history, get_history_file(NULL),\
-							(const char**)env, (const char **)local)))
+		var = concat_tab((const char**)env, (const char**)local);
+		if (!(line = call_line(&history, get_history_file(NULL), var)))
 			exit_final(1);
 		pre_exec(line, &env, &local);
 		line ? ft_strdel(&line) : NULL;
+		var ? ag_strdeldouble(&var) : NULL;
 	}
 	return (0);
 }

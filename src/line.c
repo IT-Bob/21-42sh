@@ -50,8 +50,7 @@ static void		alter_line(char **line, char c)
 	}
 }
 
-static t_lstag	*read_line(t_lstag *history, char **var,\
-							const char **env, const char **local)
+static t_lstag	*read_line(t_lstag *history, char **var)
 {
 	int		c;
 	char	*line;
@@ -63,8 +62,8 @@ static t_lstag	*read_line(t_lstag *history, char **var,\
 	while (1)
 	{
 		list ? (void)ft_putchar('\n') : NULL;
-		if ((line = line_input(getenvloc(list ? "PS2" : "PS1", local, env),\
-								history, var, get_shbuiltin())))
+		if ((line = line_input(ft_getenv(list ? "PS2" : "PS1",\
+				(const char**)var), history, var, get_shbuiltin())))
 		{
 			alter_line(&line, (c = quotes(&line, c)));
 			node = ag_lstnew(line, ft_strlen(line) + 1);
@@ -91,16 +90,13 @@ static t_lstag	*read_line(t_lstag *history, char **var,\
 **	\return	**commande** ou **NULL** en cas d'erreur
 */
 
-char			*call_line(t_lstag **history, char *hist_file,\
-						const char **env, const char **local)
+char			*call_line(t_lstag **history, char *hist_file, char **var)
 {
 	char	*line;
-	char	**var;
 	t_lstag	*list;
 	t_lstag	*hd;
 
-	var = concat_tab(env, local);
-	list = read_line(*history, var, env, local);
+	list = read_line(history ? *history : NULL, var);
 	sh_launchsignal();
 	line = list_to_str(list);
 	hd = heredoc(line, var, get_shbuiltin());
@@ -111,7 +107,6 @@ char			*call_line(t_lstag **history, char *hist_file,\
 	if (ft_expand_exclam(&line, *history) < 0)
 		exit(EXIT_FAILURE); //need to be fixed
 	*history = add_history(*history, hist_file, line);
-	var ? ag_strdeldouble(&var) : NULL;
 	*history ? *history = ag_lsthead(*history) : NULL;
 	return (line);
 }
