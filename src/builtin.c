@@ -17,16 +17,15 @@ char	**get_shbuiltin(void)
 
 	if (!t)
 	{
-		if ((t = (char**)ft_memalloc(sizeof(char*) * 10)))
+		if ((t = (char**)ft_memalloc(sizeof(char*) * 8)))
 		{
-			t[0] = "builtin";
-			t[1] = "cd";
-			t[2] = "echo";
-			t[3] = "env";
-			t[4] = "exit";
-			t[5] = "history";
-			t[6] = "setenv";
-			t[7] = "unsetenv";
+			t[0] = "cd";
+			t[1] = "echo";
+			t[2] = "env";
+			t[3] = "exit";
+			t[4] = "history";
+			t[5] = "setenv";
+			t[6] = "unsetenv";
 		}
 		else
 			sh_error(1, "in function get_builtin");
