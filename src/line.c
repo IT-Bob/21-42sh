@@ -1,11 +1,19 @@
 #include "sh.h"
 
+/*
+**	Fonction de libération de mémoire passée a ag_lstdel()
+*/
+
 static void		del(void *content, size_t content_size)
 {
 	(void)content_size;
 	if (content)
 		ft_memdel(&content);
 }
+
+/*
+**	Transformation de la liste en une chaîne de caractères
+*/
 
 static char		*list_to_str(t_lstag *list)
 {
@@ -30,6 +38,11 @@ static char		*list_to_str(t_lstag *list)
 	}
 	return (str);
 }
+
+/*
+**	Suppression du backslash en fin de ligne, ou ajout d'un retour à la ligne
+**	si l'attente était faite sur une quote
+*/
 
 static void		alter_line(char **line, char c)
 {

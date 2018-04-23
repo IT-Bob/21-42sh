@@ -5,7 +5,7 @@
 **
 **	La fonction renvoie un tableau dont chaque case contient le nom
 **	d'un builtin du projet.
-**	Seule la première dimension est allouée.
+**	Seule la première dimension est allouée dynamiquement.
 **
 **	\return	**tableau** contenant le nom des builtins
 **			ou **NULL** en cas d'erreur

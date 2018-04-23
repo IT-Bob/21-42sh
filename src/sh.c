@@ -32,6 +32,13 @@ static int	init_sh(char ***env, char ***local, t_lstag	**history)
 	return (ft_putendl_fd("ERROR: 21sh: initialization failed", 2));
 }
 
+/*
+**	Entrée du programme. 21sh ne prend pas de paramètre.
+**	Le main appelle la fonction d'intialisation des variables locales/d'environnement
+**	et de l'historique. S'il n'y a pas d'erreur, l'édition de ligne est appelée, puis le
+**	parser et l'exécution.
+*/
+
 int			main(void)
 {
 	char	**env;
