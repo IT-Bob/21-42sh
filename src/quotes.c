@@ -4,7 +4,7 @@ static int	is_that(char *line, char c)
 {
 	if (!c && (line[0] == '\'' || line[0] == '\"' || line[0] == '`'))
 		return (line[0]);
-	else if (line[0] == '\\' && !line[1])
+	else if (!c && line[0] == '\\' && !line[1])
 		return (line[0]);
 	else if ((line[0] == '&' || line[0] == '|') && (!line[1] || !not_empty(&line[1])))
 		return (line[0]);
