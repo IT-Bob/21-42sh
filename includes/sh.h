@@ -43,8 +43,7 @@ t_lstag		*init_history(const char **env, const char **loc);
 **	line.c
 */
 
-char		*call_line(t_lstag **history, char *hist_file,\
-						const char **env, const char **local);
+char		*call_line(t_lstag **history, char *hist_file, char **var);
 
 /*
 **	local.c
