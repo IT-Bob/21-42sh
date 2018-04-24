@@ -17,6 +17,7 @@
 */
 
 int			ft_expand_exclam(char **cmd, t_lstag *hist);
+int			ft_expand_dollar(char **cmd, const char **env, const char **local);
 
 /*
 **	builtin.c
@@ -42,7 +43,8 @@ t_lstag		*init_history(const char **env, const char **loc);
 **	line.c
 */
 
-char		*call_line(t_lstag **history, char *hist_file, char **var);
+char		*call_line(t_lstag **history, char *hist_file,\
+						const char **env, const char **local);
 
 /*
 **	local.c
