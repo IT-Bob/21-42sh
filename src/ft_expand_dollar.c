@@ -94,7 +94,7 @@ static int	ft_end_dollar(char *str)
 		return (1);
 	else if (ft_isalpha_und(str[i]))
 	{
-		while (ft_isalpha_und(str[i]))
+		while (ft_isalpha_und(str[i]) || ft_isdigit(str[i]))
 		{
 			i++;
 			ret++;
@@ -114,17 +114,18 @@ static char	*ft_get_var(char *str, const char **env, const char **local)
 	i = 0;
 	if (!(ret = ft_memalloc(sizeof(char) * (ft_end_dollar(str) + 1))))
 		return (sh_error(1, "Dollar"));
-	if (ft_isdigit(str[i]) || ft_isalpha_und(str[i]))
+	if (ft_isdigit(str[i]))
+		ret[i] = str[i];
+	else if (ft_isalpha_und(str[i]))
 	{
 		ret[i] = str[i];
 		i++;
-		while (ft_isalpha_und(str[i]))
+		while (ft_isalpha_und(str[i]) || ft_isdigit(str[i]))
 		{
 			ret[i] = str[i];
 			i++;
 		}
 	}
-	ret[i] = '\0';
 	tmp = getenvloc(ret, (const char **)local, (const char **)env);
 	ft_memdel((void **)&ret);
 	return (tmp);
