@@ -17,6 +17,7 @@
 */
 
 int			ft_expand_exclam(char **cmd, t_lstag *hist);
+int			ft_expand_dollar(char **cmd, const char **env, const char **local);
 
 /*
 **	builtin.c

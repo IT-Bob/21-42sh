@@ -34,9 +34,9 @@ static int	init_sh(char ***env, char ***local, t_lstag	**history)
 
 /*
 **	Entrée du programme. 21sh ne prend pas de paramètre.
-**	Le main appelle la fonction d'intialisation des variables locales/d'environnement
+**	Le main appelle la fonction d'initialisation des variables locales/d'environnement
 **	et de l'historique. S'il n'y a pas d'erreur, l'édition de ligne est appelée, puis le
-**	parser et l'exécution.
+**	parser et l'exécution
 */
 
 int			main(void)
@@ -47,10 +47,10 @@ int			main(void)
 	char	*line;
 	t_lstag	*history;
 
+	sh_launchsignal();
 	env = NULL;
 	local = NULL;
 	history = NULL;
-	sh_launchsignal();
 	if (init_sh(&env, &local, &history))
 		return (1);
 	while (1)
@@ -60,6 +60,9 @@ int			main(void)
 		var = concat_tab((const char**)env, (const char**)local);
 		if (!(line = call_line(&history, get_history_file(NULL), var)))
 			exit_final(1);
+		if (ft_expand_dollar(&line, (const char**)env,\
+									(const char **)local) < 0)
+			line = NULL;
 		pre_exec(line, &env, &local);
 		line ? ft_strdel(&line) : NULL;
 		var ? ag_strdeldouble(&var) : NULL;

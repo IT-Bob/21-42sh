@@ -194,11 +194,11 @@ static char *ft_write_exclam(char *dest, char *str, t_lstag *hist)
 
 /*
 **	This is the main function of the file.
-**	It takes the history and a pointer on the cmd line
-**	
+**	It takes the history and a pointer on the cmd line.
+**	---------------------------------------------------
 **	The objectif is to replace any '!' followed by a digit (neg / pos)
 **	or an alpha (a double '!' is egal to '!-1' and count as a digit)
-**	with the numbered string for digit and thw matching string in the case of alphas.
+**	with the numbered string for digit and the matching string in the case of alphas.
 **	(neg digit is a roll back in hist and pos digit is from the start of hist)
 */
 
