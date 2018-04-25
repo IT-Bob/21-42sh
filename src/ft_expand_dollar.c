@@ -56,24 +56,23 @@ static int	check_before(char *str, int index)
 
 		if (!index)
 			return (1);
-		while (index > 0)
+		index--;
+		if (ft_isredir(str[index]) || ft_isspace(str[index]))
 		{
-			index--;
-			if (ft_isredir(str[index]) || ft_isspace(str[index]))
+			while (ft_isspace(str[index]) && index)
+				index--;
+			if (ft_isredir(str[index]))
 			{
-				while (ft_isspace(str[index]) && index)
-					index--;
-				if (ft_isredir(str[index]))
+				if (ft_isredir(str[index]) == 1 && index)
 				{
-					if (ft_isredir(str[index]) == 1 && index)
-					{
-						if (ft_isredir(str[index - 1]) == 1)
-							return (0);
-					}
+					if (ft_isredir(str[index - 1]) == 1)
+						return (0);
 				}
-				return (1);
 			}
+			return (1);
 		}
+		else
+			return (0);
 	}
 	return (0);
 }
