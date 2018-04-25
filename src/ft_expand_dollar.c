@@ -1,5 +1,9 @@
 #include "sh.h"
 
+/*
+**	Banales fonctions de reconnaissance de char.
+*/
+
 static int	ft_isredir(int c)
 {
 	if (c == '<')
@@ -31,9 +35,19 @@ static int	ft_aft_dol(char *str)
 		return (1);
 	else if (ft_isalpha_und(str[0]))
 		return (1);
+	else if (str[0] == '?')
+		return (1);
 	else
 		return (0);
 }
+
+/*
+**	Les deux fonctions qui suivent servent a identifier les cas ou l'on
+**	replace le '~' dans notre ligne de commande.
+**
+**	la premiere check si se qu'il y a avant le tild est valide.
+**	la second check se qu'il y a apres.	
+*/
 
 static int	check_before(char *str, int index)
 {
@@ -83,6 +97,10 @@ static int	tild_k(char *str, int i)
 	return (0);
 }
 
+/*
+**	Meme chose que pour le tild sauf qu'ici c'est pour le dollar.
+*/
+
 static int	ft_end_dollar(char *str)
 {
 	int		ret;
@@ -90,7 +108,7 @@ static int	ft_end_dollar(char *str)
 
 	i = 0;
 	ret = 0;
-	if (ft_isdigit(str[i]))
+	if (ft_isdigit(str[i]) || str[i] == '?')
 		return (1);
 	else if (ft_isalpha_und(str[i]))
 	{
@@ -103,6 +121,11 @@ static int	ft_end_dollar(char *str)
 	}
 	return (0);
 }
+
+/*
+**	Cette fonction recupere les valeurs des variables d'environnement et local,
+**	a partir d'une string de recherche.
+*/
 
 static char	*ft_get_var(char *str, const char **env, const char **local)
 {
@@ -131,6 +154,10 @@ static char	*ft_get_var(char *str, const char **env, const char **local)
 	return (tmp);
 }
 
+/*
+**	Cette fonction renvoie la longueur de la string finale pour pouvoir malloc.
+*/
+
 static int	ft_malloc_dollar(char *str, const char **env, const char **local)
 {
 	char	*cmd;
@@ -145,6 +172,8 @@ static int	ft_malloc_dollar(char *str, const char **env, const char **local)
 		{
 			if (ft_isalpha_und(str[i + 1]) || ft_isdigit(str[i + 1]))
 				cmd = ft_get_var(str + i + 1, env, local);
+			else if (str[i + 1] == '?')
+				cmd = getenvloc("?", local, env);
 			else if (tild_k(str, i))
 				cmd = getenvloc("HOME", local, env);
 			if (cmd)
@@ -156,6 +185,10 @@ static int	ft_malloc_dollar(char *str, const char **env, const char **local)
 	}
 	return (len + 1);
 }
+
+/*
+**	Cette fonction ecrit sur la string malloc, qu'elle renvoie.
+*/
 
 static char	*ft_write_dollar(char *dest, char *str, const char **env,\
 													const char **local)
@@ -172,6 +205,8 @@ static char	*ft_write_dollar(char *dest, char *str, const char **env,\
 		{
 			if (ft_isalpha_und(str[i + 1]) || ft_isdigit(str[i + 1]))
 				cmd = ft_get_var(str + i + 1, env, local);
+			else if (str[i + 1] == '?')
+				cmd = getenvloc("?", local, env);
 			else if (tild_k(str, i))
 				cmd = getenvloc("HOME", local, env);
 			if (cmd)
@@ -186,6 +221,12 @@ static char	*ft_write_dollar(char *dest, char *str, const char **env,\
 	}
 	return (dest);
 }
+
+/*
+**	Cette fonction est la fonction principale.
+**	Son but est de changer tout les '$' suivit d'une string ou d'un chiffreo
+**	ou d'un '?' par les valeurs contenu dans l'env et le local.
+*/
 
 int			ft_expand_dollar(char **cmd, const char **env, const char **local)
 {

@@ -1,8 +1,7 @@
 #include "sh.h"
 
 /*
-**	This function checks if what is  following '!' is
-**	a case for expansion or not.
+**	Cette fonction check si ce qui suit le '!' est un cas d'expansion.
 */
 
 static int	ft_after_exclam(char *str)
@@ -18,9 +17,9 @@ static int	ft_after_exclam(char *str)
 }
 
 /*
-**	This function is used for error returns.
-**	Giving an "event no found" or ENF on Error output.
-**	Also displaying the "event" concerned.
+**	Cette fonction est utilisee pour retournee les erreurs.
+**	Elle affiche un "event not found" sur la sortie d'erreur.
+**	Elle affiche aussi l'event concerne.
 */
 
 static int	ft_enf(char *cmd, int val)
@@ -50,8 +49,8 @@ static int	ft_enf(char *cmd, int val)
 }
 
 /*
-**	This function allow the index on the initial string to follow 
-**	the process after it encounters a '!'.
+**	Cette fonction permet de faire suivre a l'index la suite des operations
+**	apres avoir rencontre un '!' dans la string de depart.
 */
 
 static int ft_end_exclam(char *str)
@@ -74,9 +73,9 @@ static int ft_end_exclam(char *str)
 }
 
 /*
-**	The two following funtions are giving the hist cmd for:
-**	- digit cases.
-**	- alpha cases.
+**	Les deux fonction suivantes donnent pour les cmd de l'hist pour:
+**	- le cas des digits.
+**	- le cas des alphas.
 */
 
 static char *ft_digit_node(t_lstag *hist, int nb)
@@ -128,9 +127,9 @@ static char *ft_alpha_node(t_lstag *hist, char *str)
 }
 
 /*
-**	The two following functions are, each:
-**	- giving length of the final string.
-**	- writing the final string.
+**	Les deux fonctions suivantes font chacune:
+**	- Donne la longueur de la string finale.
+**	- Ecrit la string finale.
 */
 
 static int	ft_malloc_exclam(char *str, t_lstag *hist)
@@ -193,13 +192,14 @@ static char *ft_write_exclam(char *dest, char *str, t_lstag *hist)
 }
 
 /*
-**	This is the main function of the file.
-**	It takes the history and a pointer on the cmd line.
+**	C'est la fonction principale du fichier.
+**	Elle recoit un pointer sur la ligne de cmd et sur l'historique.
 **	---------------------------------------------------
-**	The objectif is to replace any '!' followed by a digit (neg / pos)
-**	or an alpha (a double '!' is egal to '!-1' and count as a digit)
-**	with the numbered string for digit and the matching string in the case of alphas.
-**	(neg digit is a roll back in hist and pos digit is from the start of hist)
+**	L'objectif est de remplacer tout les '!' suivient d'un digit (pos/neg)
+**	ou d'un alpha (un '!' suivant un autre '!' est remplace par "!-1"
+**	et compte comme un digit) par la cmd de l'historique qui correspond.
+**	(les digits neg commence par les derniere commande et inversement pour
+**	les positifs).
 */
 
 int			ft_expand_exclam(char **cmd, t_lstag *hist)
