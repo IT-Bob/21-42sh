@@ -37,7 +37,12 @@ int			quotes(char **line, char c)
 		c = 0;
 	if (line && line[0])
 		while (line[0][++i])
+		{
 			c = is_that(&line[0][i], c);
+			if (c == '&' && (((i > 0 && line[0][i - 1] != '&') || i == 0) &&
+						(line[0][i + 1] != '&')))
+				c = 0;
+		}
 	else
 		return (-1);
 	return (c);
