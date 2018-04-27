@@ -157,7 +157,7 @@ static char	*ft_get_var(char *str, const char **env, const char **local)
 **	Cette fonction renvoie la longueur de la string finale pour pouvoir malloc.
 */
 
-static int	ft_malloc_dollar(char *str, const char **env, const char **local)
+static int	ft_malloc_dollar(char *str, const char **env, const char **local, int check_tild)
 {
 	char	*cmd;
 	int		len;
@@ -173,7 +173,7 @@ static int	ft_malloc_dollar(char *str, const char **env, const char **local)
 				cmd = ft_get_var(str + i + 1, env, local);
 			else if (str[i + 1] == '?')
 				cmd = getenvloc("?", local, env);
-			else if (tild_k(str, i))
+			else if (check_tild && tild_k(str, i))
 				cmd = getenvloc("HOME", local, env);
 			if (cmd)
 				len += ft_strlen(cmd);
@@ -190,7 +190,7 @@ static int	ft_malloc_dollar(char *str, const char **env, const char **local)
 */
 
 static char	*ft_write_dollar(char *dest, char *str, const char **env,\
-													const char **local)
+													const char **local, int check_tild)
 {
 	char	*cmd;
 	int		i;
@@ -200,13 +200,13 @@ static char	*ft_write_dollar(char *dest, char *str, const char **env,\
 	j = 0;
 	while (str[i])
 	{
-		if ((str[i] == '$' && ft_aft_dol(str + i + 1)) || tild_k(str, i))
+		if ((str[i] == '$' && ft_aft_dol(str + i + 1)) || (check_tild && tild_k(str, i)))
 		{
 			if (ft_isalpha_und(str[i + 1]) || ft_isdigit(str[i + 1]))
 				cmd = ft_get_var(str + i + 1, env, local);
 			else if (str[i + 1] == '?')
 				cmd = getenvloc("?", local, env);
-			else if (tild_k(str, i))
+			else if (check_tild && tild_k(str, i))
 				cmd = getenvloc("HOME", local, env);
 			if (cmd)
 			{
@@ -227,18 +227,18 @@ static char	*ft_write_dollar(char *dest, char *str, const char **env,\
 **	ou d'un '?' par les valeurs contenu dans l'env et le local.
 */
 
-int			ft_expand_dollar(char **cmd, const char **env, const char **local)
+int			ft_expand_dollar(char **cmd, const char **env, const char **local, int check_tild)
 {
 	char	*ret;
 	int		len;
 
 	if (!ft_strchr((*cmd), '$') && !ft_strchr((*cmd), '~'))
 		return (0);
-	if (!(len = ft_malloc_dollar(*cmd, env, local)))
+	if (!(len = ft_malloc_dollar(*cmd, env, local, check_tild)))
 		return (-1);
 	if (!(ret = ft_memalloc(sizeof(char) * len)))
 		return (sh_error_int(1, "Expand"));
-	if (!(ret = ft_write_dollar(ret, *cmd, env, local)))
+	if (!(ret = ft_write_dollar(ret, *cmd, env, local, check_tild)))
 		return (-1);
 	ft_strdel(cmd);
 	(*cmd) = ret;

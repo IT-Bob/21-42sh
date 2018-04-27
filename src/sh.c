@@ -61,7 +61,7 @@ int			main(void)
 		if (!(line = call_line(&history, get_history_file(NULL), var)))
 			exit_final(1);
 		if (ft_expand_dollar(&line, (const char**)env,\
-									(const char **)local) < 0)
+									(const char **)local, 1) < 0)
 			line = NULL;
 		pre_exec(line, &env, &local);
 		line ? ft_strdel(&line) : NULL;

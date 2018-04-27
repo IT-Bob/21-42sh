@@ -17,7 +17,7 @@
 */
 
 int			ft_expand_exclam(char **cmd, t_lstag *hist);
-int			ft_expand_dollar(char **cmd, const char **env, const char **local);
+int			ft_expand_dollar(char **cmd, const char **env, const char **local, int check_tild);
 
 /*
 **	builtin.c
