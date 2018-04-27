@@ -28,7 +28,7 @@ SH = SH_INC=../../$(INC_PATH)
 
 # Fichiers sources
 SRC_PATH = src/
-SRC_FILE = builtin.c env.c history.c line.c local.c quotes.c sh.c signal.c tools.c variables.c ft_expand_exclam.c ft_expand_dollar.c
+SRC_FILE = builtin.c env.c history.c line.c local.c quotes.c sh.c signal.c tools.c ft_expand_exclam.c ft_expand_dollar.c
 SRC = $(addprefix $(SRC_PATH), $(SRC_FILE))
 OBJ = $(SRC:.c=.o)
 
@@ -116,7 +116,7 @@ lib:
 	@make -C $(PARSER) $(FT) $(MT) $(ERR) all
 	@make -C $(EXEC) $(AG) $(FT) $(PARS) $(MT) $(ERR) $(ENVI) $(BLT) $(HST) all
 	@make -C $(LINE) $(FT) $(AG) $(ENVI) $(COMP) $(ERR) $(HRD) all
-	@make -C $(HEREDOC) $(FT) $(AG) $(ENVI) $(LIN) $(COMP) $(ERR) all
+	@make -C $(HEREDOC) $(FT) $(AG) $(HST) $(ENVI) $(LIN) $(COMP) $(ERR) all
 	@make -C $(BUILT) $(FT) $(AG) $(ENVI) $(HST) $(ERR) $(XC) $(PARS) $(MT) $(SH) all
 
 clean: cleanproj

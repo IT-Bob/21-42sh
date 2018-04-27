@@ -1,4 +1,5 @@
 #include "sh.h"
+#include "expansion.h"
 
 /*
 **	Fonction de libération de mémoire passée a ag_lstdel()

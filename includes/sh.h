@@ -13,13 +13,6 @@
 # include "heredoc.h"
 
 /*
-**	ft_expand.c
-*/
-
-int			ft_expand_exclam(char **cmd, t_lstag *hist);
-int			ft_expand_dollar(char **cmd, const char **env, const char **local, int check_tild);
-
-/*
 **	builtin.c
 */
 
@@ -70,11 +63,5 @@ void		sh_resetsignal(void);
 */
 
 char		**concat_tab(const char **env, const char **local);
-
-/*
-**	variables.c
-*/
-
-char		*getenvloc(const char *name, const char **loc, const char **env);
 
 #endif
