@@ -60,9 +60,6 @@ int			main(void)
 		var = concat_tab((const char**)env, (const char**)local);
 		if (!(line = call_line(&history, get_history_file(NULL), var)))
 			exit_final(1);
-		if (ft_expand_dollar(&line, (const char**)env,\
-									(const char **)local, 1) < 0)
-			line = NULL;
 		pre_exec(line);
 		line ? ft_strdel(&line) : NULL;
 		var ? ag_strdeldouble(&var) : NULL;
