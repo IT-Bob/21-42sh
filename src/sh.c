@@ -63,7 +63,7 @@ int			main(void)
 		if (ft_expand_dollar(&line, (const char**)env,\
 									(const char **)local, 1) < 0)
 			line = NULL;
-		pre_exec(line, &env, &local);
+		pre_exec(line);
 		line ? ft_strdel(&line) : NULL;
 		var ? ag_strdeldouble(&var) : NULL;
 	}
