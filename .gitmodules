@@ -1,5 +1,5 @@
 [submodule "modules/libft"]
-	path = modules/libft
+	path = libft
 	url = https://github.com/Aguerin42/libft.git
 [submodule "modules/environment"]
 	path = modules/environment

@@ -33,10 +33,10 @@ SRC = $(addprefix $(SRC_PATH), $(SRC_FILE))
 OBJ = $(SRC:.c=.o)
 
 # Fichiers des bibliothèques
-LIBFT = modules/libft/
+LIBFT = libft/
 LIB_INC = $(LIBFT)includes/
 LIB_FT = $(LIBFT)libft.a
-FT = LIBFT_INC=../libft/includes
+FT = LIBFT_INC=../../libft/includes
 
 LIBAG = modules/libag/
 LIBAG_INC = $(LIBAG)includes/
@@ -157,52 +157,6 @@ fcleanproj: cleanproj
 	@echo "$(ROUGEC)Suppression de l'exécutable $(NAME)$(RESET)"
 	@rm -f $(NAME)
 
-# Règles pour la norme
-norme: cleanproj
-	@echo "$(MAGEN)Norme pour $(PROJECT)$(RESET)"
-	@norminette includes/ src/
-
-normeall: norme
-	@make -C $(LIBFT) norme
-	@make -C $(LIBAG) norme
-	@make -C $(LIBMT) norme
-	@make -C $(ERROR) norme
-	@make -C $(ENV) norme
-	@make -C $(CMP) norme
-	@make -C $(HIST) norme
-	@make -C $(PARSER) norme
-	@make -C $(EXEC) norme
-	@make -C $(LINE) norme
-	@make -C $(HEREDOC) norme
-
-# Règles pour la documentation
-doxygen:
-	@echo "$(JAUNE)Pas de documentation pour $(PROJECT)$(RESET)"
-#	@echo "$(CYAN)Génération de la documentation de $(PROJECT)$(RESET)"
-#	@$(DOXYGEN) documentation/$(PROJECT).doxyconf > documentation/$(PROJECT).log
-	@make -C $(LIBFT) doxygen $(DOXYGEN)
-	@make -C $(LIBAG) doxygen $(DOXYGEN)
-	@make -C $(ENV) doxygen $(DOXYGEN)
-	@make -C $(CMP) doxygen $(DOXYGEN)
-	@make -C $(HIST) doxygen $(DOXYGEN)
-	@make -C $(LINE) doxygen $(DOXYGEN)
-	@make -C $(HEREDOC) doxygen $(DOXYGEN)
-
-cleandoxy:
-	@echo "$(JAUNE)Pas de documentation pour $(PROJECT)$(RESET)"
-#	@echo "Suppression de la documentation de $(PROJECT)"
-#	@rm -rf documentation/html
-#	@rm -rf documentation/$(PROJECT).log
-	@make -C $(LIBFT) cleandoxy
-	@make -C $(LIBAG) cleandoxy
-	@make -C $(ENV) cleandoxy
-	@make -C $(CMP) cleandoxy
-	@make -C $(HIST) cleandoxy
-	@make -C $(LINE) cleandoxy
-	@make -C $(HEREDOC) cleandoxy
-
-fcleanall: cleandoxy fclean
-
 # Couleurs
 RESET = \033[0m
 BLANC = \033[37m
@@ -214,8 +168,5 @@ NOIR  = \033[30m
 ROUGE = \033[31m
 ROUGEC = \033[1;31m
 VERT  = \033[32m
-
-# VARIABLES
-DOXYGEN = doxygen
 
 .PHONY: all lib clean fclean re doxygen cleandoxy
