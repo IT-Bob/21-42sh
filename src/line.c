@@ -104,17 +104,16 @@ static t_lstag	*read_line(t_lstag *history, char **var)
 **	\return	**commande** ou **NULL** en cas d'erreur
 */
 
-char			*call_line(t_lstag **history, char *hist_file, char **var)
+char			*call_line(t_lstag **history, char *hist_file, char **var, t_lstag **hd)
 {
 	char	*line;
 	t_lstag	*list;
-	t_lstag	*hd;
 
 	list = read_line(history ? *history : NULL, var);
 	sh_launchsignal();
 	line = list_to_str(list);
-	hd = heredoc(line, var, get_shbuiltin());
-	hd ? ag_lstdel(&hd, del) : NULL;
+	*hd = heredoc(line, var, get_shbuiltin());
+	// hd ? ag_lstdel(&hd, del) : NULL;
 	sh_launchsignal();
 	list ? ag_lstdel(&list, del) : NULL;
 	ft_putendl("");
