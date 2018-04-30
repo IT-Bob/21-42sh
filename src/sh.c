@@ -46,7 +46,6 @@ int			main(void)
 	char	**var;
 	char	*line;
 	t_lstag	*history;
-	t_lstag	*hd;
 
 	sh_launchsignal();
 	env = NULL;
@@ -59,7 +58,7 @@ int			main(void)
 		history ? history = ag_lsthead(history) : NULL;
 		history ? get_history(&history) : NULL;
 		var = concat_tab((const char**)env, (const char**)local);
-		if (!(line = call_line(&history, get_history_file(NULL), var, &hd)))
+		if (!(line = call_line(&history, get_history_file(NULL), var)))
 			exit_final(1);
 		pre_exec(line, &env);
 		line ? ft_strdel(&line) : NULL;

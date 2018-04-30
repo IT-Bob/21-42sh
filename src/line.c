@@ -104,18 +104,25 @@ static t_lstag	*read_line(t_lstag *history, char **var)
 **	\return	**commande** ou **NULL** en cas d'erreur
 */
 
-char			*call_line(t_lstag **history, char *hist_file, char **var, t_lstag **hd)
+char			*call_line(t_lstag **history, char *hist_file, char **var)
 {
 	char	*line;
 	t_lstag	*list;
-(void)hd;
+
 	list = read_line(history ? *history : NULL, var);
 	sh_launchsignal();
 	line = list_to_str(list);
 	sh_launchsignal();
 	list ? ag_lstdel(&list, del) : NULL;
+	ft_putendl("");
+	if (!line)
+		return (NULL);
 	if (ft_expand_exclam(&line, *history) < 0)
-		exit(EXIT_FAILURE); //need to be fixed
+	{
+		ft_strdel(&line);
+		line = ft_strdup("");
+		return (line);
+	}
 	*history = add_history(*history, hist_file, line);
 	*history ? *history = ag_lsthead(*history) : NULL;
 	return (line);
