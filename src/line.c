@@ -108,15 +108,12 @@ char			*call_line(t_lstag **history, char *hist_file, char **var, t_lstag **hd)
 {
 	char	*line;
 	t_lstag	*list;
-
+(void)hd;
 	list = read_line(history ? *history : NULL, var);
 	sh_launchsignal();
 	line = list_to_str(list);
-	*hd = heredoc(line, var, get_shbuiltin());
-	// hd ? ag_lstdel(&hd, del) : NULL;
 	sh_launchsignal();
 	list ? ag_lstdel(&list, del) : NULL;
-	ft_putendl("");
 	if (ft_expand_exclam(&line, *history) < 0)
 		exit(EXIT_FAILURE); //need to be fixed
 	*history = add_history(*history, hist_file, line);
