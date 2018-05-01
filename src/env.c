@@ -1,5 +1,28 @@
 #include "sh.h"
 
+static char	*shlvl_inc(char *str)
+{
+	char	*shlvl;
+
+	shlvl = NULL;
+	if (!ft_isdigit(str[0]))
+		return (ft_strdup("1"));
+	else
+	{
+		shlvl = ft_itoa(ft_atoi(str));
+		if (ft_strcmp(shlvl, str))
+		{
+			ft_strdel(&shlvl);
+			return (ft_strdup("1"));
+		}
+		ft_strdel(&shlvl);
+		if (ft_atoi(str) == 2147483647)
+			return (ft_strdup("1"));
+		shlvl = ft_itoa(ft_atoi(str) + 1);
+		return (shlvl);
+	}
+}
+
 /*
 **	\brief	Obtention de l'environnement
 **
@@ -42,6 +65,7 @@ char	***get_env(char ***env)
 char	**create_env(const char **environ)
 {
 	char	**env;
+	char	*shlvl;
 	char	*tmp;
 
 	env = NULL;
@@ -55,6 +79,13 @@ char	**create_env(const char **environ)
 	}
 	else
 		env = dupenv((const char**)environ, ag_strlendouble((char **)environ));
+	if ((shlvl = ft_getenv("SHLVL", (const char **)env)))
+	{
+		ft_vcontenv("SHLVL", (shlvl = shlvl_inc(shlvl)), &env);
+		ft_strdel(&shlvl);
+	}
+	else
+		ft_vcontenv("SHLVL", "1", &env);
 	tmp = getcwd(NULL, 0);
 	ft_vcontenv("PWD", tmp, &env);
 	beacon_pwd(tmp);
