@@ -3,75 +3,99 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguerin <aguerin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mtacnet <mtacnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/16 10:15:53 by aguerin           #+#    #+#             */
-/*   Updated: 2018/05/01 16:00:51 by mtacnet          ###   ########.fr       */
+/*   Created: 2018/05/01 18:54:49 by mtacnet           #+#    #+#             */
+/*   Updated: 2018/05/01 18:54:49 by mtacnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int		ft_error(char **buffer, char **stock)
+static char		*ft_strjoin_free(char *s1, char *s2, char flag)
 {
-	ft_strdel(buffer);
-	ft_strdel(stock);
-	return (READ_ERR);
+	char	*out;
+
+	out = ft_strjoin(s1, s2);
+	if (flag == 'l' || flag == 'b')
+		free(s1);
+	if (flag == 'r' || flag == 'b')
+		free(s2);
+	return (out);
 }
 
-static int		ft_eof(char **line, char **stock, char **buffer)
+static int		fill_buffer(int fd, char **line, char **stock)
 {
-	if (ft_strlen(*stock))
+	char	*buff;
+	char	*chr;
+	int		ret;
+
+	if (!(buff = (char *)ft_memalloc(sizeof(char) * (BUFF_SIZE + 1))))
+		return (-1);
+	while ((ret = read(fd, buff, BUFF_SIZE)) > 0)
 	{
-		if (!(*line = ft_strdup(*stock)))
-			return (ft_error(buffer, stock));
-		ft_strdel(stock);
-		ft_strdel(buffer);
-		return (READ_LINE);
+		buff[ret] = 0;
+		if (!(chr = ft_strchr(buff, '\n')))
+			*line = ft_strjoin_free(*line, buff, 'l');
+		else
+		{
+			*chr++ = 0;
+			if (stock[fd])
+				free(stock[fd]);
+			stock[fd] = ft_strdup(chr);
+			*line = ft_strjoin_free(*line, buff, 'b');
+			return (1);
+		}
 	}
-	return (READ_END);
+	free(buff);
+	if (ret < 0)
+		return (-1);
+	return (ft_strlen(*line) == 0 ? 0 : 1);
 }
 
-static int		ft_init_stock(char *tmp, char **stock, char **buffer)
+static int		extract_stock(int fd, char **line, char **stock)
 {
-	ft_strdel(stock);
-	if (!(*stock = ft_strdup(tmp)))
-		return (ft_error(buffer, stock));
-	ft_strdel(&tmp);
-	return (READ_LINE);
-}
+	char	*chr;
+	char	*temp;
+	int		ret;
 
-unsigned int	ft_strchri(char *stock, char c)
-{
-	if (ft_strchr(stock, c) != NULL)
-		return ((ft_strchr(stock, c) - stock));
-	return (READ_ERR);
+	chr = ft_strchr(stock[fd], '\n');
+	temp = (chr ? ft_strdup(chr + 1) : NULL);
+	if (!chr)
+	{
+		*line = ft_strjoin_free(*line, stock[fd], 'l');
+		ft_memdel((void**)&(stock[fd]));
+		ret = fill_buffer(fd, line, stock);
+		return (ret);
+	}
+	else
+	{
+		*chr = 0;
+		*line = ft_strjoin_free(*line, stock[fd], 'b');
+		stock[fd] = ft_strdup(temp);
+		free(temp);
+		return (1);
+	}
+	return (0);
 }
 
 int				get_next_line(const int fd, char **line)
 {
-	static char		*stock = NULL;
-	char			*buffer;
-	char			*tmp;
-	int				ret;
+	static char	*stock[MAX_FD];
+	int			ret;
 
-	if (fd < 0 || !line || BUFF_SIZE < 1 || BUFF_SIZE > 10000000)
-		return (READ_ERR);
-	stock = (!stock) ? ft_strnew(BUFF_SIZE) : stock;
-	while (!(ft_strchr(stock, '\n')))
+	ret = 0;
+	if (fd < 0 || line == NULL || fd >= MAX_FD)
+		return (-1);
+	*line = ft_strdup("");
+	if (!stock[fd])
+		ret = fill_buffer(fd, line, stock);
+	else
+		ret = extract_stock(fd, line, stock);
+	if (ret <= 0)
 	{
-		buffer = ft_strnew(BUFF_SIZE);
-		if (!(ret = read(fd, buffer,BUFF_SIZE)))
-			return (ft_eof(line, &stock, &buffer));
-		if (ret == -1 || !stock || !(tmp = ft_strjoin(stock, buffer)) ||
-				ft_init_stock(tmp, &stock, &buffer) == -1)
-			return (ft_error(&buffer, &stock));
-		ft_strdel(&buffer);
+		ft_strdel(line);
+		ft_memdel((void**)&(stock[fd]));
 	}
-	if (!(*line = ft_strsub(stock, 0, ft_strchri(stock, '\n'))))
-		return (ft_error(&buffer, &stock));
-	if (!(tmp = ft_strsub(stock, ft_strchri(stock, '\n') + 1, ft_strlen(stock)))
-			|| ft_init_stock(tmp, &stock, &buffer) == -1)
-		return (ft_error(&buffer, &stock));
-	return (READ_LINE);
+	return (ret);
 }
