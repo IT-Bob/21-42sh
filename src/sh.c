@@ -48,6 +48,7 @@ int			main(void)
 	t_lstag	*history;
 
 	sh_launchsignal();
+	get_term(0);
 	env = NULL;
 	local = NULL;
 	history = NULL;

@@ -89,6 +89,7 @@ static t_lstag	*read_line(t_lstag *history, char **var)
 			if (c <= 0 || !list)
 				break ;
 			is_in_heredoc(2);
+			sh_launchsignal();
 		}
 		else
 			break ;
@@ -113,7 +114,6 @@ char			*call_line(t_lstag **history, char *hist_file, char **var)
 	list = read_line(history ? *history : NULL, var);
 	sh_launchsignal();
 	line = list_to_str(list);
-	sh_launchsignal();
 	list ? ag_lstdel(&list, del) : NULL;
 	ft_putendl("");
 	if (!line)

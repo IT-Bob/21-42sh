@@ -11,6 +11,16 @@ static void	sh_signal(int signal)
 	ft_putendl("");
 }
 
+void		get_term(int i)
+{
+	static struct termios	def;
+
+	if (!i)
+		tcgetattr(0, &def);
+	else
+		tcsetattr(0, 0, &def);
+}
+
 /*
 **	\brief	Lancement des appels à la fonction `signal` pour les signaux à attraper
 **
