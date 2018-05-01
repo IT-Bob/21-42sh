@@ -121,7 +121,7 @@ char			*call_line(t_lstag **history, char *hist_file, char **var)
 	if (ft_expand_exclam(&line, *history) < 0)
 	{
 		ft_strdel(&line);
-		line = ft_strdup("");
+		line = ft_strdup(" ");
 		return (line);
 	}
 	*history = add_history(*history, hist_file, line);
