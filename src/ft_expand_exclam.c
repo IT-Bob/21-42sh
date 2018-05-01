@@ -81,8 +81,8 @@ static int		ft_malloc_exclam(char *str, t_lstag *hist)
 
 	i = 0;
 	len = 0;
+	cmd = NULL;
 	while (str[i])
-	{
 		if (str[i] == '!' && ft_after_exclam(str + i + 1))
 		{
 			if (ft_isdigit((str[i + 1] == '-' ? str[i + 2] : str[i + 1])))
@@ -98,18 +98,19 @@ static int		ft_malloc_exclam(char *str, t_lstag *hist)
 		}
 		else
 			i += (++len ? 1 : 0);
-	}
 	return (len + 1);
 }
 
-static char		*ft_write_exclam(char *dest, char *str, t_lstag *hist, int i)
+static char		*ft_write_exclam(char *dest, char *str, t_lstag *hist)
 {
 	char		*cmd;
+	int			i;
 	int			j;
 
+	i = 0;
 	j = 0;
+	cmd = NULL;
 	while (str[i])
-	{
 		if (str[i] == '!' && ft_after_exclam(str + i + 1))
 		{
 			if (ft_isdigit((str[i + 1] == '-' ? str[i + 2] : str[i + 1])))
@@ -126,7 +127,6 @@ static char		*ft_write_exclam(char *dest, char *str, t_lstag *hist, int i)
 		}
 		else
 			dest[j++] = str[i++];
-	}
 	return (dest);
 }
 
@@ -152,7 +152,7 @@ int				ft_expand_exclam(char **cmd, t_lstag *hist)
 		return (-1);
 	if (!(ret = ft_memalloc(sizeof(char) * len)))
 		return (sh_error_int(1, "Expand"));
-	if (!(ret = ft_write_exclam(ret, (*cmd), hist, 0)))
+	if (!(ret = ft_write_exclam(ret, (*cmd), hist)))
 		return (-1);
 	ft_strdel(cmd);
 	(*cmd) = ret;
