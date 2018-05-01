@@ -90,13 +90,11 @@ static int		ft_malloc_exclam(char *str, t_lstag *hist)
 	return (len + 1);
 }
 
-static char		*ft_write_exclam(char *dest, char *str, t_lstag *hist)
+static char		*ft_write_exclam(char *dest, char *str, t_lstag *hist, int i)
 {
 	char		*cmd;
-	int			i;
 	int			j;
 
-	i = 0;
 	j = 0;
 	while (str[i])
 	{
@@ -142,7 +140,7 @@ int				ft_expand_exclam(char **cmd, t_lstag *hist)
 		return (-1);
 	if (!(ret = ft_memalloc(sizeof(char) * len)))
 		return (sh_error_int(1, "Expand"));
-	if (!(ret = ft_write_exclam(ret, (*cmd), hist)))
+	if (!(ret = ft_write_exclam(ret, (*cmd), hist, 0)))
 		return (-1);
 	ft_strdel(cmd);
 	(*cmd) = ret;

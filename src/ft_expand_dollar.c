@@ -88,8 +88,8 @@ static char		*ft_write_dollar(char *dest, char *str, const char **local, int til
 				cmd = ft_get_var(str + i + 1, env, local);
 			else if (str[i + 1] == '?' || tild_k(str, i, tild))
 				cmd = getenvloc((str[i + 1] == 63 ? "?" : "HOME"), local, env);
-			ft_strcpy(dest + j, cmd);
-			j += ft_strlen(cmd);
+			(cmd ? ft_strcpy(dest + j, cmd) : NULL);
+			j += (cmd ? ft_strlen(cmd) : 0);
 			i += ft_end_dollar(str + i + 1) + 1;
 		}
 		else
