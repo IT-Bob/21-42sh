@@ -6,7 +6,7 @@
 /*   By: aguerin <aguerin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/15 16:55:33 by aguerin           #+#    #+#             */
-/*   Updated: 2017/06/21 14:12:00 by aguerin          ###   ########.fr       */
+/*   Updated: 2018/05/01 19:11:18 by aguerin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 
 static char	*ft_zero(char *nbr)
 {
-	nbr = (char*)ft_memalloc(sizeof(char) * 2);
-	ft_strcpy(nbr, "0");
+	if ((nbr = (char*)ft_memalloc(sizeof(char) * 2)))
+		ft_strcpy(nbr, "0");
 	return (nbr);
 }
 
