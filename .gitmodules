@@ -4,9 +4,6 @@
 [submodule "modules/environment"]
 	path = modules/environment
 	url = https://github.com/Aguerin42/environment.git
-[submodule "modules/libag"]
-	path = modules/libag
-	url = https://github.com/Aguerin42/libag.git
 [submodule "modules/line_input"]
 	path = modules/line_input
 	url = https://github.com/aguerin42/line_input.git
