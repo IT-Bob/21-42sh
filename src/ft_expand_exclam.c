@@ -45,6 +45,7 @@ static int	ft_enf(char *cmd, int val)
 	}
 	ft_putstr_fd("ERROR: event not found: ", 2);
 	ft_putendl_fd(display, 2);
+	ft_strdel(&display);
 	return (val);
 }
 
