@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_expand_dollar.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: heinfalt <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/01 17:18:34 by heinfalt          #+#    #+#             */
+/*   Updated: 2018/05/01 17:19:49 by heinfalt         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "sh.h"
 #include "expansion.h"
 
@@ -70,7 +82,8 @@ static int		ft_malloc_dollar(char *str, const char **env,
 **	Cette fonction ecrit sur la string malloc, qu'elle renvoie.
 */
 
-static char		*ft_write_dollar(char *dest, char *str, const char **local, int tild)
+static char		*ft_write_dollar(char *dest, char *str, const char **local,\
+																	int tild)
 {
 	const char	**env;
 	char		*cmd;
