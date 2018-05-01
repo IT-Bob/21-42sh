@@ -4,7 +4,7 @@
 **	Cette fonction check si ce qui suit le '!' est un cas d'expansion.
 */
 
-static int	ft_after_exclam(char *str)
+static int		ft_after_exclam(char *str)
 {
 	if (ft_isdigit((str[0] == '-' ? str[1] : str[0])))
 		return (1);
@@ -22,11 +22,11 @@ static int	ft_after_exclam(char *str)
 **	Elle affiche aussi l'event concerne.
 */
 
-static int	ft_enf(char *cmd, int val)
+static int		ft_enf(char *cmd, int val)
 {
-	char	*display;
-	int		digit;
-	int		i;
+	char		*display;
+	int			digit;
+	int			i;
 
 	i = (cmd[0] == '-' ? 1 : 0);
 	digit = (ft_isdigit(cmd[i]) ? 1 : 0);
@@ -54,9 +54,9 @@ static int	ft_enf(char *cmd, int val)
 **	apres avoir rencontre un '!' dans la string de depart.
 */
 
-static int ft_end_exclam(char *str)
+static int		ft_end_exclam(char *str)
 {
-	int		ret;
+	int			ret;
 
 	ret = 0;
 	if (ft_isdigit((str[0] == '-' ? str[1] : str[0])))
@@ -79,13 +79,13 @@ static int ft_end_exclam(char *str)
 **	- le cas des alphas.
 */
 
-static char *ft_digit_node(t_lstag *hist, int nb)
+static char		*ft_digit_node(t_lstag *hist, int nb)
 {
 	int		move;
 	int		lst_len;
 
 	lst_len = ag_lstcountelem(hist);
-	if (nb > lst_len || nb < -lst_len) // care MAX VALUE
+	if (nb > lst_len || nb < -lst_len)
 		return (NULL);
 	if (nb > 0)
 		move = lst_len - nb;
@@ -101,11 +101,11 @@ static char *ft_digit_node(t_lstag *hist, int nb)
 	return (hist->content);
 }
 
-static char *ft_alpha_node(t_lstag *hist, char *str)
+static char		*ft_alpha_node(t_lstag *hist, char *str)
 {
-	t_lstag	*find;
-	char	*search;
-	int		i;
+	t_lstag		*find;
+	char		*search;
+	int			i;
 
 	i = 0;
 	while (ft_isalpha(str[i]))
@@ -133,11 +133,11 @@ static char *ft_alpha_node(t_lstag *hist, char *str)
 **	- Ecrit la string finale.
 */
 
-static int	ft_malloc_exclam(char *str, t_lstag *hist)
+static int		ft_malloc_exclam(char *str, t_lstag *hist)
 {
-	char	*cmd;
-	int		len;
-	int		i;
+	char		*cmd;
+	int			len;
+	int			i;
 
 	i = 0;
 	len = 0;
@@ -162,11 +162,11 @@ static int	ft_malloc_exclam(char *str, t_lstag *hist)
 	return (len + 1);
 }
 
-static char *ft_write_exclam(char *dest, char *str, t_lstag *hist)
+static char		*ft_write_exclam(char *dest, char *str, t_lstag *hist)
 {
-	char	*cmd;
-	int		i;
-	int		j;
+	char		*cmd;
+	int			i;
+	int			j;
 
 	i = 0;
 	j = 0;
@@ -203,10 +203,10 @@ static char *ft_write_exclam(char *dest, char *str, t_lstag *hist)
 **	les positifs).
 */
 
-int			ft_expand_exclam(char **cmd, t_lstag *hist)
+int				ft_expand_exclam(char **cmd, t_lstag *hist)
 {
-	char	*ret;
-	int		len;
+	char		*ret;
+	int			len;
 
 	if (!ft_strchr(*cmd, '!'))
 		return (0);

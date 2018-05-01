@@ -4,7 +4,7 @@
 **	Banales fonctions de reconnaissance de char.
 */
 
-static int	ft_isredir(int c)
+static int		ft_isredir(int c)
 {
 	if (c == '<')
 		return (1);
@@ -19,7 +19,7 @@ static int	ft_isredir(int c)
 	return (0);
 }
 
-static int	ft_isalpha_und(int c)
+static int		ft_isalpha_und(int c)
 {
 	if (ft_isalpha(c))
 		return (1);
@@ -29,7 +29,7 @@ static int	ft_isalpha_und(int c)
 		return (0);
 }
 
-static int	ft_aft_dol(char *str)
+static int		ft_aft_dol(char *str)
 {
 	if (ft_isdigit(str[0]))
 		return (1);
@@ -46,14 +46,13 @@ static int	ft_aft_dol(char *str)
 **	replace le '~' dans notre ligne de commande.
 **
 **	la premiere check si se qu'il y a avant le tild est valide.
-**	la second check se qu'il y a apres.	
+**	la second check se qu'il y a apres.
 */
 
-static int	check_before(char *str, int index)
+static int		check_before(char *str, int index)
 {
 	if (str[index] == '~')
 	{
-
 		if (!index)
 			return (1);
 		index--;
@@ -77,7 +76,7 @@ static int	check_before(char *str, int index)
 	return (0);
 }
 
-static int	tild_k(char *str, int i)
+static int		tild_k(char *str, int i)
 {
 	if (str[i] == '~' && check_before(str, i))
 	{
@@ -100,7 +99,7 @@ static int	tild_k(char *str, int i)
 **	Meme chose que pour le tild sauf qu'ici c'est pour le dollar.
 */
 
-static int	ft_end_dollar(char *str)
+static int		ft_end_dollar(char *str)
 {
 	int		ret;
 	int		i;
@@ -126,13 +125,12 @@ static int	ft_end_dollar(char *str)
 **	a partir d'une string de recherche.
 */
 
-static char	*ft_get_var(char *str, const char **env, const char **local)
+static char		*ft_get_var(char *str, const char **env, const char **local)
 {
 	char	*tmp;
 	char	*ret;
 	int		i;
 
-	
 	i = 0;
 	if (!(ret = ft_memalloc(sizeof(char) * (ft_end_dollar(str) + 1))))
 		return (sh_error(1, "Dollar"));
@@ -157,7 +155,8 @@ static char	*ft_get_var(char *str, const char **env, const char **local)
 **	Cette fonction renvoie la longueur de la string finale pour pouvoir malloc.
 */
 
-static int	ft_malloc_dollar(char *str, const char **env, const char **local, int check_tild)
+static int		ft_malloc_dollar(char *str, const char **env,
+									const char **local, int check_tild)
 {
 	char	*cmd;
 	int		len;
@@ -189,8 +188,8 @@ static int	ft_malloc_dollar(char *str, const char **env, const char **local, int
 **	Cette fonction ecrit sur la string malloc, qu'elle renvoie.
 */
 
-static char	*ft_write_dollar(char *dest, char *str, const char **env,\
-													const char **local, int check_tild)
+static char		*ft_write_dollar(char *dest, char *str, const char **env,
+									const char **local, int check_tild)
 {
 	char	*cmd;
 	int		i;
@@ -200,7 +199,8 @@ static char	*ft_write_dollar(char *dest, char *str, const char **env,\
 	j = 0;
 	while (str[i])
 	{
-		if ((str[i] == '$' && ft_aft_dol(str + i + 1)) || (check_tild && tild_k(str, i)))
+		if ((str[i] == '$' && ft_aft_dol(str + i + 1)) ||
+				(check_tild && tild_k(str, i)))
 		{
 			if (ft_isalpha_und(str[i + 1]) || ft_isdigit(str[i + 1]))
 				cmd = ft_get_var(str + i + 1, env, local);
@@ -227,7 +227,8 @@ static char	*ft_write_dollar(char *dest, char *str, const char **env,\
 **	ou d'un '?' par les valeurs contenu dans l'env et le local.
 */
 
-int			ft_expand_dollar(char **cmd, const char **env, const char **local, int check_tild)
+int				ft_expand_dollar(char **cmd, const char **env,
+									const char **local, int check_tild)
 {
 	char	*ret;
 	int		len;
