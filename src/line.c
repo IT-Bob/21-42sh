@@ -88,6 +88,7 @@ static t_lstag	*read_line(t_lstag *history, char **var)
 			line ? ft_strdel(&line) : NULL;
 			if (c <= 0 || !list)
 				break ;
+			is_in_heredoc(2);
 		}
 		else
 			break ;
