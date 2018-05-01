@@ -1,5 +1,9 @@
 #include "sh.h"
 
+/*
+**	Cette fonction ajoute 1 au SHLVL ou le met a un dans les cas speciaux.
+*/
+
 static char	*shlvl_inc(char *str)
 {
 	char	*shlvl;
@@ -56,6 +60,7 @@ char	***get_env(char ***env)
 **	un nouveau sinon, contenant :
 **	- PWD : répertoire actuel,
 **	- SHLVL : niveau du Shell,
+**	Cette fonction met aussi a jour le shlvl de l'env en entree.
 **
 **	\param	environ	- environnement à copier
 **
@@ -69,6 +74,7 @@ char	**create_env(const char **environ)
 	char	*tmp;
 
 	env = NULL;
+	shlvl = NULL;
 	if (!environ || !environ[0])
 	{
 		if ((env = (char**)ft_memalloc(sizeof(char*) * (2 + 1))))
@@ -80,15 +86,12 @@ char	**create_env(const char **environ)
 	else
 		env = dupenv((const char**)environ, ag_strlendouble((char **)environ));
 	if ((shlvl = ft_getenv("SHLVL", (const char **)env)))
-	{
 		ft_vcontenv("SHLVL", (shlvl = shlvl_inc(shlvl)), &env);
-		ft_strdel(&shlvl);
-	}
 	else
 		ft_vcontenv("SHLVL", "1", &env);
-	tmp = getcwd(NULL, 0);
-	ft_vcontenv("PWD", tmp, &env);
+	ft_vcontenv("PWD", (tmp = getcwd(NULL, 0)), &env);
 	beacon_pwd(tmp);
+	shlvl ? ft_strdel(&shlvl) : NULL;
 	tmp ? ft_strdel(&tmp) : NULL;
 	return (env);
 }
