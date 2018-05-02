@@ -1,6 +1,26 @@
 #include "sh.h"
 #include "expansion.h"
 
+int				verif_parse(char *line)
+{
+	int	i;
+
+	if (line)
+	{
+		i = -1;
+		while (line[++i])
+		{
+			if ((line[i + 1] && line[i]== '>' && line[i + 1] == '|') ||
+				(line[i + 1] && line[i]== '>' && line[i + 1] == '&') ||
+				(line[i + 1] && line[i]== '<' && line[i + 1] == '|') ||
+				(line[i + 1] && line[i]== '<' && line[i + 1] == '&'))
+				return (1);
+		}
+		return (0);
+	}
+	return (1);
+}
+
 /*
 **	Fonction de libération de mémoire passée a ag_lstdel()
 */
@@ -73,7 +93,7 @@ static t_lstag	*read_line(t_lstag *history, char **var)
 
 	list = NULL;
 	c = 0;
-	while (1 || is_in_heredoc(-1) != 3)
+	while (1)
 	{
 		list ? (void)ft_putchar('\n') : NULL;
 		if ((line = line_input(ft_getenv(list ? "PS2" : "PS1",\
@@ -92,6 +112,8 @@ static t_lstag	*read_line(t_lstag *history, char **var)
 		}
 		else
 			break ;
+	//	if (verif_parse(line))
+	//		break ;
 	}
 	if (is_in_heredoc(-1) == 3 && list)
 		ag_lstdel(&list, del);
