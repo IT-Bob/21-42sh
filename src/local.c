@@ -25,13 +25,13 @@ char			***get_loc(char ***loc)
 	return (l);
 }
 
-static void		check_content(char **loc)
+static void		check_content(char ***loc)
 {
-	if (loc && ft_vcontenv("PS1", "$>", &loc))
+	if (loc && ft_vcontenv("PS1", "$>", loc))
 		sh_error_exit(1, "in function create_loc");
-	if (loc && ft_vcontenv("PS2", ">", &loc))
+	if (loc && ft_vcontenv("PS2", ">", loc))
 		sh_error_exit(1, "in function create_loc");
-	if (loc && ft_vcontenv("?", "0", &loc))
+	if (loc && ft_vcontenv("?", "0", loc))
 		sh_error_exit(1, "in function create_loc");
 }
 
@@ -68,7 +68,7 @@ char			**create_loc(const char **env)
 				ag_strdeldouble(&loc);
 			tmp ? ft_strdel(&tmp) : sh_error_exit(1, "in function create_loc");
 		}
-		check_content(loc);
+		check_content(&loc);
 	}
 	else
 		sh_error_exit(1, "in function create_loc");
