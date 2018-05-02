@@ -18,11 +18,11 @@ static int	init_sh(char ***env, char ***local, t_lstag	**history)
 	if (env && local && history)
 	{
 		if (!(*env = create_env((const char**)environ)))
-			return (sh_error_int(1, "21sh: environnement cannot be created."));
+			sh_error_exit(1, "21sh: environnement cannot be created.");
 		if (!(*local = create_loc((const char**)*env)))
 		{
 			ag_strdeldouble(env);
-			return (sh_error_int(1, "21sh: local cannot be created."));
+			sh_error_exit(1, "21sh: local cannot be created.");
 		}
 		get_env(env);
 		get_loc(local);

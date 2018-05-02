@@ -76,18 +76,17 @@ char	**create_env(const char **environ)
 	char	*shlvl;
 	char	*tmp;
 
-	env = NULL;
 	shlvl = NULL;
-	if (!environ || !environ[0])
+	if ((!environ || !environ[0]) && ((env = (char**)ft_memalloc(sizeof(char*)\
+						* (2 + 1)))))
 	{
-		if ((env = (char**)ft_memalloc(sizeof(char*) * (2 + 1))))
-		{
-			if (!(env[0] = ft_strdup("SHLVL=1")))
-				ag_strdeldouble(&env);
-		}
+		if (!(env[0] = ft_strdup("SHLVL=1")))
+			ag_strdeldouble(&env);
 	}
 	else
 		env = dupenv((const char**)environ, ag_strlendouble((char **)environ));
+	if (!env)
+		sh_error_exit(1, "in create_env function");
 	if ((shlvl = ft_getenv("SHLVL", (const char **)env)))
 		ft_vcontenv("SHLVL", (shlvl = shlvl_inc(shlvl)), &env);
 	else

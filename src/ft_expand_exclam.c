@@ -6,7 +6,7 @@
 /*   By: heinfalt <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 17:18:39 by heinfalt          #+#    #+#             */
-/*   Updated: 2018/05/01 17:18:43 by heinfalt         ###   ########.fr       */
+/*   Updated: 2018/05/02 16:35:47 by mtacnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static char		*ft_alpha_node(t_lstag *hist, char *str)
 	while (ft_isalpha(str[i]))
 		i++;
 	if (!(search = ft_memalloc(sizeof(char) * (i + 1))))
-		return (sh_error(1, "Expand"));
+		sh_error_exit(1, "in ft_alpha_node function");
 	i = 0;
 	while (ft_isalpha(str[i]))
 	{
@@ -151,7 +151,7 @@ int				ft_expand_exclam(char **cmd, t_lstag *hist)
 	if (!(len = ft_malloc_exclam(*cmd, hist)))
 		return (-1);
 	if (!(ret = ft_memalloc(sizeof(char) * len)))
-		return (sh_error_int(1, "Expand"));
+		sh_error_exit(1, "in ft_expand_exclam function");
 	if (!(ret = ft_write_exclam(ret, (*cmd), hist)))
 		return (-1);
 	ft_strdel(cmd);

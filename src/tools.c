@@ -38,7 +38,7 @@ char	**concat_tab(const char **env, const char **local)
 					ag_strdeldouble(&t);
 		}
 		if (!t)
-			sh_error(1, "21sh: in function concat_tab");
+			sh_error_exit(1, "21sh: in function concat_tab");
 	}
 	return (t);
 }

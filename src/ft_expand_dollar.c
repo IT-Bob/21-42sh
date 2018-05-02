@@ -6,7 +6,7 @@
 /*   By: heinfalt <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 17:18:34 by heinfalt          #+#    #+#             */
-/*   Updated: 2018/05/01 17:19:49 by heinfalt         ###   ########.fr       */
+/*   Updated: 2018/05/02 16:29:52 by mtacnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static char		*ft_get_var(char *str, const char **env, const char **local)
 
 	i = 0;
 	if (!(ret = ft_memalloc(sizeof(char) * (ft_end_dollar(str) + 1))))
-		return (sh_error(1, "Dollar"));
+		sh_error_exit(1, "in ft_get_var function");
 	if (ft_isdigit(str[i]))
 		ret[i] = str[i];
 	else if (ft_isalpha_und(str[i]))
@@ -128,7 +128,7 @@ int				ft_expand_dollar(char **cmd, const char **env,
 	if (!(len = ft_malloc_dollar(*cmd, env, local, tild)))
 		return (-1);
 	if (!(ret = ft_memalloc(sizeof(char) * len)))
-		return (sh_error_int(1, "Expand"));
+		sh_error_exit(1, "in ft_expand_dollar function");
 	if (!(ret = ft_write_dollar(ret, *cmd, local, tild)))
 		return (-1);
 	ft_strdel(cmd);

@@ -66,6 +66,6 @@ char	**create_loc(const char **env)
 			sh_error(1, "in function create_loc");
 	}
 	else
-		sh_error(1, "in function create_loc");
+		sh_error_exit(1, "in function create_loc");
 	return (loc);
 }

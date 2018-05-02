@@ -28,7 +28,7 @@ char	**get_shbuiltin(void)
 			t[6] = "unsetenv";
 		}
 		else
-			sh_error(1, "in function get_builtin");
+			sh_error_exit(1, "in function shget_builtin");
 	}
 	return (t);
 }

@@ -6,7 +6,7 @@
 /*   By: heinfalt <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 17:18:45 by heinfalt          #+#    #+#             */
-/*   Updated: 2018/05/01 17:18:49 by heinfalt         ###   ########.fr       */
+/*   Updated: 2018/05/02 16:36:28 by mtacnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int			ft_enf(char *cmd, int val)
 	while ((digit ? ft_isdigit(cmd[i]) : ft_isalpha(cmd[i])))
 		i++;
 	if (!(display = ft_memalloc(sizeof(char) * (i + 2))))
-		return (sh_error_int(1, "Expand"));
+		sh_error_exit(1, "in ft_enf function");
 	i = (cmd[0] == '-' ? 1 : 0);
 	display[0] = '!';
 	if (i)
