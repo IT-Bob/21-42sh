@@ -9,22 +9,25 @@ static char	*shlvl_inc(char *str)
 	char	*shlvl;
 
 	shlvl = NULL;
-	if (!ft_isdigit(str[0]))
-		return (ft_strdup("1"));
-	else
-	{
-		shlvl = ft_itoa(ft_atoi(str));
-		if (ft_strcmp(shlvl, str))
+	if (str)
+	{	
+		if (!ft_isdigit(str[0]))
+			return (ft_strdup("1"));
+		else
 		{
+			shlvl = ft_itoa(ft_atoi(str));
+			if (shlvl && ft_strcmp(shlvl, str))
+			{
+				ft_strdel(&shlvl);
+				return (ft_strdup("1"));
+			}
 			ft_strdel(&shlvl);
-			return (ft_strdup("1"));
+			if (ft_atoi(str) == 2147483647)
+				return (ft_strdup("1"));
+			shlvl = ft_itoa(ft_atoi(str) + 1);
 		}
-		ft_strdel(&shlvl);
-		if (ft_atoi(str) == 2147483647)
-			return (ft_strdup("1"));
-		shlvl = ft_itoa(ft_atoi(str) + 1);
-		return (shlvl);
 	}
+	return (shlvl);
 }
 
 /*
