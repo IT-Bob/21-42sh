@@ -16,13 +16,23 @@
 **			si celui-ci n'existe pas ou que le pointeur n'a pas été initialisé
 */
 
-char	***get_loc(char ***loc)
+char			***get_loc(char ***loc)
 {
 	static char	***l = NULL;
 
 	if (loc)
 		l = loc;
 	return (l);
+}
+
+static void		check_content(char **loc)
+{
+	if (loc && ft_vcontenv("PS1", "$>", &loc))
+		sh_error_exit(1, "in function create_loc");
+	if (loc && ft_vcontenv("PS2", ">", &loc))
+		sh_error_exit(1, "in function create_loc");
+	if (loc && ft_vcontenv("?", "0", &loc))
+		sh_error_exit(1, "in function create_loc");
 }
 
 /*
@@ -37,11 +47,11 @@ char	***get_loc(char ***loc)
 **	\return	**variables locales** ou **NULL** en cas d'erreur
 */
 
-char	**create_loc(const char **env)
+char			**create_loc(const char **env)
 {
-	char	**loc;
-	char	*tmp;
-	char	*home;
+	char		**loc;
+	char		*tmp;
+	char		*home;
 
 	if ((loc = (char**)ft_memalloc(sizeof(char*) * 2)))
 	{
@@ -52,18 +62,13 @@ char	**create_loc(const char **env)
 				tmp = ft_strcpy(tmp, home);
 				tmp = ft_strcat(tmp, "/.21sh_history");
 				if (ft_vcontenv("HISTFILE", tmp, &loc))
-					sh_error(1, "in function create_loc");
+					sh_error_exit(1, "in function create_loc");
 			}
 			else
 				ag_strdeldouble(&loc);
-			tmp ? ft_strdel(&tmp) : sh_error(1, "in function create_loc");
+			tmp ? ft_strdel(&tmp) : sh_error_exit(1, "in function create_loc");
 		}
-		if (loc && ft_vcontenv("PS1", "$>", &loc))
-			sh_error(1, "in function create_loc");
-		if (loc && ft_vcontenv("PS2", ">", &loc))
-			sh_error(1, "in function create_loc");
-		if (loc && ft_vcontenv("?", "0", &loc))
-			sh_error(1, "in function create_loc");
+		check_content(loc);
 	}
 	else
 		sh_error_exit(1, "in function create_loc");

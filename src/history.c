@@ -44,4 +44,3 @@ t_lstag		*init_history(const char **env, const char **loc)
 	cut_history(history, get_history_file(NULL));
 	return (history);
 }
-

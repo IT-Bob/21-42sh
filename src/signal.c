@@ -1,7 +1,7 @@
 #include "sh.h"
 
 /*
-**	\brief	Fonction appelée par `signal` 
+**	\brief	Fonction appelée par `signal`
 */
 
 static void	sh_signal(int signal)
@@ -22,8 +22,8 @@ void		get_term(int i)
 }
 
 /*
-**	\brief	Lancement des appels à la fonction `signal` pour les signaux à attraper
-**
+**	\brief	Lancement des appels à la fonction `signal` pour les signaux à
+** attraper.
 **	Les signaux attrapés et ignorés par le Shell sont :
 **
 **	- SIGINT
@@ -45,4 +45,3 @@ void		sh_resetsignal(void)
 	signal(SIGINT, SIG_DFL);
 	signal(SIGTSTP, SIG_DFL);
 }
-

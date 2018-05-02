@@ -4,13 +4,13 @@
 **	Cette fonction ajoute 1 au SHLVL ou le met a un dans les cas speciaux.
 */
 
-static char	*shlvl_inc(char *str)
+static char		*shlvl_inc(char *str)
 {
-	char	*shlvl;
+	char		*shlvl;
 
 	shlvl = NULL;
 	if (str)
-	{	
+	{
 		if (!ft_isdigit(str[0]))
 			return (ft_strdup("1"));
 		else
@@ -46,7 +46,7 @@ static char	*shlvl_inc(char *str)
 **			si celui-ci n'existe pas ou que le pointeur n'a pas été initialisé
 */
 
-char	***get_env(char ***env)
+char			***get_env(char ***env)
 {
 	static char	***e = NULL;
 
@@ -70,11 +70,11 @@ char	***get_env(char ***env)
 **	\return	**variables d'environnement** ou **NULL** en cas d'erreur
 */
 
-char	**create_env(const char **environ)
+char			**create_env(const char **environ)
 {
-	char	**env;
-	char	*shlvl;
-	char	*tmp;
+	char		**env;
+	char		*shlvl;
+	char		*tmp;
 
 	shlvl = NULL;
 	if ((!environ || !environ[0]) && ((env = (char**)ft_memalloc(sizeof(char*)\
