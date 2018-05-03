@@ -11,7 +11,7 @@
 **	\return	**0** en cas de succès ou **1** en cas d'erreur
 */
 
-static int	init_sh(char ***env, char ***local, t_lstag	**history)
+static int	init_sh(char ***env, char ***local, t_lstag **history)
 {
 	extern char	**environ;
 
@@ -34,9 +34,9 @@ static int	init_sh(char ***env, char ***local, t_lstag	**history)
 
 /*
 **	Entrée du programme. 21sh ne prend pas de paramètre.
-**	Le main appelle la fonction d'initialisation des variables locales/d'environnement
-**	et de l'historique. S'il n'y a pas d'erreur, l'édition de ligne est appelée, puis le
-**	parser et l'exécution
+**	Le main appelle la fonction d'initialisation des variables locales/
+**	d'environnement et de l'historique. S'il n'y a pas d'erreur, l'édition de
+**	ligne est appelée, puis le parser et l'exécution
 */
 
 int			main(void)
