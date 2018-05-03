@@ -144,5 +144,6 @@ int				ft_expand_exclam(char **cmd, t_lstag *hist)
 		return (-1);
 	ft_strdel(cmd);
 	(*cmd) = ret;
+	ft_putendl(ret);
 	return (0);
 }
