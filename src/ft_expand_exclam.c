@@ -1,6 +1,13 @@
 #include "sh.h"
 #include "expansion.h"
 
+static void	del(void *content, size_t content_size)
+{
+	(void)content_size;
+	if (content)
+		ft_memdel(&content);
+}
+
 /*
 **	Les deux fonction suivantes donnent pour les cmd de l'hist pour:
 **	- le cas des digits.
@@ -48,11 +55,14 @@ static char		*ft_alpha_node(t_lstag *hist, char *str)
 	}
 	if (!(find = search_history_begin(hist, search)))
 	{
-		ft_memdel((void **)&search);
+		ft_strdel(&search);
 		return (NULL);
 	}
-	ft_memdel((void **)&search);
-	return (find->content);
+	search ? ft_strdel(&search) : NULL;
+	if (find->content)
+		search = strdup(find->content);
+	find ? ag_lstdel(&find, del) : NULL;
+	return (search);
 }
 
 /*
@@ -82,6 +92,7 @@ static int		ft_malloc_exclam(char *str, t_lstag *hist)
 			if (!cmd)
 				return (ft_enf((str + i + 1), 0));
 			len += ft_strlen(cmd);
+			cmd ? ft_strdel(&cmd): NULL;
 			i += ft_end_exclam(str + i + 1);
 		}
 		else
@@ -111,6 +122,7 @@ static char		*ft_write_exclam(char *dest, char *str, t_lstag *hist)
 				return ((ft_enf((str + i + 1), 0) ? NULL : NULL));
 			ft_strcpy(dest + j, cmd);
 			j += ft_strlen(cmd);
+			cmd ? ft_strdel(&cmd): NULL;
 			i += ft_end_exclam(str + i + 1);
 		}
 		else
