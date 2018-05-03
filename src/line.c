@@ -86,16 +86,17 @@ static t_lstag	*read_line(t_lstag *history, char **var)
 			else
 				list = node;
 			line ? ft_strdel(&line) : NULL;
-			if (c <= 0 || !list || is_in_heredoc(-1) == 3 || verif_parse(line))
+			if (c <= 0 || !list || is_in_heredoc(-1) == 3)
 				break ;
 			is_in_heredoc(2);
 		}
 		else
 			break ;
+	//	if (verif_parse(line))
+	//		break ;
 	}
 	if (is_in_heredoc(-1) == 3 && list)
 		ag_lstdel(&list, del);
-	is_in_heredoc(0);
 	return (list);
 }
 
@@ -114,6 +115,7 @@ char			*call_line(t_lstag **history, char *hist_file, char **var)
 	t_lstag	*list;
 
 	list = read_line(history ? *history : NULL, var);
+	is_in_heredoc(0);
 	sh_launchsignal();
 	line = list_to_str(list);
 	list ? ag_lstdel(&list, del) : NULL;
