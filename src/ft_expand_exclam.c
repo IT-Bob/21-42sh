@@ -26,7 +26,7 @@ static char		*ft_digit_node(t_lstag *hist, int nb)
 		hist = hist->next;
 		move--;
 	}
-	return (hist->content);
+	return (ft_strdup(hist->content));
 }
 
 static char		*ft_alpha_node(t_lstag *hist, char *str)
@@ -48,11 +48,14 @@ static char		*ft_alpha_node(t_lstag *hist, char *str)
 	}
 	if (!(find = search_history_begin(hist, search)))
 	{
-		ft_memdel((void **)&search);
+		ft_strdel(&search);
 		return (NULL);
 	}
-	ft_memdel((void **)&search);
-	return (find->content);
+	search ? ft_strdel(&search) : NULL;
+	if (find->content)
+		search = strdup(find->content);
+	find ? ag_lstdel(&find, del_l) : NULL;
+	return (search);
 }
 
 /*
@@ -82,6 +85,7 @@ static int		ft_malloc_exclam(char *str, t_lstag *hist)
 			if (!cmd)
 				return (ft_enf((str + i + 1), 0));
 			len += ft_strlen(cmd);
+			cmd ? ft_strdel(&cmd) : NULL;
 			i += ft_end_exclam(str + i + 1);
 		}
 		else
@@ -110,7 +114,7 @@ static char		*ft_write_exclam(char *dest, char *str, t_lstag *hist)
 			if (!cmd)
 				return ((ft_enf((str + i + 1), 0) ? NULL : NULL));
 			ft_strcpy(dest + j, cmd);
-			j += ft_strlen(cmd);
+			((j += ft_strlen(cmd)) ? ft_strdel(&cmd) : NULL);
 			i += ft_end_exclam(str + i + 1);
 		}
 		else
