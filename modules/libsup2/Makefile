@@ -1,4 +1,4 @@
-NAME	= libmt.a
+NAME	= libsup2.a
 
 CC		= gcc
 

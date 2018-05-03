@@ -14,11 +14,11 @@ else
 	CFLAGSUP = -Wno-sign-compare # -g -fsanitize=address
 endif
 CPPFLAGS =	-I $(INC_PATH) -I $(LIB_INC) -I $(LIBSUP_INC) -I $(ENV_INC)  \
-			-I $(LINE_INC) -I $(CMP_INC) -I $(LIBMT_INC) -I $(ERROR_INC) -I $(PARSER_INC) -I $(HIST_INC) -I $(EXEC_INC) -I $(BUILT_INC) -I $(HERE_INC)
+			-I $(LINE_INC) -I $(CMP_INC) -I $(LIBSUP2_INC) -I $(ERROR_INC) -I $(PARSER_INC) -I $(HIST_INC) -I $(EXEC_INC) -I $(BUILT_INC) -I $(HERE_INC)
 
 CLIB =	-L $(EXEC) -lexec -L $(HEREDOC) -lheredoc -L $(LINE) -llinput -L $(CMP) -lcomplete -L $(PARSER) -lparser\
 		-L $(BUILT) -luiltins -L $(HIST) -lstory -L $(ENV) -lenv -L $(ERROR) -lerror\
-		-L $(LIBMT) -lmt -L $(LIBSUP) -lsup -L $(LIBFT) -lft -ltermcap
+		-L $(LIBSUP2) -lsup2 -L $(LIBSUP) -lsup -L $(LIBFT) -lft -ltermcap
 
 # Fichiers d'en-tête
 INC_PATH = includes/
@@ -44,10 +44,10 @@ LIBSUP_INC = $(LIBSUP)includes/
 LIB_SUP = $(LIBSUP)libsup.a
 SUP = LIBSUP_INC=../libsup/includes
 
-LIBMT = modules/libmt/
-LIBMT_INC = $(LIBMT)includes/
-LIBMT_MT = $(LIBMT)libmt.a
-MT = LIBMT_INC=../libmt/includes
+LIBSUP2 = modules/libsup2/
+LIBSUP2_INC = $(LIBSUP2)includes/
+LIB_SUP2 = $(LIBSUP2)libsup2.a
+SUP2 = LIBSUP2_INC=../libsup2/includes
 
 ERROR = modules/error/
 ERROR_INC = $(ERROR)/includes/
@@ -97,7 +97,7 @@ HRD = HERE_INC=../heredocs/includes
 # Règles de compilation
 all: lib $(NAME)
 
-$(NAME): Makefile $(LIB_FT) $(LIB_AG) $(LIB_MT) $(LIB_ERROR) $(LIB_ENV) $(LIB_HIST) \
+$(NAME): Makefile $(LIB_FT) $(LIB_SUP) $(LIB_SUP2) $(LIB_ERROR) $(LIB_ENV) $(LIB_HIST) \
 $(LIB_LINE) $(LIB_CMP) $(LIB_PARSER) $(LIB_EXEC) $(LIB_BUILT) $(LIB_HERE) $(OBJ)
 
 	@echo "$(CYAN)Compilation de $(NAME)$(RESET)"
@@ -110,21 +110,21 @@ lib:
 	@echo "$(VERT)Compilation...$(RESET)"
 	@make -C $(LIBFT) all
 	@make -C $(LIBSUP) $(FT) all
-	@make -C $(LIBMT) $(FT) all
+	@make -C $(LIBSUP2) $(FT) all
 	@make -C $(ERROR) $(FT) all
 	@make -C $(ENV) $(FT) $(SUP) $(ERR) all
 	@make -C $(CMP) $(FT) $(SUP) $(ERR) all
 	@make -C $(HIST) $(FT) $(SUP) $(ERR) all
-	@make -C $(PARSER) $(FT) $(MT) $(ERR) all
-	@make -C $(EXEC) $(SUP) $(FT) $(PARS) $(MT) $(ERR) $(ENVI) $(BLT) $(HST) $(HRD) all
+	@make -C $(PARSER) $(FT) $(SUP2) $(ERR) all
+	@make -C $(EXEC) $(SUP) $(FT) $(PARS) $(SUP2) $(ERR) $(ENVI) $(BLT) $(HST) $(HRD) all
 	@make -C $(LINE) $(FT) $(SUP) $(ENVI) $(COMP) $(ERR) $(HRD) all
 	@make -C $(HEREDOC) $(FT) $(SUP) $(HST) $(ENVI) $(LIN) $(COMP) $(ERR) all
-	@make -C $(BUILT) $(FT) $(SUP) $(ENVI) $(HST) $(ERR) $(XC) $(PARS) $(MT) $(SH) all
+	@make -C $(BUILT) $(FT) $(SUP) $(ENVI) $(HST) $(ERR) $(XC) $(PARS) $(SUP2) $(SH) all
 
 clean: cleanproj
 	@make -C $(LIBFT) clean
 	@make -C $(LIBSUP) clean
-	@make -C $(LIBMT) clean
+	@make -C $(LIBSUP2) clean
 	@make -C $(ERROR) clean
 	@make -C $(ENV) clean
 	@make -C $(CMP) clean
@@ -138,7 +138,7 @@ clean: cleanproj
 fclean: fcleanproj
 	@make -C $(LIBFT) fclean
 	@make -C $(LIBSUP) fclean
-	@make -C $(LIBMT) fclean
+	@make -C $(LIBSUP2) fclean
 	@make -C $(ERROR) fclean
 	@make -C $(ENV) fclean
 	@make -C $(CMP) fclean
