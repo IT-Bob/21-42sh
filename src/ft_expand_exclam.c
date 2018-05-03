@@ -53,7 +53,7 @@ static char		*ft_alpha_node(t_lstag *hist, char *str)
 	}
 	search ? ft_strdel(&search) : NULL;
 	if (find->content)
-		search = strdup(find->content);
+		search = ft_strdup(find->content);
 	find ? ag_lstdel(&find, del_l) : NULL;
 	return (search);
 }
