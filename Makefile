@@ -102,6 +102,7 @@ $(LIB_LINE) $(LIB_CMP) $(LIB_PARSER) $(LIB_EXEC) $(LIB_BUILT) $(LIB_HERE) $(OBJ)
 
 	@echo "$(CYAN)Compilation de $(NAME)$(RESET)"
 	@$(CC) $(CFLAGS) $(CPPFLAGS) $(CFLAGSUP) $(OBJ) $(CLIB) -o $(NAME)
+	@rm -rf $(NAME).dSYM
 
 $(OBJ): $(INC)
 
