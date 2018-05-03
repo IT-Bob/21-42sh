@@ -62,6 +62,7 @@ void		sh_resetsignal(void);
 **	tools.c
 */
 
+int			verif_parse(char *line);
 char		**concat_tab(const char **env, const char **local);
 
 #endif
