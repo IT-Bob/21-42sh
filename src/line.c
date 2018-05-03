@@ -85,6 +85,11 @@ static t_lstag	*read_line(t_lstag *history, char **var)
 				ag_lstaddtail(&list, node);
 			else
 				list = node;
+			if (line && verif_parse(line))
+			{
+				ft_strdel(&line);
+				break;
+			}
 			line ? ft_strdel(&line) : NULL;
 			if (c <= 0 || !list || is_in_heredoc(-1) == 3)
 				break ;
@@ -92,8 +97,6 @@ static t_lstag	*read_line(t_lstag *history, char **var)
 		}
 		else
 			break ;
-	//	if (verif_parse(line))
-	//		break ;
 	}
 	if (is_in_heredoc(-1) == 3 && list)
 		ag_lstdel(&list, del);

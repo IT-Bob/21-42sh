@@ -10,9 +10,8 @@ int		verif_parse(char *line)
 {
 	int	i;
 
+	i = -1;
 	if (line)
-	{
-		i = -1;
 		while (line[++i])
 		{
 			if ((line[i + 1] && line[i] == '>' && line[i + 1] == '|') ||
@@ -21,9 +20,7 @@ int		verif_parse(char *line)
 				(line[i + 1] && line[i] == '<' && line[i + 1] == '&'))
 				return (1);
 		}
-		return (0);
-	}
-	return (1);
+	return (0);
 }
 
 /*
