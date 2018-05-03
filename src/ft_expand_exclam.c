@@ -146,7 +146,7 @@ int				ft_expand_exclam(char **cmd, t_lstag *hist)
 	char		*ret;
 	int			len;
 
-	if (!cmd || (!*cmd && !ft_strchr(*cmd, '!')))
+	if (!ft_strchr(*cmd, '!'))
 		return (0);
 	if (!(len = ft_malloc_exclam(*cmd, hist)))
 		return (-1);
