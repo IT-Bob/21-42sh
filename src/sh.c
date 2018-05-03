@@ -61,7 +61,7 @@ int			main(void)
 		var = concat_tab((const char**)env, (const char**)local);
 		if (!(line = call_line(&history, get_history_file(NULL), var)))
 			exit_final(1);
-		pre_exec(line, &env);
+		pre_exec(line, &env, 0);
 		line ? ft_strdel(&line) : NULL;
 		var ? ag_strdeldouble(&var) : NULL;
 	}
