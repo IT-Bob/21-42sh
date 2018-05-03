@@ -1,6 +1,7 @@
 #ifndef SH_H
 # define SH_H
 
+# include "expansion.h"
 # include "libft.h"
 # include "libag.h"
 # include "libmt.h"

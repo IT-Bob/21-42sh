@@ -5,7 +5,7 @@
 **	Fonction de libération de mémoire passée a ag_lstdel()
 */
 
-static void		del(void *content, size_t content_size)
+void			del_l(void *content, size_t content_size)
 {
 	(void)content_size;
 	if (content)
@@ -99,7 +99,7 @@ static t_lstag	*read_line(t_lstag *history, char **var)
 			break ;
 	}
 	if (is_in_heredoc(-1) == 3 && list)
-		ag_lstdel(&list, del);
+		ag_lstdel(&list, del_l);
 	return (list);
 }
 
@@ -121,7 +121,7 @@ char			*call_line(t_lstag **history, char *hist_file, char **var)
 	is_in_heredoc(0);
 	sh_launchsignal();
 	line = list_to_str(list);
-	list ? ag_lstdel(&list, del) : NULL;
+	list ? ag_lstdel(&list, del_l) : NULL;
 	if (!line)
 		return (NULL);
 	ft_putendl("");

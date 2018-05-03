@@ -6,6 +6,12 @@
 # include "libmt.h"
 
 /*
+**	line.c
+*/
+
+void		del_l(void *content, size_t content_size);
+
+/*
 **	ft_expand_index.c
 */
 
@@ -29,6 +35,7 @@ int			tild_k(char *str, int i, int tild);
 */
 
 int			ft_expand_exclam(char **cmd, t_lstag *hist);
-int			ft_expand_dollar(char **cmd, const char **env, const char **local, int check_tild);
+int			ft_expand_dollar(char **cmd, const char **env, const char **local,\
+			int check_tild);
 
 #endif
