@@ -1,6 +1,17 @@
 #include "sh.h"
 
 /*
+**	Fonction de libération de mémoire passée a ag_lstdel()
+*/
+
+void	del_l(void *content, size_t content_size)
+{
+	(void)content_size;
+	if (content)
+		ft_memdel(&content);
+}
+
+/*
 **	Parsing basique pour l'attente de ligne
 **
 **	La fonction renvoie 1 en cas d'erreur dans la ligne

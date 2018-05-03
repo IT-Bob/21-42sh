@@ -2,17 +2,6 @@
 #include "expansion.h"
 
 /*
-**	Fonction de libération de mémoire passée a ag_lstdel()
-*/
-
-void			del_l(void *content, size_t content_size)
-{
-	(void)content_size;
-	if (content)
-		ft_memdel(&content);
-}
-
-/*
 **	Transformation de la liste en une chaîne de caractères
 */
 
@@ -64,12 +53,30 @@ static void		alter_line(char **line, char c)
 	}
 }
 
+static int		read_line2(int *c, char **line, t_lstag **list)
+{
+	t_lstag		*node;
+
+	alter_line(line, (*c = quotes(line, *c)));
+	node = ag_lstnew(*line, ft_strlen(*line) + 1);
+	if (list && *list)
+		ag_lstaddtail(list, node);
+	else
+		*list = node;
+	if (line && *line && verif_parse(*line))
+	{
+		ft_strdel(line);
+		return (1);
+	}
+	line && *line ? ft_strdel(line) : NULL;
+	return (0);
+}
+
 static t_lstag	*read_line(t_lstag *history, char **var)
 {
 	int		c;
 	char	*line;
 	t_lstag	*list;
-	t_lstag	*node;
 
 	list = NULL;
 	c = 0;
@@ -77,20 +84,10 @@ static t_lstag	*read_line(t_lstag *history, char **var)
 	{
 		list ? (void)ft_putchar('\n') : NULL;
 		if ((line = line_input(ft_getenv(list ? "PS2" : "PS1",\
-				(const char**)var), history, var, get_shbuiltin())))
+							(const char**)var), history, var, get_shbuiltin())))
 		{
-			alter_line(&line, (c = quotes(&line, c)));
-			node = ag_lstnew(line, ft_strlen(line) + 1);
-			if (list)
-				ag_lstaddtail(&list, node);
-			else
-				list = node;
-			if (line && verif_parse(line))
-			{
-				ft_strdel(&line);
-				break;
-			}
-			line ? ft_strdel(&line) : NULL;
+			if (read_line2(&c, &line, &list))
+				break ;
 			if (c <= 0 || !list || is_in_heredoc(-1) == 3)
 				break ;
 			is_in_heredoc(2);
