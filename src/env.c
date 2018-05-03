@@ -80,7 +80,7 @@ char			**create_env(const char **environ)
 	if ((!environ || !environ[0]) && ((env = (char**)ft_memalloc(sizeof(char*)\
 						* (2 + 1)))))
 	{
-		if (!(env[0] = ft_strdup("SHLVL=1")))
+		if (!(env[0] = ft_strdup("SHLVL=0")))
 			ag_strdeldouble(&env);
 	}
 	else
